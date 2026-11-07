@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ICSE Java (Class 9 &amp; 10) | CodeCanvas</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', Arial, Helvetica, sans-serif;
+            background:
+                    radial-gradient(circle at 80% 0%, rgba(99, 102, 241, 0.18), transparent 30%),
+                    radial-gradient(circle at 0% 30%, rgba(59, 130, 246, 0.10), transparent 25%),
+                    #080b14;
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            height: 72px;
+            padding: 0 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(8, 11, 20, 0.78);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.7px;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: #818cf8;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+
+        .nav-link {
+            color: #a1a1aa;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: white;
+        }
+
+        .profile {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            font-weight: 700;
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.35);
+        }
+
+        /* MAIN CONTAINER */
+        .container {
+            width: min(1180px, 90%);
+            margin: auto;
+            padding: 55px 0 80px;
+        }
+
+        /* HERO */
+        .hero {
+            display: grid;
+            grid-template-columns: 1.5fr 0.8fr;
+            gap: 35px;
+            align-items: stretch;
+            margin-bottom: 50px;
+        }
+
+        .hero-main {
+            padding: 42px;
+            border-radius: 24px;
+            background:
+                    linear-gradient(
+                            135deg,
+                            rgba(99, 102, 241, 0.22),
+                            rgba(30, 41, 59, 0.45)
+                    );
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            box-shadow:
+                    0 25px 60px rgba(0, 0, 0, 0.35),
+                    inset 0 1px rgba(255, 255, 255, 0.05);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: rgba(129, 140, 248, 0.12);
+            border: 1px solid rgba(129, 140, 248, 0.25);
+            color: #a5b4fc;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 18px;
+        }
+
+        .hero h1 {
+            font-size: clamp(34px, 4.5vw, 54px);
+            line-height: 1.1;
+            margin: 0 0 18px;
+            letter-spacing: -2px;
+            font-weight: 800;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(90deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: #94a3b8;
+            font-size: 16px;
+            line-height: 1.7;
+            max-width: 620px;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .primary-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 22px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6366f1, #7c3aed);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.25);
+            transition: all 0.2s ease;
+        }
+
+        .primary-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.35);
+        }
+
+        /* STATS CARD */
+        .stats-card {
+            border-radius: 24px;
+            padding: 30px;
+            background: rgba(15, 23, 42, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .stats-title {
+            color: #94a3b8;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .progress-number {
+            font-size: 42px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: #ffffff;
+        }
+
+        .progress-bar {
+            height: 9px;
+            width: 100%;
+            background: #1e293b;
+            border-radius: 999px;
+            overflow: hidden;
+            margin: 15px 0 12px;
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #6366f1, #a855f7);
+            border-radius: inherit;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .stats-description {
+            color: #94a3b8;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* SEARCH BAR */
+        .search-wrapper {
+            position: relative;
+            margin-bottom: 45px;
+        }
+
+        .search {
+            width: 100%;
+            padding: 17px 20px 17px 48px;
+            border-radius: 14px;
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: white;
+            font-size: 15px;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .search::placeholder {
+            color: #64748b;
+        }
+
+        .search:focus {
+            border-color: rgba(129, 140, 248, 0.6);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            font-size: 16px;
+        }
+
+        .clear-search-btn {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #94a3b8;
+            border-radius: 50%;
+            width: 26px;
+            height: 26px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .clear-search-btn:hover {
+            background: rgba(255, 255, 255, 0.16);
+            color: #ffffff;
+        }
+
+        .search-counter {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #94a3b8;
+            display: none;
+        }
+
+        /* SECTION HEADER */
+        .section-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 22px;
+        }
+
+        .section-header h2 {
+            font-size: 24px;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        .section-header p {
+            margin-top: 6px;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        /* TOPICS GRID */
+        .topics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .topic-card {
+            position: relative;
+            padding: 26px;
+            border-radius: 20px;
+            background: rgba(15, 23, 42, 0.72);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.25s ease;
+            overflow: hidden;
+        }
+
+        .topic-card::before {
+            content: "";
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background: rgba(99, 102, 241, 0.10);
+            filter: blur(35px);
+            top: -60px;
+            right: -60px;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(129, 140, 248, 0.35);
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+            background: rgba(15, 23, 42, 0.85);
+        }
+
+        .topic-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .topic-number {
+            font-size: 13px;
+            font-weight: 700;
+            color: #818cf8;
+            background: rgba(129, 140, 248, 0.12);
+            padding: 4px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(129, 140, 248, 0.25);
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .status-badge {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 9px;
+            border-radius: 999px;
+        }
+
+        .topic-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: -0.3px;
+            color: #ffffff;
+        }
+
+        .topic-card p {
+            color: #94a3b8;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 18px;
+            flex-grow: 1;
+        }
+
+        .topic-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 20px;
+        }
+
+        .topic-tag {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #cbd5e1;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .topic-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .topic-button {
+            flex: 1;
+            padding: 9px 14px;
+            border-radius: 9px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .topic-button:hover {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: rgba(99, 102, 241, 0.4);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        /* EMPTY STATE */
+        .empty-search {
+            grid-column: 1 / -1;
+            padding: 50px 20px;
+            text-align: center;
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 18px;
+            border: 1px dashed rgba(255, 255, 255, 0.12);
+            display: none;
+        }
+
+        .empty-search h4 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #f1f5f9;
+        }
+
+        .empty-search p {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 850px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+            .topics {
+                grid-template-columns: 1fr;
+            }
+            .hero-main {
+                padding: 30px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .navbar {
+                padding: 0 20px;
+            }
+            .nav-link {
+                display: none;
+            }
+            .container {
+                width: 92%;
+                padding-top: 35px;
+            }
+            .hero h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <a href="/dashboard" class="logo">Code<span>Canvas</span></a>
+    <div class="nav-right">
+        <a href="/dashboard" class="nav-link">Dashboard</a>
+        <a href="/progress" class="nav-link">My Progress</a>
+        <div class="profile" id="userProfileAvatar">H</div>
+    </div>
+</nav>
+
+<main class="container">
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-main">
+            <div class="badge">
+                ICSE COMPUTER APPLICATIONS • CLASS 9 &amp; 10
+            </div>
+
+            <h1>
+                Ace ICSE Java.<br>
+                <span>Board-Ready Mastery.</span>
+            </h1>
+
+            <p>
+                Master the complete CISCE curriculum: OOP principles, operators, iteration,
+                classic number algorithms (Armstrong, Palindrome, Prime), String manipulation,
+                methods &amp; overloading, and arrays &amp; sorting.
+            </p>
+
+            <div class="hero-actions">
+                <a href="#topicsSection" class="primary-button" id="explorePracticeBtn">
+                    Explore Practice ↓
+                </a>
+                <a href="/icse/exam" class="primary-button" style="background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.4); color: #c7d2fe; box-shadow: none;">
+                    ⏱ 40-Question Mock Exam →
+                </a>
+            </div>
+        </div>
+
+        <div class="stats-card">
+            <div>
+                <div class="stats-title">
+                    <span>YOUR ICSE PROGRESS</span>
+                    <span id="icseScoreBadge" style="font-size: 11px; padding: 4px 10px; border-radius: 999px; font-weight: 700; background: rgba(148, 163, 184, 0.16); color: #cbd5e1; border: 1px solid rgba(148, 163, 184, 0.3); transition: all 0.3s ease;">
+                        TARGET: 100/100
+                    </span>
+                </div>
+
+                <div class="progress-number" id="icseProgressNumber">
+                    0%
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="icseProgressFill"></div>
+                </div>
+
+                <div class="stats-description" id="icseProgressDesc">
+                    Pass your first ICSE quiz with 7/10 (70%) or higher to unlock progress.
+                </div>
+            </div>
+
+            <div class="stats-description" id="icseScoreTargetNotice" style="margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.08); font-size: 12px; color: #94a3b8; display: flex; justify-content: space-between; align-items: center;">
+                <span>🎯 Goal: 100/100 Board Grade</span>
+                <span id="icseTargetHint" style="color: #818cf8;">0/8 Units Mastered</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEARCH -->
+    <div class="search-wrapper">
+        <span class="search-icon">🔍</span>
+        <input
+                id="topicSearch"
+                class="search"
+                type="text"
+                placeholder="Search ICSE topics (e.g. armstrong, prime, bubble sort, switch-case, methods, strings)..."
+                autocomplete="off">
+        <button id="clearSearch" class="clear-search-btn" aria-label="Clear search" title="Clear search">✕</button>
+        <div id="searchCounter" class="search-counter"></div>
+    </div>
+
+    <!-- TOPICS -->
+    <div class="section-header" id="topicsSection">
+        <div>
+            <h2>ICSE Java Syllabus Units</h2>
+            <p>Select any unit to learn core concepts or practice with board-standard interactive questions.</p>
+        </div>
+    </div>
+
+    <section class="topics" id="topicsContainer">
+
+        <!-- UNIT 1 -->
+        <div class="topic-card" data-keywords="oop object oriented programming class object factory bytecode javac jvm platform independence encapsulation abstraction polymorphism inheritance tokens keywords data types">
+            <div>
+                <div class="topic-header">
+                    <span class="topic-number">UNIT 01</span>
+                </div>
+                <h3>OOP &amp; Java Fundamentals</h3>
+                <p>
+                    Understand Java bytecode, javac compiler, JVM, class as an object factory, and the four OOP pillars: Encapsulation, Abstraction, Polymorphism, and Inheritance.
+                </p>
+                <div class="topic-tags">
+                    <span class="topic-tag">javac &amp; JVM</span>
+                    <span class="topic-tag">Encapsulation</span>
+                    <span class="topic-tag">Polymorphism</span>
+                </div>
+            </div>
+            <div class="topic-actions">
+                <a href="/icse/learn?unit=1" class="topic-button">
+                    Learn
+                </a>
+                <a href="/apcs/quiz?topic=OOP%20%26%20Java%20Fundamentals&curriculum=ICSE" class="topic-button">
+                    Practice
+                </a>
+            </div>
+        </div>
+
+        <!-- UNIT 2 -->
+        <div class="topic-card" data-keywords="operators arithmetic relational logical boolean assignment unary binary ternary increment decrement prefix postfix precedence type casting explicit implicit math sqrt pow cbrt round">
+            <div>
+                <div class="topic-header">
+                    <span class="topic-number">UNIT 02</span>
+                </div>
+                <h3>Operators &amp; Expressions</h3>
+                <p>
+                    Master arithmetic, relational, and logical operators, prefix vs postfix increments (++x, x++), evaluation hierarchy, implicit/explicit type casting, and Math methods.
+                </p>
+                <div class="topic-tags">
+                    <span class="topic-tag">++x vs x++</span>
+                    <span class="topic-tag">Type Casting</span>
+                    <span class="topic-tag">Math.pow()</span>
+                </div>
+            </div>
+            <div class="topic-actions">
+                <a href="/icse/learn?unit=2" class="topic-button">
+                    Learn
+                </a>
+                <a href="/apcs/quiz?topic=Operators%20%26%20Expressions&curriculum=ICSE" class="topic-button">
+                    Practice
+                </a>
+            </div>
+        </div>
+
+        <!-- UNIT 3 -->
+        <div class="topic-card" data-keywords="decision making branching if else nested switch case break default fall through ternary operator conditional">
+            <div>
+                <div class="topic-header">
+                    <span class="topic-number">UNIT 03</span>
+                </div>
+                <h3>Conditional Branching &amp; Switch</h3>
+                <p>
+                    Control program execution using if-else ladders, nested conditionals, ternary expressions (?:), and menu-driven switch-case structures with break and default.
+                </p>
+                <div class="topic-tags">
+                    <span class="topic-tag">switch-case</span>
+                    <span class="topic-tag">Fall-through</span>
+                    <span class="topic-tag">Ternary ?:</span>
+                </div>
+            </div>
+            <div class="topic-actions">
+                <a href="/icse/learn?unit=3" class="topic-button">
+                    Learn
+                </a>
+                <a href="/apcs/quiz?topic=Conditional%20Branching%20%26%20Switch&curriculum=ICSE" class="topic-button">
+                    Practice
+                </a>
+            </div>
+        </div>
+
+        <!-- UNIT 4 -->
+        <div class="topic-card" data-keywords="loops iteration for while do while entry controlled exit controlled infinite loops nested loops pattern printing break continue jump statements">
+            <div>
+                <div class="topic-header">
+                    <span class="topic-number">UNIT 04</span>
+                </div>
+                <h3>Iterative Constructs &amp; Loops</h3>
+                <p>
+                    Learn differences between entry-controlled (for, while) and exit-controlled (do-while) loops, jump statements (break, continue), and nested loops for triangle patterns.
+                </p>
+                <div class="topic-tags">
+                    <span class="topic-tag">Entry vs Exit</span>
+                    <span class="topic-tag">break &amp; continue</span>
+                    <span class="topic-tag">Nested Patterns</span>
+                </div>
+            </div>
+            <div class="topic-actions">
+                <a href="/icse/learn?unit=4" class="topic-button">
+                    Learn
+                </a>
+                <a href="/apcs/quiz?topic=Iterative%20Constructs%20%26%20Loops&curriculum=ICSE" class="topic-button">
+                    Practice
+                </a>
+            </div>
+        </div>
+
+        <!-- UNIT 5 -->
+        <div class="topic-card" data-keywords="classic numbers digit extraction modulo armstrong palindrome prime perfect automorphic spy duck neon reverse sum digits">
+            <div>
+                <div class="topic-header">
+                    <span class="topic-number">UNIT 05</span>
+                </div>
+                <h3>Classic Number Programs</h3>
+                <p>
+                    Master core ICSE board algorithms: digit extraction (% 10, / 10), reversing numbers, palindrome check, prime verification, Armstrong numbers, perfect numbers, and spy numbers.
+                </p>
+                <div class="topic-tags">
+                    <span class="topic-tag">Armstrong</span>
+                    <span class="topic-tag">Prime &amp; Palindrome</span>
+                    <span class="topic-tag">Spy &amp; Perfect</span>
+                </div>
+            </div>
+            <div class="topic-actions">
+                <a href="/icse/learn?unit=5" class="topic-button">
+                    Learn
+                </a>
+                <a href="/apcs/quiz?topic=Classic%20Number%20Programs&curriculum=ICSE" class="topic-button">
+                    Practice
+                </a>
+            </div>
+        </div>
+
+        <!-- UNIT 6 -->
+        <div class="topic-card" data-keywords="character string wrapper class isuppercase islowercase isdigit touppercase charat substring length indexof equals compareto piglatin palindrome word frequency">
+            <div>
+                <div class="topic-header">
+                    <span class="topic-number">UNIT 06</span>
+                </div>
+                <h3>Character &amp; String Handling</h3>
+                <p>
+                    Use Character wrapper methods (isLetter, isDigit, toUpperCase), String immutability, substring(), indexOf(), compareTo(), and build word algorithms like Piglatin.
+                </p>
+                <div class="topic-tags">
+                    <span class="topic-tag">Character Methods</span>
+                    <span class="topic-tag">substring() &amp; indexOf()</span>
+                    <span class="topic-tag">Piglatin Words</span>
+                </div>
+            </div>
+            <div class="topic-actions">
+                <a href="/icse/learn?unit=6" class="topic-button">
+                    Learn
+                </a>
+                <a href="/apcs/quiz?topic=Character%20%26%20String%20Handling&curriculum=ICSE" class="topic-button">
+                    Practice
+                </a>
+            </div>
+        </div>
+
+        <!-- UNIT 7 -->
+        <div class="topic-card" data-keywords="methods functions user defined signature return type formal actual parameters pass by value pass by reference overloading pure impure static">
+            <div>
+                <div class="topic-header">
+                    <span class="topic-number">UNIT 07</span>
+                </div>
+                <h3>User-Defined Methods &amp; Overloading</h3>
+                <p>
+                    Deconstruct methods: actual vs formal parameters, return values, pass-by-value semantics, method overloading rules (different parameter lists), and pure vs impure functions.
+                </p>
+                <div class="topic-tags">
+                    <span class="topic-tag">Method Signature</span>
+                    <span class="topic-tag">Overloading</span>
+                    <span class="topic-tag">Pure vs Impure</span>
+                </div>
+            </div>
+            <div class="topic-actions">
+                <a href="/icse/learn?unit=7" class="topic-button">
+                    Learn
+                </a>
+                <a href="/apcs/quiz?topic=User-Defined%20Methods%20%26%20Overloading&curriculum=ICSE" class="topic-button">
+                    Practice
+                </a>
+            </div>
+        </div>
+
+        <!-- UNIT 8 -->
+        <div class="topic-card" data-keywords="arrays single dimensional double dimensional 1d 2d linear search binary search bubble sort ascending descending matrix diagonal row column length">
+            <div>
+                <div class="topic-header">
+                    <span class="topic-number">UNIT 08</span>
+                </div>
+                <h3>Arrays, Searching &amp; Sorting</h3>
+                <p>
+                    1D array declaration and boundary limits, Linear Search, Binary Search on sorted datasets, Bubble Sort step-by-step passes, and 2D matrix diagonal indexing.
+                </p>
+                <div class="topic-tags">
+                    <span class="topic-tag">Linear &amp; Binary Search</span>
+                    <span class="topic-tag">Bubble Sort</span>
+                    <span class="topic-tag">2D Matrix Diagonals</span>
+                </div>
+            </div>
+            <div class="topic-actions">
+                <a href="/icse/learn?unit=8" class="topic-button">
+                    Learn
+                </a>
+                <a href="/apcs/quiz?topic=Arrays%2C%20Searching%20%26%20Sorting&curriculum=ICSE" class="topic-button">
+                    Practice
+                </a>
+            </div>
+        </div>
+
+        <!-- EMPTY STATE -->
+        <div class="empty-search" id="emptySearch">
+            <h4>No matching ICSE topics found</h4>
+            <p>Try searching for "prime", "armstrong", "methods", "loops", "bubble sort", or "arrays".</p>
+        </div>
+
+    </section>
+
+</main>
+
+<script>
+    // Load student avatar
+    try {
+        const studentName = localStorage.getItem('codecanvas_student_name');
+        if (studentName && studentName.trim() !== '') {
+            const avatar = document.getElementById('userProfileAvatar');
+            if (avatar) avatar.textContent = studentName.trim().charAt(0).toUpperCase();
+        }
+    } catch (e) {}
+
+    // ==========================================
+    //  SEARCH FUNCTIONALITY
+    // ==========================================
+    const searchInput = document.getElementById('topicSearch');
+    const clearBtn = document.getElementById('clearSearch');
+    const searchCounter = document.getElementById('searchCounter');
+    const cards = Array.from(document.querySelectorAll('.topic-card'));
+    const emptySearch = document.getElementById('emptySearch');
+
+    function filterTopics() {
+        const query = searchInput.value.toLowerCase().trim();
+
+        if (query.length > 0) {
+            clearBtn.style.display = 'flex';
+        } else {
+            clearBtn.style.display = 'none';
+        }
+
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+            const title = card.querySelector('h3').textContent.toLowerCase();
+            const desc = card.querySelector('p').textContent.toLowerCase();
+            const keywords = (card.dataset.keywords || '').toLowerCase();
+
+            const isMatch = !query ||
+                title.includes(query) ||
+                desc.includes(query) ||
+                keywords.includes(query);
+
+            if (isMatch) {
+                card.style.display = 'flex';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        if (query.length > 0) {
+            searchCounter.style.display = 'block';
+            searchCounter.textContent = `Showing ${visibleCount} of ${cards.length} units`;
+            emptySearch.style.display = visibleCount === 0 ? 'block' : 'none';
+        } else {
+            searchCounter.style.display = 'none';
+            emptySearch.style.display = 'none';
+        }
+    }
+
+    searchInput.addEventListener('input', filterTopics);
+
+    clearBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        searchInput.focus();
+        filterTopics();
+    });
+
+    // Keyboard shortcut '/' to search
+    window.addEventListener('keydown', (e) => {
+        if (e.key === '/' && document.activeElement !== searchInput) {
+            e.preventDefault();
+            searchInput.focus();
+            searchInput.select();
+        }
+    });
+
+    // ==========================================
+    //  PROGRESS & STATUS RENDERING
+    // ==========================================
+    function updateIcseProgress() {
+        try {
+            const completedTopics = JSON.parse(localStorage.getItem('codecanvas_completed_topics') || '{}');
+            const totalModules = 8;
+            let passedCount = 0;
+            let totalPctSum = 0;
+
+            cards.forEach(card => {
+                const title = card.querySelector('h3')?.textContent?.trim();
+                const item = title ? completedTopics[title] : null;
+
+                if (item && item.passed) {
+                    passedCount++;
+                    totalPctSum += (item.percentage || Math.round((item.bestScore / (item.total || 10)) * 100));
+                }
+
+                if (item) {
+                    const header = card.querySelector('.topic-header');
+                    if (header) {
+                        const existingBadge = header.querySelector('.status-badge');
+                        if (existingBadge) existingBadge.remove();
+
+                        const badge = document.createElement('span');
+                        badge.className = 'status-badge';
+
+                        if (item.passed) {
+                            badge.style.background = 'rgba(34, 197, 94, 0.15)';
+                            badge.style.color = '#86efac';
+                            badge.style.border = '1px solid rgba(34, 197, 94, 0.35)';
+                            badge.textContent = `✓ Passed (${item.bestScore}/${item.total})`;
+                        } else {
+                            badge.style.background = 'rgba(245, 158, 11, 0.15)';
+                            badge.style.color = '#fcd34d';
+                            badge.style.border = '1px solid rgba(245, 158, 11, 0.35)';
+                            badge.textContent = `Review (${item.bestScore}/${item.total})`;
+                        }
+                        header.appendChild(badge);
+                    }
+                }
+            });
+
+            const pct = Math.round((passedCount / totalModules) * 100);
+            const avgAccuracy = passedCount > 0 ? Math.round(totalPctSum / passedCount) : 0;
+
+            let gradeTitle = 'TARGET: 100/100';
+            let gradeColor = '#94a3b8';
+            let targetHint = `${passedCount}/8 Units Mastered`;
+
+            if (passedCount === 8 && avgAccuracy >= 90) {
+                gradeTitle = 'GRADE: 100/100 (DISTINCTION ★)';
+                gradeColor = '#fde047';
+                targetHint = '8/8 Units Mastered • Board Ready!';
+            } else if (passedCount >= 6) {
+                gradeTitle = 'GRADE: 90%+ (FIRST CLASS)';
+                gradeColor = '#86efac';
+                targetHint = `${passedCount}/8 Units (${8 - passedCount} more for 100/100)`;
+            } else if (passedCount >= 4) {
+                gradeTitle = 'GRADE: 80%+ (STRONG PASS)';
+                gradeColor = '#818cf8';
+                targetHint = `${passedCount}/8 Units (${6 - passedCount} more for 90%+)`;
+            } else if (passedCount >= 1) {
+                gradeTitle = 'GRADE: IN PROGRESS';
+                gradeColor = '#93c5fd';
+                targetHint = `${passedCount}/8 Units (${4 - passedCount} more for 80%+)`;
+            }
+
+            const fillEl = document.getElementById('icseProgressFill');
+            const numEl = document.getElementById('icseProgressNumber');
+            const descEl = document.getElementById('icseProgressDesc');
+            const badgeEl = document.getElementById('icseScoreBadge');
+            const targetHintEl = document.getElementById('icseTargetHint');
+
+            if (fillEl) fillEl.style.width = pct + '%';
+            if (numEl) numEl.textContent = pct + '%';
+            if (badgeEl) {
+                badgeEl.textContent = gradeTitle;
+                badgeEl.style.color = gradeColor;
+                badgeEl.style.borderColor = gradeColor + '66';
+                badgeEl.style.background = gradeColor + '1f';
+            }
+            if (targetHintEl) {
+                targetHintEl.textContent = targetHint;
+                targetHintEl.style.color = gradeColor;
+            }
+
+            if (descEl) {
+                if (passedCount === 0) {
+                    descEl.textContent = 'Pass your first ICSE quiz with 7/10 (70%) or higher to unlock progress.';
+                } else if (passedCount < totalModules) {
+                    descEl.textContent = `${passedCount} of ${totalModules} units mastered with ${avgAccuracy}% average accuracy. Keep going!`;
+                } else {
+                    descEl.textContent = '🎉 All 8 ICSE units mastered with passing scores! Ready for board exam excellence!';
+                }
+            }
+
+        } catch (e) {
+            console.error('Error updating ICSE progress:', e);
+        }
+    }
+
+    updateIcseProgress();
+</script>
+
+</body>
+</html>

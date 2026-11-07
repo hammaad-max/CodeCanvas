@@ -1,0 +1,1926 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AP CS A Mock Exam | CodeCanvas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #090d16;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* NAVBAR */
+        .exam-navbar {
+            height: 70px;
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(10, 15, 29, 0.85);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .exam-brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 800;
+            text-decoration: none;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: #818cf8;
+        }
+
+        .exam-badge {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            color: #a5b4fc;
+        }
+
+        .exam-center-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .exam-nav-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* TIMER WIDGET */
+        .timer-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 6px 14px;
+            border-radius: 12px;
+        }
+
+        .timer-icon {
+            font-size: 16px;
+            color: #818cf8;
+        }
+
+        .timer-display {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 16px;
+            font-weight: 700;
+            color: #ffffff;
+            min-width: 68px;
+        }
+
+        .timer-warning {
+            border-color: rgba(239, 68, 68, 0.4);
+            background: rgba(239, 68, 68, 0.12);
+            animation: pulseWarning 1.5s infinite;
+        }
+
+        .timer-warning .timer-display,
+        .timer-warning .timer-icon {
+            color: #fca5a5;
+        }
+
+        @keyframes pulseWarning {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .pause-btn {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 13px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .pause-btn:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* SUBMIT BUTTON */
+        .submit-exam-btn {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #ffffff;
+            border: none;
+            padding: 9px 20px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.35);
+            transition: all 0.2s ease;
+        }
+
+        .submit-exam-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+            filter: brightness(1.1);
+        }
+
+        /* MAIN EXAM LAYOUT */
+        .exam-container {
+            max-width: 1380px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 28px 24px 60px;
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 28px;
+            flex-grow: 1;
+        }
+
+        /* QUESTION CARD */
+        .question-card {
+            background: rgba(15, 23, 42, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 34px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            backdrop-filter: blur(12px);
+        }
+
+        .question-meta-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .question-unit-tag {
+            font-size: 12px;
+            font-weight: 700;
+            color: #818cf8;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .question-actions-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .flag-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .flag-btn:hover {
+            color: #ffffff;
+            border-color: rgba(245, 158, 11, 0.4);
+        }
+
+        .flag-btn.flagged {
+            background: rgba(245, 158, 11, 0.15);
+            border-color: rgba(245, 158, 11, 0.45);
+            color: #fbbf24;
+        }
+
+        .question-heading {
+            font-size: 13px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 19px;
+            font-weight: 600;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            color: #f8fafc;
+            margin-bottom: 28px;
+        }
+
+        .question-text code, pre {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 6px;
+            padding: 2px 6px;
+            font-size: 16px;
+            color: #c7d2fe;
+        }
+
+        /* OPTIONS LIST */
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 34px;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 16px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .option-item:hover {
+            background: rgba(99, 102, 241, 0.06);
+            border-color: rgba(99, 102, 241, 0.35);
+            transform: translateX(3px);
+        }
+
+        .option-item.selected {
+            background: rgba(99, 102, 241, 0.15);
+            border-color: #818cf8;
+            box-shadow: 0 0 16px rgba(99, 102, 241, 0.25);
+        }
+
+        .option-letter {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: #94a3b8;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .option-item.selected .option-letter {
+            background: #6366f1;
+            border-color: #818cf8;
+            color: #ffffff;
+        }
+
+        .option-content {
+            font-size: 15px;
+            color: #e2e8f0;
+            line-height: 1.5;
+            padding-top: 3px;
+        }
+
+        /* BOTTOM NAV ROW */
+        .question-nav-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            padding: 10px 22px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: rgba(99, 102, 241, 0.15);
+            border-color: rgba(99, 102, 241, 0.35);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .clear-answer-btn {
+            background: transparent;
+            border: none;
+            color: #64748b;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .clear-answer-btn:hover {
+            color: #cbd5e1;
+            text-decoration: underline;
+        }
+
+        /* SIDEBAR NAVIGATOR */
+        .exam-sidebar {
+            background: rgba(15, 23, 42, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            backdrop-filter: blur(12px);
+            height: fit-content;
+            position: sticky;
+            top: 98px;
+        }
+
+        .sidebar-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-title {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+            color: #e2e8f0;
+        }
+
+        .sidebar-answered-badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 999px;
+            background: rgba(99, 102, 241, 0.15);
+            color: #a5b4fc;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        /* 40 QUESTIONS GRID */
+        .navigator-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 7px;
+        }
+
+        .nav-pip {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            position: relative;
+        }
+
+        .nav-pip:hover {
+            border-color: #818cf8;
+            color: #ffffff;
+            transform: scale(1.08);
+        }
+
+        .nav-pip.current {
+            border: 2px solid #ffffff;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        .nav-pip.answered {
+            background: rgba(99, 102, 241, 0.3);
+            border-color: rgba(99, 102, 241, 0.6);
+            color: #e0e7ff;
+        }
+
+        .nav-pip.flagged::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #f59e0b;
+            box-shadow: 0 0 6px #f59e0b;
+        }
+
+        /* NAVIGATOR LEGEND */
+        .navigator-legend {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            font-size: 11px;
+            color: #94a3b8;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .legend-answered { background: #818cf8; }
+        .legend-unanswered { background: rgba(255, 255, 255, 0.2); }
+        .legend-flagged { background: #f59e0b; }
+        .legend-current { background: #ffffff; }
+
+        /* QUICK STATS */
+        .sidebar-stats {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 12px 14px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .sidebar-stats strong {
+            color: #ffffff;
+        }
+
+        /* CONFIRMATION MODAL */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            padding: 20px;
+        }
+
+        .modal-card {
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            max-width: 480px;
+            width: 100%;
+            padding: 30px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+            text-align: center;
+        }
+
+        .modal-icon {
+            font-size: 38px;
+            margin-bottom: 14px;
+        }
+
+        .modal-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .modal-card p {
+            color: #94a3b8;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 22px;
+        }
+
+        .modal-summary-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 14px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .summary-num {
+            font-size: 20px;
+            font-weight: 800;
+            color: #818cf8;
+            display: block;
+        }
+
+        .summary-lbl {
+            font-size: 11px;
+            color: #64748b;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .modal-btn-cancel {
+            flex: 1;
+            padding: 11px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e2e8f0;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .modal-btn-cancel:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-btn-submit {
+            flex: 1;
+            padding: 11px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            color: #ffffff;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
+            transition: all 0.2s;
+        }
+
+        .modal-btn-submit:hover {
+            filter: brightness(1.1);
+        }
+
+        /* ========================
+           EXAM START / BRIEFING SCREEN
+           ======================== */
+        .exam-start-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            padding: 40px 24px 80px;
+        }
+
+        .exam-start-card {
+            background: rgba(15, 23, 42, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            max-width: 720px;
+            width: 100%;
+            padding: 44px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(16px);
+            text-align: left;
+        }
+
+        .exam-start-card h1 {
+            font-size: 30px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            letter-spacing: -0.5px;
+        }
+
+        .start-chips-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            margin: 24px 0;
+        }
+
+        .start-chip {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 12px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .chip-icon {
+            font-size: 24px;
+        }
+
+        .chip-val {
+            font-size: 15px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .chip-lbl {
+            font-size: 11px;
+            color: #64748b;
+        }
+
+        .start-instructions {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            padding: 20px 24px;
+            margin-bottom: 32px;
+        }
+
+        .start-instructions ul {
+            padding-left: 20px;
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.8;
+        }
+
+        .start-actions-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        /* ========================
+           DIAGNOSTIC REPORT (RESULTS)
+           ======================== */
+        .report-view {
+            display: none;
+            max-width: 1100px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 36px 20px 80px;
+        }
+
+        .report-hero {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 38px;
+            margin-bottom: 32px;
+            backdrop-filter: blur(14px);
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 36px;
+            align-items: center;
+        }
+
+        .hero-left h1 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-left p {
+            color: #94a3b8;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .score-display-card {
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 26px;
+            text-align: center;
+        }
+
+        .ap-score-large {
+            font-size: 64px;
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 6px;
+            color: #fde047;
+            text-shadow: 0 0 30px rgba(245, 158, 11, 0.4);
+        }
+
+        .ap-score-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 12px;
+        }
+
+        .score-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .meta-stat-num {
+            font-size: 20px;
+            font-weight: 800;
+            color: #818cf8;
+        }
+
+        .meta-stat-lbl {
+            font-size: 11px;
+            color: #64748b;
+        }
+
+        /* UNIT BREAKDOWN SECTION */
+        .section-header {
+            margin-bottom: 20px;
+        }
+
+        .section-header h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .section-header p {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .unit-breakdown-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .unit-card {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            padding: 20px;
+            transition: all 0.2s ease;
+        }
+
+        .unit-card:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            background: rgba(15, 23, 42, 0.7);
+        }
+
+        .unit-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .unit-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #f1f5f9;
+        }
+
+        .unit-status-pill {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 999px;
+        }
+
+        .pill-mastery {
+            background: rgba(34, 197, 94, 0.15);
+            color: #86efac;
+            border: 1px solid rgba(34, 197, 94, 0.35);
+        }
+
+        .pill-review {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fcd34d;
+            border: 1px solid rgba(245, 158, 11, 0.35);
+        }
+
+        .unit-progress-container {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 999px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .unit-progress-fill {
+            height: 100%;
+            border-radius: inherit;
+        }
+
+        .unit-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .unit-study-link {
+            color: #818cf8;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .unit-study-link:hover {
+            color: #c7d2fe;
+            text-decoration: underline;
+        }
+
+        /* QUESTION REVIEW SECTION */
+        .review-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 22px;
+        }
+
+        .review-tab-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #94a3b8;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .review-tab-btn.active {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: #818cf8;
+            color: #ffffff;
+        }
+
+        .review-questions-list {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            margin-bottom: 40px;
+        }
+
+        .review-item {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            padding: 24px;
+        }
+
+        .review-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .review-question-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #f8fafc;
+            margin-bottom: 18px;
+            line-height: 1.5;
+        }
+
+        .review-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .review-option {
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: #94a3b8;
+        }
+
+        .review-option.correct-answer {
+            background: rgba(34, 197, 94, 0.12);
+            border-color: rgba(34, 197, 94, 0.4);
+            color: #86efac;
+            font-weight: 600;
+        }
+
+        .review-option.user-wrong {
+            background: rgba(239, 68, 68, 0.12);
+            border-color: rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+        }
+
+        .explanation-box {
+            background: rgba(0, 0, 0, 0.25);
+            border-left: 3px solid #818cf8;
+            padding: 12px 16px;
+            border-radius: 0 8px 8px 0;
+            font-size: 13px;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+
+        /* ACTIONS FOOTER */
+        .report-actions-footer {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            padding-top: 20px;
+        }
+
+        .report-btn {
+            padding: 12px 26px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary-action {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #ffffff;
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.35);
+            border: none;
+        }
+
+        .btn-primary-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.5);
+        }
+
+        .btn-secondary-action {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e2e8f0;
+        }
+
+        .btn-secondary-action:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* LOADING & ERROR */
+        .loading-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            gap: 16px;
+            color: #94a3b8;
+        }
+
+        .loading-spinner {
+            width: 44px;
+            height: 44px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top-color: #818cf8;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 992px) {
+            .exam-container {
+                grid-template-columns: 1fr;
+            }
+            .exam-sidebar {
+                order: -1;
+                position: static;
+            }
+            .report-hero {
+                grid-template-columns: 1fr;
+            }
+            .unit-breakdown-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header class="exam-navbar">
+        <div class="exam-brand">
+            <a href="/dashboard" class="logo">
+                Code<span>Canvas</span>
+            </a>
+            <span class="exam-badge">Diagnostic Mock Exam</span>
+        </div>
+
+        <div class="exam-center-title" id="examProgressIndicator">
+            AP Computer Science A • 40 Questions
+        </div>
+
+        <div class="exam-nav-right">
+            <div class="timer-container" id="timerWidget" style="display: none;">
+                <span class="timer-icon">⏱</span>
+                <span class="timer-display" id="timeRemaining">90:00</span>
+                <button class="pause-btn" id="pauseTimerBtn" title="Pause / Resume Timer">⏸</button>
+            </div>
+            <button class="submit-exam-btn" id="finishExamBtn" style="display: none;">Submit Exam →</button>
+        </div>
+    </header>
+
+    <!-- LOADING SCREEN -->
+    <div class="loading-screen" id="examLoadingState">
+        <div class="loading-spinner"></div>
+        <p>Preparing balanced 40-question AP CS diagnostic mock exam...</p>
+    </div>
+
+    <!-- START / BRIEFING SCREEN (Student must click Start to begin) -->
+    <div class="exam-start-wrapper" id="examStartScreen" style="display: none;">
+        <div class="exam-start-card">
+            <span class="exam-badge" style="margin-bottom: 14px; display: inline-block;">OFFICIAL EXAM SIMULATION</span>
+            <h1>AP Computer Science A</h1>
+            <h2 style="font-size: 18px; color: #818cf8; font-weight: 600; margin-bottom: 14px;">Diagnostic Mock Exam • Section I</h2>
+            <p style="color: #94a3b8; font-size: 15px; line-height: 1.6;">
+                This exam contains 40 multiple-choice questions representative of the official AP Computer Science A exam format. Questions are balanced across all 8 syllabus units.
+            </p>
+
+            <div class="start-chips-grid">
+                <div class="start-chip">
+                    <span class="chip-icon">⏱</span>
+                    <div>
+                        <div class="chip-val">90 Minutes</div>
+                        <div class="chip-lbl">Timed Section</div>
+                    </div>
+                </div>
+                <div class="start-chip">
+                    <span class="chip-icon">📝</span>
+                    <div>
+                        <div class="chip-val">40 Questions</div>
+                        <div class="chip-lbl">All 8 AP Units</div>
+                    </div>
+                </div>
+                <div class="start-chip">
+                    <span class="chip-icon">🎯</span>
+                    <div>
+                        <div class="chip-val">70% Pass Mark</div>
+                        <div class="chip-lbl">28 / 40 Standard</div>
+                    </div>
+                </div>
+                <div class="start-chip">
+                    <span class="chip-icon">📊</span>
+                    <div>
+                        <div class="chip-val">AP Score (1 to 5)</div>
+                        <div class="chip-lbl">Instant Diagnostic</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="start-instructions">
+                <h3 style="font-size: 14px; font-weight: 700; color: #e2e8f0; margin-bottom: 8px;">Important Guidelines:</h3>
+                <ul>
+                    <li>The 90-minute timer will <strong>only start when you click "Start Exam" below</strong>.</li>
+                    <li>Navigate freely between questions anytime using the Question Navigator on the right.</li>
+                    <li>Use <strong>"Flag for Review"</strong> to mark questions to double-check before final submission.</li>
+                    <li>You can pause and resume the timer at any time during your exam.</li>
+                </ul>
+            </div>
+
+            <div class="start-actions-row">
+                <a href="/apcs" class="nav-btn" style="text-decoration: none;">← Back to Curriculum</a>
+                <button class="submit-exam-btn" id="startExamBtn" style="padding: 13px 32px; font-size: 15px;">
+                    Start Exam Now ⏱
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- EXAM INTERFACE -->
+    <main class="exam-container" id="examMainInterface" style="display: none;">
+
+        <!-- LEFT: QUESTION CARD -->
+        <section class="question-card">
+            <div>
+                <div class="question-meta-row">
+                    <span class="question-unit-tag" id="currentUnitTag">UNIT 01 • VARIABLES &amp; DATA TYPES</span>
+                    <div class="question-actions-top">
+                        <button class="flag-btn" id="flagQuestionBtn">
+                            <span>⚑</span> Flag for Review
+                        </button>
+                    </div>
+                </div>
+
+                <div class="question-heading" id="currentQuestionNum">QUESTION 1 OF 40</div>
+                <h1 class="question-text" id="questionPrompt">Loading question...</h1>
+
+                <!-- OPTIONS -->
+                <div class="options-list" id="optionsContainer"></div>
+            </div>
+
+            <div class="question-nav-row">
+                <button class="nav-btn" id="prevQuestionBtn">← Previous</button>
+                <button class="clear-answer-btn" id="clearAnswerBtn">Clear Selection</button>
+                <button class="nav-btn" id="nextQuestionBtn">Next →</button>
+            </div>
+        </section>
+
+        <!-- RIGHT: SIDEBAR NAVIGATOR -->
+        <aside class="exam-sidebar">
+            <div class="sidebar-title-row">
+                <span class="sidebar-title">Question Navigator</span>
+                <span class="sidebar-answered-badge" id="sidebarAnsweredCount">0/40 Answered</span>
+            </div>
+
+            <!-- 40 PIPS -->
+            <div class="navigator-grid" id="navigatorGrid"></div>
+
+            <div class="navigator-legend">
+                <div class="legend-item"><span class="legend-dot legend-answered"></span> Answered</div>
+                <div class="legend-item"><span class="legend-dot legend-unanswered"></span> Unanswered</div>
+                <div class="legend-item"><span class="legend-dot legend-flagged"></span> Flagged</div>
+                <div class="legend-item"><span class="legend-dot legend-current"></span> Current</div>
+            </div>
+
+            <div class="sidebar-stats">
+                <span>Remaining: <strong id="statRemainingCount">40</strong></span>
+                <span>Flagged: <strong id="statFlaggedCount">0</strong></span>
+            </div>
+
+            <button class="nav-btn" id="jumpUnansweredBtn" style="width: 100%; justify-content: center;">
+                Next Unanswered ↷
+            </button>
+        </aside>
+
+    </main>
+
+    <!-- CONFIRMATION MODAL -->
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal-card">
+            <div class="modal-icon">📋</div>
+            <h3>Submit Diagnostic Exam?</h3>
+            <p id="modalConfirmText">
+                Are you ready to submit your exam for grading? Once submitted, your diagnostic breakdown and projected AP score will be generated.
+            </p>
+
+            <div class="modal-summary-box">
+                <div>
+                    <span class="summary-num" id="modalAnsweredCount">0</span>
+                    <span class="summary-lbl">Answered</span>
+                </div>
+                <div>
+                    <span class="summary-num" id="modalUnansweredCount" style="color: #fca5a5;">40</span>
+                    <span class="summary-lbl">Unanswered</span>
+                </div>
+                <div>
+                    <span class="summary-num" id="modalFlaggedCount" style="color: #fbbf24;">0</span>
+                    <span class="summary-lbl">Flagged</span>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="modal-btn-cancel" id="cancelSubmitBtn">Return to Exam</button>
+                <button class="modal-btn-submit" id="confirmSubmitBtn">Submit &amp; Grade</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================
+         DIAGNOSTIC REPORT (RESULTS)
+         ======================== -->
+    <section class="report-view" id="diagnosticReport">
+
+        <!-- REPORT HERO -->
+        <div class="report-hero">
+            <div class="hero-left">
+                <span class="exam-badge" style="margin-bottom: 12px; display: inline-block;">OFFICIAL DIAGNOSTIC REPORT</span>
+                <h1 id="reportGreeting">Exam Complete! 🎉</h1>
+                <p id="reportSummaryText">
+                    You completed the 40-question AP Computer Science A Diagnostic Exam. Review your performance breakdown across all 8 syllabus units below to target your practice.
+                </p>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                    <a href="/apcs" class="report-btn btn-primary-action">Back to Curriculum →</a>
+                    <a href="/dashboard" class="report-btn btn-secondary-action">View Dashboard</a>
+                </div>
+            </div>
+
+            <div class="score-display-card">
+                <div class="ap-score-large" id="reportApScore">5</div>
+                <div class="ap-score-title" id="reportApScoreTitle">Extremely Well Qualified ★</div>
+                <div class="exam-badge" id="reportPassBadge" style="background: rgba(34, 197, 94, 0.15); color: #86efac; border-color: rgba(34, 197, 94, 0.3);">
+                    ✓ PASSED (70%+ MET)
+                </div>
+
+                <div class="score-meta-grid">
+                    <div>
+                        <div class="meta-stat-num" id="reportRawScore">34 / 40</div>
+                        <div class="meta-stat-lbl">Raw Score (85%)</div>
+                    </div>
+                    <div>
+                        <div class="meta-stat-num" id="reportTimeSpent">48m 12s</div>
+                        <div class="meta-stat-lbl">Time Elapsed</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- UNIT DIAGNOSTIC BREAKDOWN -->
+        <div class="section-header">
+            <h2>Unit-by-Unit Performance Breakdown</h2>
+            <p>Target specific AP CS units where your accuracy was below 70%.</p>
+        </div>
+
+        <div class="unit-breakdown-grid" id="unitBreakdownContainer"></div>
+
+        <!-- DETAILED QUESTION REVIEW -->
+        <div class="section-header">
+            <h2>Question Analysis &amp; Explanations</h2>
+            <p>Review every question, your selected response, and full concept rationales.</p>
+        </div>
+
+        <div class="review-tabs">
+            <button class="review-tab-btn active" data-filter="all" id="tabAll">All (40)</button>
+            <button class="review-tab-btn" data-filter="incorrect" id="tabIncorrect">Incorrect (0)</button>
+            <button class="review-tab-btn" data-filter="flagged" id="tabFlagged">Flagged (0)</button>
+        </div>
+
+        <div class="review-questions-list" id="reviewQuestionsList"></div>
+
+        <div class="report-actions-footer">
+            <button class="report-btn btn-primary-action" onclick="location.reload();">Retake Mock Exam ↺</button>
+            <a href="/apcs" class="report-btn btn-secondary-action">Review Curriculum Units</a>
+        </div>
+
+    </section>
+
+    <!-- EXAM JAVASCRIPT LOGIC -->
+    <script>
+        // State
+        let examQuestions = [];
+        let currentIndex = 0;
+        let userAnswers = {}; // { questionIndex: selectedAnswerString }
+        let flaggedQuestions = new Set();
+        let totalSeconds = 90 * 60; // 90 minutes
+        let timerInterval = null;
+        let isPaused = false;
+        let startTime = null;
+
+        const isIcseExam = window.location.pathname.includes('/icse') || 
+            new URLSearchParams(window.location.search).get('curriculum') === 'ICSE';
+
+        const topicSlugMap = {
+            'Variables & Data Types': '/apcs/variables',
+            'Expressions & Assignment': '/apcs/expressions',
+            'Strings': '/apcs/strings',
+            'Selection': '/apcs/selection',
+            'Iteration': '/apcs/iteration',
+            'Methods': '/apcs/methods',
+            'Classes & Objects': '/apcs/classes',
+            'Arrays': '/apcs/arrays',
+            'OOP & Java Fundamentals': '/icse/learn?unit=1',
+            'Operators & Expressions': '/icse/learn?unit=2',
+            'Conditional Branching & Switch': '/icse/learn?unit=3',
+            'Iterative Constructs & Loops': '/icse/learn?unit=4',
+            'Classic Number Programs': '/icse/learn?unit=5',
+            'Character & String Handling': '/icse/learn?unit=6',
+            'User-Defined Methods & Overloading': '/icse/learn?unit=7',
+            'Arrays, Searching & Sorting': '/icse/learn?unit=8'
+        };
+
+        // DOM elements
+        const loadingScreen = document.getElementById('examLoadingState');
+        const mainInterface = document.getElementById('examMainInterface');
+        const confirmModal = document.getElementById('confirmModal');
+        const diagnosticReport = document.getElementById('diagnosticReport');
+
+        const currentUnitTag = document.getElementById('currentUnitTag');
+        const currentQuestionNum = document.getElementById('currentQuestionNum');
+        const questionPrompt = document.getElementById('questionPrompt');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const flagQuestionBtn = document.getElementById('flagQuestionBtn');
+        const prevQuestionBtn = document.getElementById('prevQuestionBtn');
+        const nextQuestionBtn = document.getElementById('nextQuestionBtn');
+        const clearAnswerBtn = document.getElementById('clearAnswerBtn');
+
+        const navigatorGrid = document.getElementById('navigatorGrid');
+        const sidebarAnsweredCount = document.getElementById('sidebarAnsweredCount');
+        const statRemainingCount = document.getElementById('statRemainingCount');
+        const statFlaggedCount = document.getElementById('statFlaggedCount');
+        const jumpUnansweredBtn = document.getElementById('jumpUnansweredBtn');
+
+        const timeRemainingEl = document.getElementById('timeRemaining');
+        const timerWidget = document.getElementById('timerWidget');
+        const pauseTimerBtn = document.getElementById('pauseTimerBtn');
+        const finishExamBtn = document.getElementById('finishExamBtn');
+
+        // Fetch exam questions (5 per each of the 8 topics = 40 total)
+        async function loadExam() {
+            try {
+                if (isIcseExam) {
+                    document.title = 'ICSE Class 10 Java Board Mock Exam | CodeCanvas';
+                    const startBadge = document.querySelector('#examStartScreen .exam-badge');
+                    if (startBadge) startBadge.textContent = 'ICSE BOARD SIMULATION';
+                    const heading = document.querySelector('#examStartScreen h1');
+                    if (heading) heading.textContent = 'ICSE Class 10 Java';
+                    const subheading = document.querySelector('#examStartScreen h2');
+                    if (subheading) subheading.textContent = 'Diagnostic Mock Exam • 40 Questions';
+                    const desc = document.querySelector('#examStartScreen p');
+                    if (desc) desc.textContent = 'This exam contains 40 multiple-choice questions representative of the official ICSE Computer Applications examination format, balanced across all 8 syllabus units.';
+                    const chipUnits = document.querySelectorAll('#examStartScreen .chip-lbl')[1];
+                    if (chipUnits) chipUnits.textContent = 'All 8 ICSE Units';
+                    const chipScore = document.querySelectorAll('#examStartScreen .chip-lbl')[3];
+                    if (chipScore) chipScore.textContent = 'Target: 100/100 Board Grade';
+                    const backBtn = document.querySelector('.start-actions-row a');
+                    if (backBtn) backBtn.href = '/icse';
+                    const returnBtn = document.querySelector('.report-hero a.btn-primary-action');
+                    if (returnBtn) returnBtn.href = '/icse';
+                }
+
+                const endpoint = isIcseExam ? '/api/exam/icse?questionsPerTopic=5' : '/api/exam/apcs?questionsPerTopic=5';
+                const response = await fetch(endpoint);
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+                examQuestions = await response.json();
+
+                if (examQuestions.length === 0) {
+                    loadingScreen.innerHTML = '<p>No exam questions available. Please try again later.</p>';
+                    return;
+                }
+
+                // Render navigator pips
+                renderNavigatorPips();
+
+                // Show Start / Briefing screen instead of auto-starting
+                loadingScreen.style.display = 'none';
+                document.getElementById('examStartScreen').style.display = 'flex';
+
+            } catch (err) {
+                console.error('Failed to load exam:', err);
+                loadingScreen.innerHTML = '<p>Error loading exam questions. Please refresh the page.</p>';
+            }
+        }
+
+        // Start Exam Button listener
+        document.getElementById('startExamBtn').addEventListener('click', () => {
+            document.getElementById('examStartScreen').style.display = 'none';
+            mainInterface.style.display = 'grid';
+            document.getElementById('timerWidget').style.display = 'flex';
+            document.getElementById('finishExamBtn').style.display = 'inline-block';
+            showQuestion(0);
+            startTime = Date.now();
+            startTimer();
+        });
+
+        // Render 40 Question Navigator Pips
+        function renderNavigatorPips() {
+            navigatorGrid.innerHTML = '';
+            examQuestions.forEach((q, idx) => {
+                const pip = document.createElement('div');
+                pip.className = 'nav-pip';
+                pip.id = `pip-${idx}`;
+                pip.textContent = idx + 1;
+                pip.addEventListener('click', () => showQuestion(idx));
+                navigatorGrid.appendChild(pip);
+            });
+            updateSidebarStats();
+        }
+
+        // Display current question
+        function showQuestion(index) {
+            if (index < 0 || index >= examQuestions.length) return;
+            currentIndex = index;
+
+            const q = examQuestions[currentIndex];
+
+            currentUnitTag.textContent = (q.topic || 'AP Computer Science A').toUpperCase();
+            currentQuestionNum.textContent = `QUESTION ${currentIndex + 1} OF ${examQuestions.length}`;
+            questionPrompt.textContent = q.questionText || q.question;
+
+            // Flag state
+            if (flaggedQuestions.has(currentIndex)) {
+                flagQuestionBtn.classList.add('flagged');
+                flagQuestionBtn.innerHTML = '<span>⚑</span> Flagged for Review';
+            } else {
+                flagQuestionBtn.classList.remove('flagged');
+                flagQuestionBtn.innerHTML = '<span>⚑</span> Flag for Review';
+            }
+
+            // Options
+            optionsContainer.innerHTML = '';
+            const options = [q.optionA, q.optionB, q.optionC, q.optionD];
+            const letters = ['A', 'B', 'C', 'D'];
+            const currentSelection = userAnswers[currentIndex];
+
+            options.forEach((optText, optIdx) => {
+                const item = document.createElement('div');
+                item.className = 'option-item';
+                if (currentSelection === optText) {
+                    item.classList.add('selected');
+                }
+
+                item.innerHTML = `
+                    <span class="option-letter">${letters[optIdx]}</span>
+                    <span class="option-content">${escapeHtml(optText)}</span>
+                `;
+
+                item.addEventListener('click', () => {
+                    userAnswers[currentIndex] = optText;
+                    updateNavigatorPip(currentIndex);
+                    showQuestion(currentIndex); // re-render selection highlight
+                    updateSidebarStats();
+                });
+
+                optionsContainer.appendChild(item);
+            });
+
+            // Nav buttons
+            prevQuestionBtn.disabled = (currentIndex === 0);
+            nextQuestionBtn.textContent = (currentIndex === examQuestions.length - 1) ? 'Review & Submit →' : 'Next →';
+
+            // Highlight current pip
+            document.querySelectorAll('.nav-pip').forEach(p => p.classList.remove('current'));
+            const activePip = document.getElementById(`pip-${currentIndex}`);
+            if (activePip) activePip.classList.add('current');
+        }
+
+        // Update navigator pip visual state
+        function updateNavigatorPip(idx) {
+            const pip = document.getElementById(`pip-${idx}`);
+            if (!pip) return;
+
+            if (userAnswers[idx]) {
+                pip.classList.add('answered');
+            } else {
+                pip.classList.remove('answered');
+            }
+
+            if (flaggedQuestions.has(idx)) {
+                pip.classList.add('flagged');
+            } else {
+                pip.classList.remove('flagged');
+            }
+        }
+
+        function updateSidebarStats() {
+            const answeredCount = Object.keys(userAnswers).length;
+            const remaining = examQuestions.length - answeredCount;
+            const flagged = flaggedQuestions.size;
+
+            sidebarAnsweredCount.textContent = `${answeredCount}/${examQuestions.length} Answered`;
+            statRemainingCount.textContent = remaining;
+            statFlaggedCount.textContent = flagged;
+        }
+
+        // Toggle Flag
+        flagQuestionBtn.addEventListener('click', () => {
+            if (flaggedQuestions.has(currentIndex)) {
+                flaggedQuestions.delete(currentIndex);
+            } else {
+                flaggedQuestions.add(currentIndex);
+            }
+            updateNavigatorPip(currentIndex);
+            showQuestion(currentIndex);
+            updateSidebarStats();
+        });
+
+        // Navigation actions
+        prevQuestionBtn.addEventListener('click', () => {
+            if (currentIndex > 0) showQuestion(currentIndex - 1);
+        });
+
+        nextQuestionBtn.addEventListener('click', () => {
+            if (currentIndex < examQuestions.length - 1) {
+                showQuestion(currentIndex + 1);
+            } else {
+                openSubmitModal();
+            }
+        });
+
+        clearAnswerBtn.addEventListener('click', () => {
+            delete userAnswers[currentIndex];
+            updateNavigatorPip(currentIndex);
+            showQuestion(currentIndex);
+            updateSidebarStats();
+        });
+
+        jumpUnansweredBtn.addEventListener('click', () => {
+            for (let i = 0; i < examQuestions.length; i++) {
+                if (!userAnswers[i]) {
+                    showQuestion(i);
+                    return;
+                }
+            }
+            alert('All questions have been answered! You can review or submit your exam.');
+        });
+
+        // Timer
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                if (isPaused) return;
+
+                totalSeconds--;
+
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    alert('Time is up! Submitting exam automatically for grading.');
+                    submitExam();
+                    return;
+                }
+
+                const mins = Math.floor(totalSeconds / 60);
+                const secs = totalSeconds % 60;
+                timeRemainingEl.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+
+                if (totalSeconds < 600) { // < 10 mins warning
+                    timerWidget.classList.add('timer-warning');
+                }
+            }, 1000);
+        }
+
+        pauseTimerBtn.addEventListener('click', () => {
+            isPaused = !isPaused;
+            pauseTimerBtn.textContent = isPaused ? '▶' : '⏸';
+            pauseTimerBtn.title = isPaused ? 'Resume Timer' : 'Pause Timer';
+            if (isPaused) {
+                timeRemainingEl.textContent = 'PAUSED';
+            }
+        });
+
+        // Modal confirmation
+        finishExamBtn.addEventListener('click', openSubmitModal);
+
+        function openSubmitModal() {
+            const answeredCount = Object.keys(userAnswers).length;
+            const unanswered = examQuestions.length - answeredCount;
+            const flagged = flaggedQuestions.size;
+
+            document.getElementById('modalAnsweredCount').textContent = answeredCount;
+            document.getElementById('modalUnansweredCount').textContent = unanswered;
+            document.getElementById('modalFlaggedCount').textContent = flagged;
+
+            if (unanswered > 0) {
+                document.getElementById('modalConfirmText').innerHTML =
+                    `<strong style="color:#fca5a5;">Warning:</strong> You still have <strong>${unanswered} unanswered question${unanswered > 1 ? 's' : ''}</strong>. Are you sure you want to submit now?`;
+            } else {
+                document.getElementById('modalConfirmText').textContent =
+                    'You have answered all 40 questions! Ready to generate your official diagnostic performance breakdown?';
+            }
+
+            confirmModal.style.display = 'flex';
+        }
+
+        document.getElementById('cancelSubmitBtn').addEventListener('click', () => {
+            confirmModal.style.display = 'none';
+        });
+
+        document.getElementById('confirmSubmitBtn').addEventListener('click', () => {
+            confirmModal.style.display = 'none';
+            submitExam();
+        });
+
+        // Escape question / option text before inserting it as HTML (Java code contains < and >)
+        function escapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        // Send all answers to the server; answers and explanations are only revealed after submission
+        async function fetchGrades() {
+            const payload = examQuestions.map((q, idx) => ({ id: q.id, answer: userAnswers[idx] ?? null }));
+            const response = await fetch('/api/exam/grade', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            if (!response.ok) throw new Error('HTTP ' + response.status);
+            const results = await response.json();
+            const byId = {};
+            results.forEach(r => { byId[r.id] = r; });
+            examQuestions.forEach(q => {
+                const r = byId[q.id];
+                if (r) {
+                    q.correctAnswer = r.correctAnswer;
+                    q.explanation = r.explanation;
+                }
+            });
+        }
+
+        let isSubmitting = false;
+
+        // Grading & Diagnostic generation
+        async function submitExam() {
+            if (isSubmitting) return;
+            isSubmitting = true;
+            clearInterval(timerInterval);
+
+            try {
+                await fetchGrades();
+            } catch (err) {
+                console.error('Failed to grade exam:', err);
+                isSubmitting = false;
+                alert('Could not reach the grading server. Your answers are still here — please check your connection and press Submit again.');
+                if (totalSeconds > 0) startTimer();
+                return;
+            }
+
+            mainInterface.style.display = 'none';
+            document.getElementById('timerWidget').style.display = 'none';
+            document.getElementById('finishExamBtn').style.display = 'none';
+
+            let rawScore = 0;
+            const totalCount = examQuestions.length;
+
+            // Unit tracking: { topicName: { correct: 0, total: 0 } }
+            const unitStats = {};
+
+            examQuestions.forEach((q, idx) => {
+                const topic = q.topic || 'General';
+                if (!unitStats[topic]) unitStats[topic] = { correct: 0, total: 0 };
+                unitStats[topic].total++;
+
+                const selected = userAnswers[idx];
+                if (selected === q.correctAnswer) {
+                    rawScore++;
+                    unitStats[topic].correct++;
+                }
+            });
+
+            const pct = Math.round((rawScore / totalCount) * 100);
+
+            // Projected Score calculation
+            let projectedScore = 1;
+            let scoreTitle = 'Score 1 — No Recommendation';
+            let scoreColor = '#cbd5e1';
+
+            if (isIcseExam) {
+                if (pct >= 90) {
+                    projectedScore = '100/100';
+                    scoreTitle = 'Grade 1 (A*) • Board Distinction ★';
+                    scoreColor = '#fde047';
+                } else if (pct >= 80) {
+                    projectedScore = '90%+';
+                    scoreTitle = 'Grade 2 (A) • First Class';
+                    scoreColor = '#86efac';
+                } else if (pct >= 70) {
+                    projectedScore = '80%+';
+                    scoreTitle = 'Grade 3 (B) • Passed with Merit';
+                    scoreColor = '#818cf8';
+                } else {
+                    projectedScore = `${pct}%`;
+                    scoreTitle = 'Needs Review • Board Pass Threshold is 70%';
+                    scoreColor = '#fcd34d';
+                }
+            } else {
+                if (pct >= 85) {
+                    projectedScore = 5;
+                    scoreTitle = 'Score 5 — Extremely Well Qualified ★';
+                    scoreColor = '#fde047';
+                } else if (pct >= 70) {
+                    projectedScore = 4;
+                    scoreTitle = 'Score 4 — Well Qualified';
+                    scoreColor = '#86efac';
+                } else if (pct >= 55) {
+                    projectedScore = 3;
+                    scoreTitle = 'Score 3 — Qualified (College Credit Baseline)';
+                    scoreColor = '#a5b4fc';
+                } else if (pct >= 40) {
+                    projectedScore = 2;
+                    scoreTitle = 'Score 2 — Possibly Qualified';
+                    scoreColor = '#93c5fd';
+                }
+            }
+
+            // Populate Report Hero
+            const apScoreEl = document.getElementById('reportApScore');
+            const scoreTitleEl = document.getElementById('reportApScoreTitle');
+            const rawScoreEl = document.getElementById('reportRawScore');
+            const passBadgeEl = document.getElementById('reportPassBadge');
+            const timeSpentEl = document.getElementById('reportTimeSpent');
+
+            apScoreEl.textContent = projectedScore;
+            apScoreEl.style.color = scoreColor;
+            apScoreEl.style.textShadow = `0 0 35px ${scoreColor}66`;
+
+            scoreTitleEl.textContent = scoreTitle;
+            rawScoreEl.textContent = `${rawScore} / ${totalCount} (${pct}%)`;
+
+            const elapsedSecs = 5400 - totalSeconds;
+            const elapsedMins = Math.floor(elapsedSecs / 60);
+            const elapsedRemSecs = elapsedSecs % 60;
+            timeSpentEl.textContent = `${elapsedMins}m ${elapsedRemSecs}s`;
+
+            if (isIcseExam) {
+                document.getElementById('reportGreeting').textContent = 'ICSE Board Diagnostic Complete! 🎉';
+                document.getElementById('reportSummaryText').textContent = 'You completed the 40-question ICSE Class 10 Java Board Diagnostic Exam. Review your performance breakdown across all 8 syllabus units below to target your practice.';
+                const backCurricBtn = document.querySelector('.report-hero a.btn-primary-action');
+                if (backCurricBtn) backCurricBtn.href = '/icse';
+                const footCurricBtn = document.querySelector('.report-actions-footer a.btn-secondary-action');
+                if (footCurricBtn) footCurricBtn.href = '/icse';
+            }
+
+            if (pct >= 70) {
+                passBadgeEl.textContent = '✓ EXAM PASSED (70%+ MET)';
+                passBadgeEl.style.background = 'rgba(34, 197, 94, 0.15)';
+                passBadgeEl.style.color = '#86efac';
+                passBadgeEl.style.borderColor = 'rgba(34, 197, 94, 0.35)';
+            } else {
+                passBadgeEl.textContent = 'PASS MARK IS 70% • REVIEW WEAK UNITS';
+                passBadgeEl.style.background = 'rgba(245, 158, 11, 0.15)';
+                passBadgeEl.style.color = '#fcd34d';
+                passBadgeEl.style.borderColor = 'rgba(245, 158, 11, 0.35)';
+            }
+
+            // Populate Unit Breakdown
+            const unitContainer = document.getElementById('unitBreakdownContainer');
+            unitContainer.innerHTML = '';
+
+            Object.keys(unitStats).forEach(topicName => {
+                const stat = unitStats[topicName];
+                const unitPct = Math.round((stat.correct / stat.total) * 100);
+                const isUnitPassed = unitPct >= 70;
+                const lessonUrl = topicSlugMap[topicName] || (isIcseExam ? '/icse' : '/apcs');
+
+                const card = document.createElement('div');
+                card.className = 'unit-card';
+                card.innerHTML = `
+                    <div class="unit-card-header">
+                        <span class="unit-name">${topicName}</span>
+                        <span class="unit-status-pill ${isUnitPassed ? 'pill-mastery' : 'pill-review'}">
+                            ${isUnitPassed ? '✓ Proficient' : 'Needs Review'}
+                        </span>
+                    </div>
+                    <div class="unit-progress-container">
+                        <div class="unit-progress-fill" style="width: ${unitPct}%; background: ${isUnitPassed ? 'linear-gradient(90deg, #10b981, #34d399)' : 'linear-gradient(90deg, #f59e0b, #fbbf24)'};"></div>
+                    </div>
+                    <div class="unit-card-footer">
+                        <span>${stat.correct} of ${stat.total} Correct (${unitPct}%)</span>
+                        <a href="${lessonUrl}" class="unit-study-link">Review Unit →</a>
+                    </div>
+                `;
+                unitContainer.appendChild(card);
+            });
+
+            // Populate Detailed Review List
+            renderDetailedReview('all');
+
+            // Save to localStorage for dashboard synchronization
+            try {
+                const examResult = {
+                    score: rawScore,
+                    total: totalCount,
+                    percentage: pct,
+                    projectedScore: projectedScore,
+                    curriculum: isIcseExam ? 'ICSE' : 'APCS',
+                    completedAt: new Date().toISOString()
+                };
+                if (isIcseExam) {
+                    localStorage.setItem('codecanvas_icse_mock_exam', JSON.stringify(examResult));
+                } else {
+                    localStorage.setItem('codecanvas_mock_exam', JSON.stringify(examResult));
+                }
+            } catch (e) {
+                console.error('Could not save mock exam result:', e);
+            }
+
+            // Display Report
+            diagnosticReport.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Render Question Reviews
+        function renderDetailedReview(filter) {
+            const listEl = document.getElementById('reviewQuestionsList');
+            listEl.innerHTML = '';
+
+            let incorrectCount = 0;
+            let flaggedCount = 0;
+
+            examQuestions.forEach((q, idx) => {
+                const userAns = userAnswers[idx];
+                const isCorrect = (userAns === q.correctAnswer);
+                const isFlagged = flaggedQuestions.has(idx);
+
+                if (!isCorrect) incorrectCount++;
+                if (isFlagged) flaggedCount++;
+
+                if (filter === 'incorrect' && isCorrect) return;
+                if (filter === 'flagged' && !isFlagged) return;
+
+                const card = document.createElement('div');
+                card.className = 'review-item';
+
+                const optionsHtml = [q.optionA, q.optionB, q.optionC, q.optionD].map(opt => {
+                    let cls = '';
+                    let badge = '';
+                    if (opt === q.correctAnswer) {
+                        cls = 'correct-answer';
+                        badge = '✓ Correct Answer';
+                    } else if (opt === userAns) {
+                        cls = 'user-wrong';
+                        badge = '✕ Your Selection';
+                    }
+                    return `
+                        <div class="review-option ${cls}">
+                            <span style="flex-grow: 1;">${escapeHtml(opt)}</span>
+                            ${badge ? `<span style="font-size:11px; font-weight:700;">${badge}</span>` : ''}
+                        </div>
+                    `;
+                }).join('');
+
+                card.innerHTML = `
+                    <div class="review-item-header">
+                        <span class="question-unit-tag">${q.topic || 'AP CS A'} • QUESTION ${idx + 1}</span>
+                        <span style="font-size: 13px; font-weight: 700; color: ${isCorrect ? '#86efac' : '#fca5a5'};">
+                            ${isCorrect ? '✓ Correct (+1)' : '✕ Incorrect'}
+                        </span>
+                    </div>
+                    <div class="review-question-title" style="white-space: pre-wrap;">${escapeHtml(q.questionText || q.question)}</div>
+                    <div class="review-options">${optionsHtml}</div>
+                    <div class="explanation-box">
+                        <strong>Explanation:</strong> ${escapeHtml(q.explanation)}
+                    </div>
+                `;
+                listEl.appendChild(card);
+            });
+
+            // Update tab labels
+            document.getElementById('tabAll').textContent = `All (${examQuestions.length})`;
+            document.getElementById('tabIncorrect').textContent = `Incorrect (${incorrectCount})`;
+            document.getElementById('tabFlagged').textContent = `Flagged (${flaggedCount})`;
+        }
+
+        // Review filter tab clicks
+        document.querySelectorAll('.review-tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.review-tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderDetailedReview(btn.getAttribute('data-filter'));
+            });
+        });
+
+        // Run
+        loadExam();
+    </script>
+</body>
+</html>

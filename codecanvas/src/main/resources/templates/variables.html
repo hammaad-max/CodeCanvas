@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Variables & Data Types | CodeCanvas</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+
+            background:
+                    radial-gradient(
+                            circle at 80% 0%,
+                            rgba(99, 102, 241, 0.18),
+                            transparent 30%
+                    ),
+                    #080b14;
+
+            color: #f8fafc;
+        }
+
+        .navbar {
+            height: 72px;
+
+            padding: 0 6%;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            background: rgba(8, 11, 20, 0.8);
+
+            backdrop-filter: blur(16px);
+
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        .logo span {
+            color: #818cf8;
+        }
+
+        .back {
+            color: #a1a1aa;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .container {
+            width: min(1000px, 90%);
+
+            margin: auto;
+
+            padding: 55px 0 80px;
+        }
+
+        .breadcrumb {
+            color: #71717a;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .badge {
+            display: inline-block;
+
+            padding: 7px 12px;
+
+            border-radius: 999px;
+
+            background: rgba(129,140,248,0.12);
+
+            border: 1px solid rgba(129,140,248,0.25);
+
+            color: #a5b4fc;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            margin-bottom: 18px;
+        }
+
+        h1 {
+            font-size: 48px;
+
+            letter-spacing: -1.8px;
+
+            margin: 0 0 15px;
+        }
+
+        .intro {
+            color: #a1a1aa;
+
+            font-size: 17px;
+
+            line-height: 1.7;
+
+            max-width: 750px;
+
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(15,23,42,0.72);
+
+            border: 1px solid rgba(255,255,255,0.08);
+
+            border-radius: 20px;
+
+            padding: 30px;
+
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            margin-top: 0;
+
+            font-size: 23px;
+        }
+
+        .card p {
+            color: #a1a1aa;
+
+            line-height: 1.7;
+        }
+
+        .concept-grid {
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 15px;
+        }
+
+        .concept {
+            padding: 20px;
+
+            border-radius: 14px;
+
+            background: rgba(255,255,255,0.035);
+
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .concept h3 {
+            margin-top: 0;
+
+            font-size: 17px;
+        }
+
+        .concept p {
+            margin-bottom: 0;
+
+            font-size: 14px;
+        }
+
+        code {
+            color: #c4b5fd;
+
+            background: rgba(129,140,248,0.1);
+
+            padding: 3px 6px;
+
+            border-radius: 5px;
+        }
+
+        .code-block {
+            background: #05070d;
+
+            border: 1px solid rgba(255,255,255,0.08);
+
+            border-radius: 12px;
+
+            padding: 22px;
+
+            overflow-x: auto;
+
+            color: #e2e8f0;
+
+            font-family: Consolas, monospace;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+        }
+
+        .quiz-button {
+            display: inline-block;
+
+            margin-top: 10px;
+
+            padding: 12px 20px;
+
+            border-radius: 10px;
+
+            background: linear-gradient(
+                    135deg,
+                    #6366f1,
+                    #7c3aed
+            );
+
+            color: white;
+
+            text-decoration: none;
+
+            font-weight: 700;
+
+            box-shadow: 0 10px 25px rgba(99,102,241,0.25);
+        }
+
+        @media(max-width:700px) {
+
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 38px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<nav class="navbar">
+
+    <div class="logo">
+        Code<span>Canvas</span>
+    </div>
+
+    <a href="/apcs" class="back">
+        ← AP CS Java
+    </a>
+
+</nav>
+
+
+<main class="container">
+
+
+    <div class="breadcrumb">
+        AP CS Java / Variables & Data Types
+    </div>
+
+
+    <div class="badge">
+        AP COMPUTER SCIENCE A
+    </div>
+
+
+    <h1>
+        Variables & Data Types
+    </h1>
+
+
+    <p class="intro">
+
+        Learn how Java stores information using variables
+        and primitive data types. Understanding these
+        concepts is essential for writing Java programs.
+
+    </p>
+
+
+    <!-- CONCEPT -->
+
+    <div class="card">
+
+        <h2>
+            What is a Variable?
+        </h2>
+
+        <p>
+
+            A variable is a named location used to store
+            a value in a Java program.
+
+            The value stored in a variable can be used
+            later in the program.
+
+        </p>
+
+        <div class="code-block">
+
+            int age = 18;<br>
+            double price = 99.99;<br>
+            boolean student = true;
+
+        </div>
+
+    </div>
+
+
+    <!-- DATA TYPES -->
+
+    <div class="card">
+
+        <h2>
+            Java Data Types
+        </h2>
+
+        <div class="concept-grid">
+
+            <div class="concept">
+
+                <h3>int</h3>
+
+                <p>
+                    Stores whole numbers.
+                    Example: <code>int age = 18;</code>
+                </p>
+
+            </div>
+
+
+            <div class="concept">
+
+                <h3>double</h3>
+
+                <p>
+                    Stores decimal numbers.
+                    Example: <code>double price = 99.5;</code>
+                </p>
+
+            </div>
+
+
+            <div class="concept">
+
+                <h3>boolean</h3>
+
+                <p>
+                    Stores either true or false.
+                    Example: <code>boolean active = true;</code>
+                </p>
+
+            </div>
+
+
+            <div class="concept">
+
+                <h3>char</h3>
+
+                <p>
+                    Stores a single character.
+                    Example: <code>char grade = 'A';</code>
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- EXAMPLE -->
+
+    <!-- EXAMPLE PROGRAM -->
+
+    <div class="card">
+
+        <h2>Example Program</h2>
+
+        <p>
+            This program creates variables of different data types
+            and then displays their values.
+        </p>
+
+        <h3>Complete Java Program</h3>
+
+        <div class="code-block">
+<pre><code>public class StudentInfo {
+
+    public static void main(String[] args) {
+
+        String name = "Josh";
+        int age = 18;
+        double marks = 87.5;
+        boolean passed = true;
+
+        System.out.println(name);
+        System.out.println(age);
+        System.out.println(marks);
+        System.out.println(passed);
+    }
+}</code></pre>
+        </div>
+
+    </div>
+
+
+    <!-- PROGRAM STRUCTURE -->
+
+    <div class="card">
+
+        <h2>Understanding the Program Structure</h2>
+
+        <p>
+            Before looking at individual statements, notice the two
+            important parts of every basic Java program:
+        </p>
+
+        <div class="concept-grid">
+
+            <div class="concept">
+
+                <h3>1. The Class</h3>
+
+                <p>
+                    <code>public class StudentInfo</code>
+                    defines a class named <code>StudentInfo</code>.
+                    The program's code is written inside the class.
+                </p>
+
+            </div>
+
+
+            <div class="concept">
+
+                <h3>2. The main Method</h3>
+
+                <p>
+                    <code>public static void main(String[] args)</code>
+                    is the starting point of the program.
+                    Java begins executing the statements inside
+                    the <code>main</code> method.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- EXECUTION ORDER -->
+
+    <div class="card">
+
+        <h2>How Does Java Execute This Program?</h2>
+
+        <p>
+            This program does not contain any loops or conditional
+            statements. Therefore, Java executes the statements
+            inside the <code>main</code> method sequentially,
+            from top to bottom.
+        </p>
+
+        <div class="concept-grid">
+
+            <div class="concept">
+
+                <h3>Step 1</h3>
+
+                <p>
+                    Java enters the <code>main</code> method.
+                </p>
+
+            </div>
+
+            <div class="concept">
+
+                <h3>Step 2</h3>
+
+                <p>
+                    The variables are created and assigned values
+                    in order.
+                </p>
+
+            </div>
+
+            <div class="concept">
+
+                <h3>Step 3</h3>
+
+                <p>
+                    The first <code>println</code> statement executes.
+                </p>
+
+            </div>
+
+            <div class="concept">
+
+                <h3>Step 4</h3>
+
+                <p>
+                    The remaining <code>println</code> statements
+                    execute from top to bottom.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- LINE BY LINE -->
+
+    <div class="card">
+
+        <h2>Line-by-Line Explanation</h2>
+
+
+        <div class="concept">
+
+            <h3>Line 1 — Creating the class</h3>
+
+            <div class="code-block">
+                <pre><code>public class StudentInfo {</code></pre>
+            </div>
+
+            <p>
+                <code>public</code> means the class can be accessed
+                from other parts of the program.
+            </p>
+
+            <p>
+                <code>class</code> tells Java that we are defining
+                a class.
+            </p>
+
+            <p>
+                <code>StudentInfo</code> is the name of the class.
+            </p>
+
+            <p>
+                <code>{</code> begins the body of the class.
+                Everything belonging to the class is written
+                between this opening brace and its matching
+                closing brace <code>}</code>.
+            </p>
+
+        </div>
+
+
+        <div class="concept">
+
+            <h3>Line 2 — The main method</h3>
+
+            <div class="code-block">
+                <pre><code>public static void main(String[] args) {</code></pre>
+            </div>
+
+            <p>
+                <code>public</code> allows Java to access the method.
+            </p>
+
+            <p>
+                <code>static</code> means Java can run the method
+                without creating an object of the class first.
+            </p>
+
+            <p>
+                <code>void</code> means the method does not return
+                a value.
+            </p>
+
+            <p>
+                <code>main</code> is the special method where Java
+                starts executing the program.
+            </p>
+
+            <p>
+                <code>()</code> contains the information passed
+                into the method.
+            </p>
+
+            <p>
+                <code>String[] args</code> represents command-line
+                arguments that can be passed to the program.
+            </p>
+
+            <p>
+                <code>{</code> marks the beginning of the main
+                method's body.
+            </p>
+
+        </div>
+
+
+        <div class="concept">
+
+            <h3>Line 3 — Creating a String variable</h3>
+
+            <div class="code-block">
+                <pre><code>String name = "Josh";</code></pre>
+            </div>
+
+            <p>
+                <code>String</code> is the data type.
+            </p>
+
+            <p>
+                <code>name</code> is the variable name.
+            </p>
+
+            <p>
+                <code>=</code> assigns the value on the right
+                to the variable on the left.
+            </p>
+
+            <p>
+                <code>"Josh"</code> is the String value.
+                Double quotation marks indicate a String literal.
+            </p>
+
+            <p>
+                <code>;</code> marks the end of the statement.
+            </p>
+
+        </div>
+
+
+        <div class="concept">
+
+            <h3>Line 4 — Creating an integer variable</h3>
+
+            <div class="code-block">
+                <pre><code>int age = 18;</code></pre>
+            </div>
+
+            <p>
+                <code>int</code> stores whole numbers.
+                Here, the variable <code>age</code> stores
+                the value <code>18</code>.
+            </p>
+
+            <p>
+                The statement ends with <code>;</code>.
+            </p>
+
+        </div>
+
+
+        <div class="concept">
+
+            <h3>Line 5 — Creating a decimal variable</h3>
+
+            <div class="code-block">
+                <pre><code>double marks = 87.5;</code></pre>
+            </div>
+
+            <p>
+                <code>double</code> is used to store decimal numbers.
+            </p>
+
+            <p>
+                The variable <code>marks</code> stores
+                <code>87.5</code>.
+            </p>
+
+        </div>
+
+
+        <div class="concept">
+
+            <h3>Line 6 — Creating a boolean variable</h3>
+
+            <div class="code-block">
+                <pre><code>boolean passed = true;</code></pre>
+            </div>
+
+            <p>
+                <code>boolean</code> stores one of two values:
+                <code>true</code> or <code>false</code>.
+            </p>
+
+            <p>
+                Here, <code>passed</code> is assigned
+                the value <code>true</code>.
+            </p>
+
+        </div>
+
+
+        <div class="concept">
+
+            <h3>Lines 7–10 — Displaying the values</h3>
+
+            <div class="code-block">
+<pre><code>System.out.println(name);
+System.out.println(age);
+System.out.println(marks);
+System.out.println(passed);</code></pre>
+            </div>
+
+            <p>
+                <code>System.out.println()</code> displays a value
+                in the console and moves to the next line.
+            </p>
+
+            <p>
+                Java executes these four statements sequentially,
+                from the first <code>println</code> to the last.
+            </p>
+
+        </div>
+
+
+        <div class="concept">
+
+            <h3>Closing braces</h3>
+
+            <div class="code-block">
+<pre><code>    }
+}</code></pre>
+            </div>
+
+            <p>
+                The first <code>}</code> closes the
+                <code>main</code> method.
+            </p>
+
+            <p>
+                The second <code>}</code> closes the
+                <code>StudentInfo</code> class.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- OUTPUT -->
+
+    <div class="card">
+
+        <h2>Expected Output</h2>
+
+        <div class="code-block">
+<pre><code>Josh
+18
+87.5
+true</code></pre>
+        </div>
+
+        <p>
+            The output appears in the same order as the
+            <code>println</code> statements because the statements
+            are executed sequentially.
+        </p>
+
+    </div>
+
+
+    <!-- PRACTICE -->
+
+    <div class="card">
+
+        <h2>
+            Ready to Practice?
+        </h2>
+
+        <p>
+            Test your understanding with interactive
+            questions. The answer and explanation will
+            appear immediately after each question.
+        </p>
+
+        <a href="/apcs/quiz?topic=Variables%20%26%20Data%20Types" class="quiz-button">
+            Start Practice →
+        </a>
+
+    </div>
+
+
+</main>
+
+</body>
+
+</html>

@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | CodeCanvas</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', Arial, Helvetica, sans-serif;
+            background:
+                    radial-gradient(circle at 80% 0%, rgba(99, 102, 241, 0.18), transparent 30%),
+                    radial-gradient(circle at 0% 30%, rgba(59, 130, 246, 0.10), transparent 25%),
+                    #080b14;
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            height: 72px;
+            padding: 0 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(8, 11, 20, 0.78);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: -0.7px;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: #818cf8;
+        }
+
+        .profile-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .profile-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #cbd5e1;
+        }
+
+        .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.35);
+        }
+
+        /* MAIN CONTAINER */
+        .container {
+            width: min(1180px, 90%);
+            margin: auto;
+            padding: 48px 0 80px;
+        }
+
+        /* WELCOME HEADER */
+        .welcome-header {
+            margin-bottom: 44px;
+        }
+
+        .welcome-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 30px;
+            background: rgba(99, 102, 241, 0.12);
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            color: #a5b4fc;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 14px;
+        }
+
+        .welcome-header h1 {
+            font-size: 36px;
+            font-weight: 800;
+            letter-spacing: -0.8px;
+            margin: 0 0 10px;
+            color: #ffffff;
+        }
+
+        .welcome-header p {
+            color: #94a3b8;
+            font-size: 16px;
+            margin: 0;
+            max-width: 650px;
+            line-height: 1.6;
+        }
+
+        /* SECTION HEADER WITH INTEGRATED GLASS SEARCH */
+        .curriculum-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.4px;
+            margin: 0 0 4px;
+            color: #ffffff;
+        }
+
+        .section-subtitle {
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        /* GLASS SEARCH BAR INSIDE CURRICULUM */
+        .curriculum-search-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 6px 14px 6px 8px;
+            border-radius: 12px;
+            min-width: 320px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+            transition: all 0.25s ease;
+        }
+
+        .curriculum-search-box:focus-within {
+            border-color: #818cf8;
+            background: rgba(255, 255, 255, 0.07);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25), 0 4px 20px rgba(0, 0, 0, 0.35);
+        }
+
+        .glass-search-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #a5b4fc;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
+        }
+
+        .curriculum-search-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .curriculum-search-input::placeholder {
+            color: #64748b;
+        }
+
+        /* CURRICULUM GRID */
+        .curriculum-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .curriculum-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.25s ease;
+        }
+
+        .curriculum-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #6366f1, #a855f7);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .curriculum-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(99, 102, 241, 0.35);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+        }
+
+        .curriculum-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-pill {
+            align-self: flex-start;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+            background: rgba(99, 102, 241, 0.2);
+            color: #a5b4fc;
+            border: 1px solid rgba(99, 102, 241, 0.35);
+        }
+
+        .curriculum-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0 0 10px;
+            color: #ffffff;
+        }
+
+        .curriculum-card p {
+            color: #94a3b8;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0 0 20px;
+            flex-grow: 1;
+        }
+
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 22px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        /* GLOWING ACTION BUTTONS FOR ALL CARDS */
+        .card-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 12px 18px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.35);
+            transition: all 0.2s ease;
+        }
+
+        .card-button:hover {
+            box-shadow: 0 6px 24px rgba(99, 102, 241, 0.5);
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+        }
+
+        .card-button:active {
+            transform: translateY(0);
+        }
+
+        /* PROGRESS & STATS SECTION */
+        .progress-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 32px;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 36px;
+            align-items: center;
+        }
+
+        .progress-info h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin: 0 0 8px;
+            color: #ffffff;
+        }
+
+        .progress-info p {
+            color: #94a3b8;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0 0 20px;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar-fill {
+            width: 12.5%;
+            height: 100%;
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+            border-radius: 8px;
+            box-shadow: 0 0 12px rgba(99, 102, 241, 0.5);
+        }
+
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            padding: 18px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 26px;
+            font-weight: 800;
+            color: #818cf8;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        /* AP SCORE PREDICTOR */
+        .ap-score-predictor {
+            margin-top: 22px;
+            padding: 16px 18px;
+            background: rgba(0, 0, 0, 0.28);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+        }
+
+        .predictor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .predictor-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .predictor-value {
+            font-size: 12px;
+            font-weight: 700;
+            color: #818cf8;
+            padding: 3px 10px;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .score-pips {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .score-pip {
+            padding: 8px 4px;
+            text-align: center;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.25s ease;
+            opacity: 0.45;
+        }
+
+        .score-pip .pip-num {
+            display: block;
+            font-size: 16px;
+            font-weight: 800;
+            color: #94a3b8;
+            line-height: 1.2;
+        }
+
+        .score-pip .pip-label {
+            display: block;
+            font-size: 10px;
+            color: #64748b;
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        .score-pip.reached {
+            opacity: 0.8;
+            background: rgba(99, 102, 241, 0.08);
+            border-color: rgba(99, 102, 241, 0.2);
+        }
+
+        .score-pip.reached .pip-num {
+            color: #c7d2fe;
+        }
+
+        .score-pip.current-target {
+            opacity: 1;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+        }
+
+        .score-pip.score-1.current-target {
+            background: rgba(148, 163, 184, 0.16);
+            border-color: rgba(148, 163, 184, 0.45);
+        }
+        .score-pip.score-1.current-target .pip-num { color: #cbd5e1; }
+
+        .score-pip.score-2.current-target {
+            background: rgba(59, 130, 246, 0.18);
+            border-color: rgba(59, 130, 246, 0.45);
+        }
+        .score-pip.score-2.current-target .pip-num { color: #93c5fd; }
+
+        .score-pip.score-3.current-target {
+            background: rgba(99, 102, 241, 0.22);
+            border-color: rgba(99, 102, 241, 0.5);
+            box-shadow: 0 0 14px rgba(99, 102, 241, 0.3);
+        }
+        .score-pip.score-3.current-target .pip-num { color: #a5b4fc; }
+
+        .score-pip.score-4.current-target {
+            background: rgba(16, 185, 129, 0.22);
+            border-color: rgba(16, 185, 129, 0.5);
+            box-shadow: 0 0 16px rgba(16, 185, 129, 0.3);
+        }
+        .score-pip.score-4.current-target .pip-num { color: #6ee7b7; }
+
+        .score-pip.score-5.current-target {
+            background: rgba(245, 158, 11, 0.24);
+            border-color: rgba(245, 158, 11, 0.6);
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+        }
+        .score-pip.score-5.current-target .pip-num { color: #fde047; }
+
+        .predictor-hint {
+            font-size: 12px;
+            color: #94a3b8;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 900px) {
+            .curriculum-grid {
+                grid-template-columns: 1fr;
+            }
+            .progress-card {
+                grid-template-columns: 1fr;
+            }
+            .curriculum-section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .curriculum-search-box {
+                width: 100%;
+            }
+            .navbar {
+                padding: 0 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVIGATION -->
+<nav class="navbar">
+    <a href="/dashboard" class="logo">
+        Code<span>Canvas</span>
+    </a>
+
+    <div style="display: flex; align-items: center; gap: 20px;">
+        <a href="/progress" class="nav-link" style="color: #94a3b8; text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s;">My Progress</a>
+        <div class="profile-container">
+            <span class="profile-name" id="studentDisplayName">Student</span>
+            <div class="avatar" id="studentAvatar">S</div>
+        </div>
+    </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="container">
+
+    <!-- HERO HEADER -->
+    <div class="welcome-header">
+        <div class="welcome-badge">
+            ⚡ Advanced Java Learning Engine
+        </div>
+        <h1 id="welcomeTitle">Welcome to CodeCanvas 👋</h1>
+        <p>
+            Master Java through structured concept guides, interactive line-by-line code breakdowns, and targeted AP/exam-level quizzes.
+        </p>
+    </div>
+
+    <!-- CURRICULUM SECTION HEADER -->
+    <div class="curriculum-section-header">
+        <div>
+            <h2 class="section-title">Select Curriculum</h2>
+            <span class="section-subtitle">Official examination syllabuses</span>
+        </div>
+    </div>
+
+    <!-- CURRICULUM GRID -->
+    <div class="curriculum-grid" id="curriculumCardsContainer">
+
+        <!-- AP CS Java -->
+        <div class="curriculum-card" data-title="AP CS Java Computer Science A OOP Algorithms Arrays">
+            <div>
+                <span class="card-pill">Featured Course</span>
+                <h3>AP CS Java</h3>
+                <p>
+                    Full AP Computer Science A course aligned with College Board guidelines. Covers OOP, algorithms, arrays, and standard AP question formats.
+                </p>
+            </div>
+            <div>
+                <div class="card-meta">
+                    <span>📚 8 Modules</span>
+                    <span>⚡ Interactive Quizzes</span>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <a href="/apcs" class="card-button" style="flex: 1.2;">
+                        Explore AP CS
+                    </a>
+                    <a href="/apcs/exam" class="card-button" style="flex: 0.9; background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.4); color: #c7d2fe; box-shadow: none;">
+                        ⏱ Mock Exam
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ICSE Java -->
+        <div class="curriculum-card" data-title="ICSE Java Class 9 10 loops methods fundamentals">
+            <div>
+                <span class="card-pill">Standard Curriculum</span>
+                <h3>ICSE Java</h3>
+                <p>
+                    Rigorous foundation in object-oriented programming for Class 9 and 10 ICSE students, covering core syntax, loops, and user-defined methods.
+                </p>
+            </div>
+            <div>
+                <div class="card-meta">
+                    <span>📚 Class 9 & 10</span>
+                    <span>⚡ Practice Drills</span>
+                </div>
+                <a href="/icse" class="card-button">
+                    Explore ICSE
+                </a>
+            </div>
+        </div>
+
+        <!-- ISC Java -->
+        <div class="curriculum-card" data-title="ISC Java Class 11 12 recursion inheritance data structures">
+            <div>
+                <span class="card-pill">Advanced High School</span>
+                <h3>ISC Java</h3>
+                <p>
+                    In-depth syllabus for Class 11 & 12 ISC, exploring recursion, inheritance, data structures, and complex algorithm problems.
+                </p>
+            </div>
+            <div>
+                <div class="card-meta">
+                    <span>📚 Class 11 & 12</span>
+                    <span>⚡ Exam Prep</span>
+                </div>
+                <button class="card-button" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); color: #94a3b8; cursor: not-allowed; box-shadow: none;" disabled>
+                    🔒 Coming Soon (Class 11 &amp; 12)
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- PROGRESS & PERFORMANCE -->
+    <div class="progress-card">
+        <div class="progress-info">
+            <h2>Your Learning Journey</h2>
+            <p id="journeyDescription">
+                Take your first quiz in any of the 8 AP CS modules to start tracking your course progress and performance.
+            </p>
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill" id="dashboardProgressBar" style="width: 0%;"></div>
+            </div>
+            <div class="progress-labels">
+                <span id="progressTopicCount">0 of 8 Topics Completed</span>
+                <span id="progressPercentage">0% Complete</span>
+            </div>
+
+            <!-- AP SCORE PREDICTOR -->
+            <div class="ap-score-predictor">
+                <div class="predictor-header">
+                    <span class="predictor-label">🎯 PROJECTED AP EXAM SCORE</span>
+                    <span class="predictor-value" id="projectedScoreDisplay">Score 1 (Starting)</span>
+                </div>
+                <div class="score-pips" id="scorePips">
+                    <div class="score-pip score-1" data-score="1">
+                        <span class="pip-num">1</span>
+                        <span class="pip-label">Starter</span>
+                    </div>
+                    <div class="score-pip score-2" data-score="2">
+                        <span class="pip-num">2</span>
+                        <span class="pip-label">Basic</span>
+                    </div>
+                    <div class="score-pip score-3" data-score="3">
+                        <span class="pip-num">3</span>
+                        <span class="pip-label">Pass</span>
+                    </div>
+                    <div class="score-pip score-4" data-score="4">
+                        <span class="pip-num">4</span>
+                        <span class="pip-label">Qualified</span>
+                    </div>
+                    <div class="score-pip score-5" data-score="5">
+                        <span class="pip-num">5</span>
+                        <span class="pip-label">Top Mastery</span>
+                    </div>
+                </div>
+                <div class="predictor-hint" id="predictorHint">
+                    Pass your first unit quiz with 70%+ score to begin projecting your AP Computer Science A score.
+                </div>
+                <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.08); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                    <span style="font-size: 12px; color: #94a3b8;" id="mockExamStatusText">Want an official 40-question diagnostic?</span>
+                    <a href="/apcs/exam" style="font-size: 12px; font-weight: 700; color: #818cf8; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+                        Take Timed Mock Exam (90m) →
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-box">
+                <div class="stat-number" id="statProjectedScore" style="color: #cbd5e1;">1</div>
+                <div class="stat-label">Projected AP Score</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">80</div>
+                <div class="stat-label">Questions in Bank</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number" id="statMasteryPct">0%</div>
+                <div class="stat-label">Syllabus Mastery</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number" id="statQuizzesCompleted">0</div>
+                <div class="stat-label">Quizzes Passed</div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<script>
+    // Extract username from query param or localStorage
+    const urlParams = new URLSearchParams(window.location.search);
+    const rawUsername = urlParams.get('username') || localStorage.getItem('codecanvas_student_name');
+    if (rawUsername && rawUsername.trim() !== '') {
+        const cleanName = rawUsername.trim();
+        localStorage.setItem('codecanvas_student_name', cleanName);
+        document.getElementById('studentDisplayName').textContent = cleanName;
+        document.getElementById('studentAvatar').textContent = cleanName.charAt(0).toUpperCase();
+        document.getElementById('welcomeTitle').textContent = `Welcome back, ${cleanName} 👋`;
+    }
+
+    // Dynamic progress computation based on student's completed quizzes
+    function updateDashboardProgress() {
+        try {
+            const completedTopics = JSON.parse(localStorage.getItem('codecanvas_completed_topics') || '{}');
+            const quizzesCompleted = parseInt(localStorage.getItem('codecanvas_quizzes_completed') || '0', 10);
+
+            const totalModules = 8;
+            // Only count topics that were passed (score >= 70%)
+            const passedTopics = Object.values(completedTopics).filter(t => t && t.passed === true);
+            const passedCount = passedTopics.length;
+            const pct = Math.round((passedCount / totalModules) * 100);
+
+            // Compute average percentage on passed topics
+            let avgAccuracy = 0;
+            if (passedCount > 0) {
+                const totalPct = passedTopics.reduce((sum, t) => sum + (t.percentage || Math.round((t.bestScore / (t.total || 10)) * 100)), 0);
+                avgAccuracy = Math.round(totalPct / passedCount);
+            }
+
+            // AP CS Score Projection (1 to 5)
+            let projectedScore = 1;
+            let scoreTitle = 'Score 1 (Starting)';
+            let scoreHint = 'Pass your first unit quiz with 70%+ score to begin projecting your AP Computer Science A score.';
+            let scoreColor = '#cbd5e1';
+
+            if (passedCount >= 7 && avgAccuracy >= 85) {
+                projectedScore = 5;
+                scoreTitle = 'Score 5 (Extremely Well Qualified ★)';
+                scoreHint = '🎉 Outstanding! You have mastered 7+ units with 85%+ accuracy. You are primed for a 5 on the AP Exam!';
+                scoreColor = '#fde047';
+            } else if (passedCount >= 5) {
+                projectedScore = 4;
+                scoreTitle = 'Score 4 (Well Qualified)';
+                scoreHint = `Master ${7 - passedCount} more unit${7 - passedCount > 1 ? 's' : ''} with 85%+ accuracy to reach a projected Score 5!`;
+                scoreColor = '#6ee7b7';
+            } else if (passedCount >= 3) {
+                projectedScore = 3;
+                scoreTitle = 'Score 3 (Qualified / College Pass)';
+                scoreHint = `Solid progress! Master ${5 - passedCount} more unit${5 - passedCount > 1 ? 's' : ''} with 70%+ to boost your projection to Score 4.`;
+                scoreColor = '#a5b4fc';
+            } else if (passedCount >= 1) {
+                projectedScore = 2;
+                scoreTitle = 'Score 2 (Developing Foundation)';
+                scoreHint = `Pass ${3 - passedCount} more unit${3 - passedCount > 1 ? 's' : ''} to reach the College Board qualifying mark (Score 3).`;
+                scoreColor = '#93c5fd';
+            }
+
+            const fillEl = document.getElementById('dashboardProgressBar');
+            const labelCountEl = document.getElementById('progressTopicCount');
+            const labelPctEl = document.getElementById('progressPercentage');
+            const quizzesCountEl = document.getElementById('statQuizzesCompleted');
+            const masteryPctEl = document.getElementById('statMasteryPct');
+            const journeyDescEl = document.getElementById('journeyDescription');
+            const statScoreEl = document.getElementById('statProjectedScore');
+            const projDisplayEl = document.getElementById('projectedScoreDisplay');
+            const projHintEl = document.getElementById('predictorHint');
+
+            if (fillEl) fillEl.style.width = pct + '%';
+            if (labelCountEl) labelCountEl.textContent = `${passedCount} of ${totalModules} Topics Mastered (70%+ Score)`;
+            if (labelPctEl) labelPctEl.textContent = `${pct}% Complete`;
+            if (quizzesCountEl) quizzesCountEl.textContent = quizzesCompleted.toString();
+            if (masteryPctEl) masteryPctEl.textContent = pct + '%';
+
+            if (statScoreEl) {
+                statScoreEl.textContent = projectedScore.toString();
+                statScoreEl.style.color = scoreColor;
+            }
+
+            if (projDisplayEl) {
+                projDisplayEl.textContent = scoreTitle;
+                projDisplayEl.style.color = scoreColor;
+                projDisplayEl.style.borderColor = scoreColor + '66';
+                projDisplayEl.style.background = scoreColor + '1a';
+            }
+
+            if (projHintEl) {
+                projHintEl.textContent = scoreHint;
+            }
+
+            // Update 1-5 score pips
+            const pips = document.querySelectorAll('.score-pip');
+            pips.forEach(pip => {
+                const s = parseInt(pip.getAttribute('data-score'), 10);
+                pip.classList.remove('reached', 'current-target');
+                if (s < projectedScore) {
+                    pip.classList.add('reached');
+                } else if (s === projectedScore) {
+                    pip.classList.add('current-target');
+                }
+            });
+
+            if (journeyDescEl) {
+                if (passedCount === 0) {
+                    journeyDescEl.textContent = 'Pass your first quiz with a score of 7/10 (70%) or higher to unlock topic credit and begin your progress.';
+                } else if (passedCount < totalModules) {
+                    journeyDescEl.textContent = `Great progress! You have mastered ${passedCount} of ${totalModules} topics with an average accuracy of ${avgAccuracy}%. Keep going to reach 100% course mastery.`;
+                } else {
+                    journeyDescEl.textContent = '🎉 Outstanding achievement! You have mastered all 8 AP Computer Science A topics!';
+                }
+            }
+
+            // Check for completed mock exam
+            try {
+                const mockExam = JSON.parse(localStorage.getItem('codecanvas_mock_exam') || 'null');
+                const mockStatusEl = document.getElementById('mockExamStatusText');
+                if (mockExam && mockStatusEl) {
+                    mockStatusEl.innerHTML = `Latest Mock Exam: <strong style="color:#86efac;">${mockExam.score}/${mockExam.total} (${mockExam.percentage}%)</strong> • Projected: <strong style="color:#fde047;">Score ${mockExam.projectedScore}</strong>`;
+                }
+            } catch (err) {}
+        } catch (e) {
+            console.error('Error loading progress:', e);
+        }
+    }
+
+    updateDashboardProgress();
+</script>
+
+</body>
+</html>

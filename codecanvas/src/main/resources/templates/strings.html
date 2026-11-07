@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strings | CodeCanvas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', Arial, Helvetica, sans-serif;
+            background:
+                    radial-gradient(
+                            circle at 80% 0%,
+                            rgba(99, 102, 241, 0.18),
+                            transparent 30%
+                    ),
+                    radial-gradient(
+                            circle at 0% 50%,
+                            rgba(124, 58, 237, 0.08),
+                            transparent 30%
+                    ),
+                    #080b14;
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            height: 72px;
+            padding: 0 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(8, 11, 20, 0.82);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            color: #ffffff;
+            text-decoration: none;
+            letter-spacing: -0.7px;
+        }
+
+        .logo span {
+            color: #818cf8;
+        }
+
+        .back {
+            color: #a1a1aa;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .back:hover {
+            color: #ffffff;
+        }
+
+        .container {
+            width: min(1000px, 90%);
+            margin: auto;
+            padding: 50px 0 80px;
+        }
+
+        .breadcrumb {
+            color: #71717a;
+            font-size: 13px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumb a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb a:hover {
+            color: #ffffff;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: rgba(129,140,248,0.12);
+            border: 1px solid rgba(129,140,248,0.25);
+            color: #a5b4fc;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 46px;
+            letter-spacing: -1.5px;
+            margin: 0 0 15px;
+            font-weight: 800;
+        }
+
+        .intro {
+            color: #94a3b8;
+            font-size: 17px;
+            line-height: 1.7;
+            max-width: 780px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+
+        .card p {
+            color: #94a3b8;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .concept {
+            padding: 22px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .concept h3 {
+            margin-top: 0;
+            font-size: 16px;
+            color: #e2e8f0;
+        }
+
+        .concept p {
+            margin-bottom: 0;
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        code {
+            color: #c4b5fd;
+            background: rgba(129,140,248,0.1);
+            padding: 3px 7px;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 13px;
+        }
+
+        .code-block {
+            background: #05070d;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 22px;
+            overflow-x: auto;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 14px;
+            line-height: 1.7;
+            margin: 16px 0;
+        }
+
+        .code-block pre {
+            margin: 0;
+        }
+
+        .quiz-button {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 13px 26px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6366f1, #7c3aed);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            box-shadow: 0 10px 25px rgba(99,102,241,0.3);
+            transition: all 0.2s ease;
+        }
+
+        .quiz-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(99,102,241,0.5);
+        }
+
+        @media(max-width: 768px) {
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 34px;
+            }
+            .card {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <a href="/dashboard" class="logo">
+        Code<span>Canvas</span>
+    </a>
+    <a href="/apcs" class="back">
+        ← Back to AP CS Java
+    </a>
+</nav>
+
+<main class="container">
+
+    <div class="breadcrumb">
+        <a href="/dashboard">Dashboard</a>
+        <span>›</span>
+        <a href="/apcs">AP CS Java</a>
+        <span>›</span>
+        <span style="color: #e2e8f0;">Strings</span>
+    </div>
+
+    <div class="badge">
+        AP COMPUTER SCIENCE A • UNIT 2
+    </div>
+
+    <h1>Strings</h1>
+
+    <p class="intro">
+        In Java, String is an object reference type representing an immutable sequence of characters. Mastering 0-based indexing, string methods, concatenation, and equality checking is essential for AP Computer Science A.
+    </p>
+
+    <!-- KEY CONCEPTS -->
+    <div class="card">
+        <h2>Core Concepts &amp; Rules</h2>
+        <p>Essential principles tested on the AP Computer Science A exam:</p>
+        <div class="concept-grid">
+            
+            <div class="concept">
+                <h3>Zero-Based Indexing</h3>
+                <p>The first character of a string is at index <code>0</code>, and the last character is at index <code>str.length() - 1</code>.</p>
+            </div>
+            <div class="concept">
+                <h3>Immutability</h3>
+                <p>Strings cannot be modified after creation. Methods like <code>toUpperCase()</code> or <code>substring()</code> return a new String object rather than altering the existing one.</p>
+            </div>
+            <div class="concept">
+                <h3>.equals() vs ==</h3>
+                <p>Always use <code>str1.equals(str2)</code> to compare the text content of two strings. The <code>==</code> operator only checks if both variables point to the exact same memory location.</p>
+            </div>
+            <div class="concept">
+                <h3>Key Methods</h3>
+                <p><code>length()</code> returns character count, <code>substring(start, end)</code> extracts a slice (end is exclusive), and <code>indexOf(sub)</code> locates a substring.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CODE PROGRAM -->
+    <div class="card">
+        <h2>Example Program</h2>
+        <p>This program demonstrates string length, substring slicing, searching with indexOf, and content comparison with .equals().</p>
+        <h3>Complete Java Program</h3>
+        <div class="code-block">
+<pre><code>public class StringDemo {
+
+    public static void main(String[] args) {
+
+        String phrase = "AP CS Java";
+
+        // Measuring length
+        int len = phrase.length();
+
+        // Substring extraction (index 0 up to 5 exclusive)
+        String subject = phrase.substring(0, 5);
+
+        // Substring from index 6 to the end
+        String language = phrase.substring(6);
+
+        // Finding the index of a character or substring
+        int indexJava = phrase.indexOf("Java");
+
+        // String comparison
+        String target = "AP CS Java";
+        boolean isMatch = phrase.equals(target);
+
+        System.out.println("Original: " + phrase);
+        System.out.println("Length: " + len);
+        System.out.println("Subject: " + subject);
+        System.out.println("Language: " + language);
+        System.out.println("Index of 'Java': " + indexJava);
+        System.out.println("Content matches: " + isMatch);
+    }
+}</code></pre>
+        </div>
+    </div>
+
+    <!-- STRUCTURE -->
+    <div class="card">
+        <h2>Understanding the Program Structure</h2>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>1. The Class Definition</h3>
+                <p><code>public class StringDemo</code> defines the enclosing blueprint. In Java, all runnable code resides within a class structure.</p>
+            </div>
+            <div class="concept">
+                <h3>2. The Execution Entry Point</h3>
+                <p><code>public static void main(String[] args)</code> is invoked by the Java Virtual Machine (JVM) to start executing the program.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- EXECUTION TRACE -->
+    <div class="card">
+        <h2>How Does Java Execute This Program?</h2>
+        <p>Execution trace showing the sequential evaluation and memory state changes:</p>
+        <div class="concept-grid">
+            
+            <div class="concept">
+                <h3>Step 1</h3>
+                <p>The String object <code>phrase</code> is created in the string pool holding <code>"AP CS Java"</code>.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 2</h3>
+                <p><code>phrase.length()</code> counts the 10 characters (including spaces) and stores 10 in <code>len</code>.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 3</h3>
+                <p><code>phrase.substring(0, 5)</code> extracts characters from index 0 through index 4, returning <code>"AP CS"</code>.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 4</h3>
+                <p><code>phrase.substring(6)</code> extracts from index 6 to the end, returning <code>"Java"</code>.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 5</h3>
+                <p><code>phrase.indexOf("Java")</code> locates the first appearance starting at index 6.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 6</h3>
+                <p><code>phrase.equals(target)</code> compares textual values character-by-character, evaluating to <code>true</code>.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- LINE BY LINE -->
+    <div class="card">
+        <h2>Line-by-Line Explanation</h2>
+        
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 8 — length() method</h3>
+            <div class="code-block"><pre><code>int len = phrase.length();</code></pre></div>
+            <p>Notice the parentheses: for Strings, <code>length()</code> is a method call, unlike arrays where <code>length</code> is a field.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 11 — substring(start, end)</h3>
+            <div class="code-block"><pre><code>String subject = phrase.substring(0, 5);</code></pre></div>
+            <p>Extracts characters from <code>start</code> up to but NOT including <code>end</code>: characters at indices 0, 1, 2, 3, and 4.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 14 — substring(start)</h3>
+            <div class="code-block"><pre><code>String language = phrase.substring(6);</code></pre></div>
+            <p>With a single argument, extracts from index 6 through the very end of the string.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 21 — .equals() comparison</h3>
+            <div class="code-block"><pre><code>boolean isMatch = phrase.equals(target);</code></pre></div>
+            <p>Compares text values. Never use <code>==</code> to compare string contents on the AP exam.</p>
+        </div>
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="card">
+        <h2>Expected Console Output</h2>
+        <div class="code-block">
+<pre><code>Original: AP CS Java
+Length: 10
+Subject: AP CS
+Language: Java
+Index of 'Java': 6
+Content matches: true</code></pre>
+        </div>
+        <p>Notice how each output line correlates directly to each statement executed in the main method.</p>
+    </div>
+
+    <!-- EXAM TIPS -->
+    <div class="card">
+        <h2>AP Exam Tips &amp; Common Traps</h2>
+        <p>Keep these frequent multiple-choice traps in mind:</p>
+        <div class="concept-grid">
+            
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 IndexOutOfBoundsException</h3>
+                <p>Calling <code>str.substring(0, str.length() + 1)</code> or accessing index <code>str.length()</code> will crash with <code>StringIndexOutOfBoundsException</code>.</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 indexOf Return on Failure</h3>
+                <p>If the substring is not found, <code>indexOf()</code> returns <code>-1</code>, not <code>0</code> or <code>null</code>.</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 compareTo() Method</h3>
+                <p><code>a.compareTo(b)</code> returns negative if <code>a</code> comes before <code>b</code> alphabetically, 0 if equal, and positive if <code>a</code> comes after <code>b</code>.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRACTICE CTA -->
+    <div class="card" style="text-align: center; padding: 45px 30px;">
+        <h2>Ready to Test Your Knowledge?</h2>
+        <p style="max-width: 550px; margin: 10px auto 25px;">
+            Test your understanding with instant feedback, randomized questions, and step-by-step explanations.
+        </p>
+        <a href="/apcs/quiz?topic=Strings" class="quiz-button">
+            Start Practice →
+        </a>
+    </div>
+
+</main>
+
+</body>
+</html>

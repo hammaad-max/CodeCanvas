@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arrays | CodeCanvas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', Arial, Helvetica, sans-serif;
+            background:
+                    radial-gradient(
+                            circle at 80% 0%,
+                            rgba(99, 102, 241, 0.18),
+                            transparent 30%
+                    ),
+                    radial-gradient(
+                            circle at 0% 50%,
+                            rgba(124, 58, 237, 0.08),
+                            transparent 30%
+                    ),
+                    #080b14;
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            height: 72px;
+            padding: 0 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(8, 11, 20, 0.82);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            color: #ffffff;
+            text-decoration: none;
+            letter-spacing: -0.7px;
+        }
+
+        .logo span {
+            color: #818cf8;
+        }
+
+        .back {
+            color: #a1a1aa;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .back:hover {
+            color: #ffffff;
+        }
+
+        .container {
+            width: min(1000px, 90%);
+            margin: auto;
+            padding: 50px 0 80px;
+        }
+
+        .breadcrumb {
+            color: #71717a;
+            font-size: 13px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumb a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb a:hover {
+            color: #ffffff;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: rgba(129,140,248,0.12);
+            border: 1px solid rgba(129,140,248,0.25);
+            color: #a5b4fc;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 46px;
+            letter-spacing: -1.5px;
+            margin: 0 0 15px;
+            font-weight: 800;
+        }
+
+        .intro {
+            color: #94a3b8;
+            font-size: 17px;
+            line-height: 1.7;
+            max-width: 780px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+
+        .card p {
+            color: #94a3b8;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .concept {
+            padding: 22px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .concept h3 {
+            margin-top: 0;
+            font-size: 16px;
+            color: #e2e8f0;
+        }
+
+        .concept p {
+            margin-bottom: 0;
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        code {
+            color: #c4b5fd;
+            background: rgba(129,140,248,0.1);
+            padding: 3px 7px;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 13px;
+        }
+
+        .code-block {
+            background: #05070d;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 22px;
+            overflow-x: auto;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 14px;
+            line-height: 1.7;
+            margin: 16px 0;
+        }
+
+        .code-block pre {
+            margin: 0;
+        }
+
+        .quiz-button {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 13px 26px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6366f1, #7c3aed);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            box-shadow: 0 10px 25px rgba(99,102,241,0.3);
+            transition: all 0.2s ease;
+        }
+
+        .quiz-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(99,102,241,0.5);
+        }
+
+        @media(max-width: 768px) {
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 34px;
+            }
+            .card {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <a href="/dashboard" class="logo">
+        Code<span>Canvas</span>
+    </a>
+    <a href="/apcs" class="back">
+        ← Back to AP CS Java
+    </a>
+</nav>
+
+<main class="container">
+
+    <div class="breadcrumb">
+        <a href="/dashboard">Dashboard</a>
+        <span>›</span>
+        <a href="/apcs">AP CS Java</a>
+        <span>›</span>
+        <span style="color: #e2e8f0;">Arrays</span>
+    </div>
+
+    <div class="badge">
+        AP COMPUTER SCIENCE A • UNIT 6
+    </div>
+
+    <h1>Arrays</h1>
+
+    <p class="intro">
+        An array is a fixed-size container that stores multiple values of the same type. Array traversal, index manipulation, element replacement, and common standard algorithms (sum, average, minimum, maximum) are heavily tested on the AP CS A exam.
+    </p>
+
+    <!-- KEY CONCEPTS -->
+    <div class="card">
+        <h2>Core Concepts &amp; Rules</h2>
+        <p>Essential principles tested on the AP Computer Science A exam:</p>
+        <div class="concept-grid">
+            
+            <div class="concept">
+                <h3>Fixed Size &amp; Indexing</h3>
+                <p>Arrays have a fixed size set when created. Indices range from <code>0</code> up to <code>arr.length - 1</code>. <code>length</code> is a field, not a method!</p>
+            </div>
+            <div class="concept">
+                <h3>Default Values</h3>
+                <p>Newly allocated arrays contain default values: <code>0</code> for numeric types, <code>false</code> for booleans, and <code>null</code> for object reference types.</p>
+            </div>
+            <div class="concept">
+                <h3>Standard For Loop Traversal</h3>
+                <p>Allows accessing and modifying elements using their index: <code>for (int i = 0; i &lt; arr.length; i++)</code>.</p>
+            </div>
+            <div class="concept">
+                <h3>Enhanced For-Each Loop</h3>
+                <p>Convenient for reading elements sequentially: <code>for (int num : arr)</code>. Cannot be used to modify array elements or track index positions.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CODE PROGRAM -->
+    <div class="card">
+        <h2>Example Program</h2>
+        <p>This program demonstrates array creation, index traversal, calculating sum and average, and finding maximum values.</p>
+        <h3>Complete Java Program</h3>
+        <div class="code-block">
+<pre><code>public class ArrayAlgorithms {
+
+    public static void main(String[] args) {
+
+        // Array declaration with an initializer list
+        int[] scores = {85, 92, 78, 96, 88};
+
+        // Algorithm 1: Calculate sum and average
+        int sum = 0;
+        for (int i = 0; i &lt; scores.length; i++) {
+            sum += scores[i];
+        }
+        double average = (double) sum / scores.length;
+
+        // Algorithm 2: Find maximum value using enhanced for loop
+        int max = scores[0];
+        for (int score : scores) {
+            if (score &gt; max) {
+                max = score;
+            }
+        }
+
+        // Modifying an element
+        scores[2] = 82; // replaces 78 with 82
+
+        System.out.println("Array Length: " + scores.length);
+        System.out.println("Total Sum: " + sum);
+        System.out.println("Class Average: " + average);
+        System.out.println("High Score: " + max);
+        System.out.println("Updated Score at index 2: " + scores[2]);
+    }
+}</code></pre>
+        </div>
+    </div>
+
+    <!-- STRUCTURE -->
+    <div class="card">
+        <h2>Understanding the Program Structure</h2>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>1. The Class Definition</h3>
+                <p><code>public class ArrayAlgorithms</code> defines the enclosing blueprint. In Java, all runnable code resides within a class structure.</p>
+            </div>
+            <div class="concept">
+                <h3>2. The Execution Entry Point</h3>
+                <p><code>public static void main(String[] args)</code> is invoked by the Java Virtual Machine (JVM) to start executing the program.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- EXECUTION TRACE -->
+    <div class="card">
+        <h2>How Does Java Execute This Program?</h2>
+        <p>Execution trace showing the sequential evaluation and memory state changes:</p>
+        <div class="concept-grid">
+            
+            <div class="concept">
+                <h3>Step 1</h3>
+                <p>Memory allocates a 5-element array initialized with values: <code>[85, 92, 78, 96, 88]</code>.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 2</h3>
+                <p>Standard loop visits each index 0 through 4, accumulating the sum: 85 + 92 + 78 + 96 + 88 = 439.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 3</h3>
+                <p>Average is computed by casting <code>(double) sum / scores.length</code> = 439.0 / 5 = 87.8.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 4</h3>
+                <p>Enhanced for loop iterates through each score; when encountering 96, <code>max</code> updates to 96.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 5</h3>
+                <p><code>scores[2] = 82</code> changes the value at index 2 from 78 to 82.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- LINE BY LINE -->
+    <div class="card">
+        <h2>Line-by-Line Explanation</h2>
+        
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 6 — Initializer list</h3>
+            <div class="code-block"><pre><code>int[] scores = {85, 92, 78, 96, 88};</code></pre></div>
+            <p>Declares, allocates, and populates a 5-element array in one compact statement.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 10 — Loop boundary with .length</h3>
+            <div class="code-block"><pre><code>for (int i = 0; i &lt; scores.length; i++)</code></pre></div>
+            <p>Always use <code>i &lt; scores.length</code>. Using <code>&lt;=</code> will cause an <code>ArrayIndexOutOfBoundsException</code>.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 17 — Enhanced for-each loop</h3>
+            <div class="code-block"><pre><code>for (int score : scores)</code></pre></div>
+            <p>Iterates through each element in order. In each pass, <code>score</code> takes on the value of the current element.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 24 — Array mutation</h3>
+            <div class="code-block"><pre><code>scores[2] = 82;</code></pre></div>
+            <p>Accesses element at index 2 (the 3rd element) and assigns it the new value 82.</p>
+        </div>
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="card">
+        <h2>Expected Console Output</h2>
+        <div class="code-block">
+<pre><code>Array Length: 5
+Total Sum: 439
+Class Average: 87.8
+High Score: 96
+Updated Score at index 2: 82</code></pre>
+        </div>
+        <p>Notice how each output line correlates directly to each statement executed in the main method.</p>
+    </div>
+
+    <!-- EXAM TIPS -->
+    <div class="card">
+        <h2>AP Exam Tips &amp; Common Traps</h2>
+        <p>Keep these frequent multiple-choice traps in mind:</p>
+        <div class="concept-grid">
+            
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 .length Property vs .length()</h3>
+                <p>Arrays use <code>arr.length</code> (no parentheses, it is an immutable field). Strings use <code>str.length()</code> (method call).</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 ArrayIndexOutOfBoundsException Trap</h3>
+                <p>Valid indices for an array of size N are <code>0</code> to <code>N - 1</code>. Accessing <code>arr[arr.length]</code> is the #1 most common AP exam trap!</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 For-Each Cannot Modify Primitives</h3>
+                <p>Writing <code>for (int x : arr) { x = 0; }</code> does NOT change the values in the array because <code>x</code> is merely a copy of the element.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRACTICE CTA -->
+    <div class="card" style="text-align: center; padding: 45px 30px;">
+        <h2>Ready to Test Your Knowledge?</h2>
+        <p style="max-width: 550px; margin: 10px auto 25px;">
+            Test your understanding with instant feedback, randomized questions, and step-by-step explanations.
+        </p>
+        <a href="/apcs/quiz?topic=Arrays" class="quiz-button">
+            Start Practice →
+        </a>
+    </div>
+
+</main>
+
+</body>
+</html>

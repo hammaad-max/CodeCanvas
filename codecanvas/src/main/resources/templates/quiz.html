@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Quiz | CodeCanvas</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', Arial, Helvetica, sans-serif;
+            background:
+                    radial-gradient(
+                            circle at 80% 0%,
+                            rgba(99, 102, 241, 0.18),
+                            transparent 30%
+                    ),
+                    radial-gradient(
+                            circle at 0% 40%,
+                            rgba(124, 58, 237, 0.08),
+                            transparent 30%
+                    ),
+                    #080b14;
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+
+        /* NAVBAR */
+
+        .navbar {
+            height: 72px;
+            padding: 0 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(8, 11, 20, 0.82);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: -0.7px;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: #818cf8;
+        }
+
+        .back {
+            color: #a1a1aa;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .back:hover {
+            color: white;
+        }
+
+
+        /* CONTAINER */
+
+        .container {
+            width: min(900px, 90%);
+            margin: auto;
+            padding: 55px 0 80px;
+        }
+
+
+        /* HEADER */
+
+        .quiz-header {
+            margin-bottom: 35px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 18px;
+            font-size: 13px;
+        }
+
+        .breadcrumb a {
+            color: #818cf8;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb a:hover {
+            color: #a5b4fc;
+        }
+
+        .breadcrumb .separator {
+            color: #475569;
+        }
+
+        .breadcrumb .current {
+            color: #94a3b8;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: rgba(129,140,248,0.12);
+            border: 1px solid rgba(129,140,248,0.25);
+            color: #a5b4fc;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 18px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        h1 {
+            font-size: 40px;
+            letter-spacing: -1.5px;
+            margin: 0 0 10px;
+            font-weight: 800;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* QUIZ MODE SELECTOR */
+        .mode-selector {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .mode-button {
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.03);
+            color: #94a3b8;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .mode-button:hover {
+            border-color: rgba(129,140,248,0.4);
+            background: rgba(129,140,248,0.08);
+            color: #e2e8f0;
+        }
+
+        .mode-button.active {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 4px 14px rgba(99,102,241,0.35);
+        }
+
+
+        /* PROGRESS */
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            color: #71717a;
+            font-size: 13px;
+            margin-bottom: 9px;
+        }
+
+        .progress-bar {
+            height: 7px;
+            background: #1e293b;
+            border-radius: 999px;
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(
+                    90deg,
+                    #6366f1,
+                    #a855f7
+            );
+            border-radius: inherit;
+            transition: width 0.4s ease;
+        }
+
+
+        /* QUIZ CARD */
+
+        .quiz-card {
+            padding: 32px;
+            background: rgba(15,23,42,0.75);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 22px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.25);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .question-number {
+            color: #818cf8;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .question {
+            font-size: 22px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            margin: 0 0 25px;
+            font-weight: 600;
+        }
+
+
+        /* OPTIONS */
+
+        .options {
+            display: grid;
+            gap: 12px;
+        }
+
+        .option {
+            width: 100%;
+            padding: 16px 18px;
+            text-align: left;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.035);
+            color: #e4e4e7;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.2s ease;
+        }
+
+        .option:hover:not(:disabled):not(.correct):not(.wrong) {
+            border-color: rgba(129,140,248,0.45);
+            background: rgba(129,140,248,0.08);
+            transform: translateY(-1px);
+        }
+
+        .option.correct {
+            border-color: rgba(34,197,94,0.5);
+            background: rgba(34,197,94,0.10);
+            color: #86efac;
+            cursor: default;
+        }
+
+        .option.wrong {
+            border-color: rgba(239,68,68,0.5);
+            background: rgba(239,68,68,0.10);
+            color: #fca5a5;
+            cursor: default;
+        }
+
+        .option:disabled {
+            cursor: default;
+        }
+
+        .option:disabled:hover {
+            transform: none;
+        }
+
+
+        /* FEEDBACK */
+
+        .feedback {
+            display: none;
+            margin-top: 22px;
+            padding: 18px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.035);
+            border: 1px solid rgba(255,255,255,0.07);
+            animation: fadeSlideIn 0.3s ease;
+        }
+
+        @keyframes fadeSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .feedback-title {
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        .feedback-text {
+            color: #94a3b8;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+
+        /* QUIZ FOOTER */
+
+        .quiz-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 25px;
+        }
+
+        .score {
+            color: #71717a;
+            font-size: 13px;
+        }
+
+        .next-button {
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            background: linear-gradient(
+                    135deg,
+                    #6366f1,
+                    #7c3aed
+            );
+            color: white;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(99,102,241,0.25);
+            transition: all 0.2s ease;
+        }
+
+        .next-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(99,102,241,0.4);
+        }
+
+        .next-button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+
+        /* RESULT */
+
+        .result {
+            display: none;
+            text-align: center;
+            padding: 40px 25px;
+        }
+
+        .result-number {
+            font-size: 64px;
+            font-weight: 800;
+            background: linear-gradient(
+                    90deg,
+                    #818cf8,
+                    #c084fc
+            );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 10px 0;
+        }
+
+        .result p {
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        .result-actions {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .restart-button {
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            background: linear-gradient(
+                    135deg,
+                    #6366f1,
+                    #7c3aed
+            );
+            color: white;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(99,102,241,0.3);
+            transition: all 0.2s ease;
+        }
+
+        .restart-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 26px rgba(99,102,241,0.5);
+        }
+
+        .retry-missed-button {
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #ffffff;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.35);
+            transition: all 0.2s ease;
+        }
+
+        .retry-missed-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 26px rgba(245, 158, 11, 0.5);
+        }
+
+        .back-button {
+            padding: 12px 24px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.05);
+            color: #e2e8f0;
+            border: 1px solid rgba(255,255,255,0.1);
+            font-weight: 600;
+            font-family: inherit;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+
+        .back-button:hover {
+            background: rgba(255,255,255,0.1);
+            color: #ffffff;
+        }
+
+
+        /* EMPTY STATE */
+
+        .empty-state {
+            display: none;
+            text-align: center;
+            padding: 60px 25px;
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .empty-state h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 0 10px;
+            color: #ffffff;
+        }
+
+        .empty-state p {
+            color: #94a3b8;
+            font-size: 15px;
+            line-height: 1.6;
+            max-width: 400px;
+            margin: 0 auto 24px;
+        }
+
+        /* LOADING */
+        .loading-state {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top-color: #818cf8;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-state p {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+
+        @media(max-width:600px) {
+            .container {
+                width: 92%;
+            }
+            h1 {
+                font-size: 30px;
+            }
+            .quiz-card {
+                padding: 22px;
+            }
+            .question {
+                font-size: 18px;
+            }
+            .mode-selector {
+                flex-direction: column;
+            }
+            .mode-button {
+                text-align: center;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<nav class="navbar">
+    <a href="/dashboard" class="logo">
+        Code<span>Canvas</span>
+    </a>
+    <a href="/apcs" class="back" id="backLink">
+        ← Back to Curriculum
+    </a>
+</nav>
+
+
+<main class="container">
+
+
+    <!-- HEADER -->
+
+    <section class="quiz-header">
+
+        <div class="breadcrumb">
+            <a href="/dashboard">Dashboard</a>
+            <span class="separator">›</span>
+            <a href="/apcs" id="breadcrumbCurriculum">AP CS Java</a>
+            <span class="separator">›</span>
+            <span class="current" id="breadcrumbTopic">Quiz</span>
+        </div>
+
+        <div class="badge" id="quizBadge">
+            AP COMPUTER SCIENCE A
+        </div>
+
+        <h1 id="quizTitle">
+            Loading...
+        </h1>
+
+        <p class="subtitle" id="quizSubtitle">
+            Practice the fundamentals of Java. The answer and explanation appear
+            immediately after each question.
+        </p>
+
+    </section>
+
+
+    <!-- MODE SELECTOR -->
+    <div class="mode-selector" id="modeSelector">
+        <button class="mode-button active" data-mode="practice" data-count="10">
+            Practice (10 Questions)
+        </button>
+        <button class="mode-button" data-mode="full" data-count="all">
+            All Questions
+        </button>
+        <button class="mode-button" data-mode="marathon" data-count="100">
+            Marathon (Up to 100)
+        </button>
+    </div>
+
+
+    <!-- PROGRESS -->
+
+    <div class="progress-info" id="progressSection" style="display:none;">
+        <span id="questionCounter">
+            Question 1 of 10
+        </span>
+        <span id="scoreDisplay">
+            Score: 0
+        </span>
+    </div>
+
+    <div class="progress-bar" id="progressBar" style="display:none;">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+
+    <!-- LOADING STATE -->
+    <div class="quiz-card loading-state" id="loadingState">
+        <div class="loading-spinner"></div>
+        <p>Loading questions...</p>
+    </div>
+
+
+    <!-- QUIZ -->
+
+    <div class="quiz-card" id="quizCard" style="display:none;">
+
+        <div class="question-number" id="questionNumber">
+            QUESTION 01
+        </div>
+
+        <h2 class="question" id="question"></h2>
+
+        <div class="options" id="options"></div>
+
+        <!-- FEEDBACK -->
+        <div class="feedback" id="feedback">
+            <div class="feedback-title" id="feedbackTitle"></div>
+            <p class="feedback-text" id="feedbackText"></p>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="quiz-footer">
+            <span class="score" id="footerScore">
+                Select an answer to continue.
+            </span>
+            <button class="next-button" id="nextButton" disabled>
+                Next →
+            </button>
+        </div>
+
+    </div>
+
+
+    <!-- RESULT -->
+
+    <div class="quiz-card result" id="resultCard">
+
+        <div class="badge" id="resultStatusBadge">
+            QUIZ COMPLETE
+        </div>
+
+        <h2 id="resultTitle">
+            Great work!
+        </h2>
+
+        <div class="result-number" id="finalScore">
+            0/0
+        </div>
+
+        <p id="resultMessage">
+            You completed the quiz.
+        </p>
+
+        <div class="result-actions">
+            <button class="retry-missed-button" id="retryMissedBtn" onclick="retryMissedQuestions()" style="display:none;">
+                ↺ Retry Missed Questions
+            </button>
+            <button class="restart-button" onclick="restartQuiz()">
+                Try Full Quiz Again
+            </button>
+            <a href="/apcs" class="back-button" id="backToCurriculum">
+                Back to Curriculum
+            </a>
+        </div>
+
+    </div>
+
+
+    <!-- EMPTY STATE -->
+
+    <div class="quiz-card empty-state" id="emptyState">
+        <div class="empty-state-icon">📭</div>
+        <h2>No Questions Available</h2>
+        <p id="emptyMessage">
+            There are no questions for this topic yet. Check back later or try a different topic.
+        </p>
+        <a href="/apcs" class="back-button">
+            Browse Topics
+        </a>
+    </div>
+
+
+</main>
+
+
+<script>
+
+    // ========================
+    //  CONFIGURATION
+    // ========================
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const topic = urlParams.get('topic') || 'Variables & Data Types';
+    const curriculum = urlParams.get('curriculum');
+    const requestedCount = urlParams.get('count');
+
+    let allQuestions = [];
+    let questions = [];
+    let currentQuestion = 0;
+    let score = 0;
+    let answered = false;
+    let currentMode = 'practice';
+    let missedQuestions = [];
+    let isReviewMode = false;
+    let totalSessionQuestions = 10;
+
+
+    // ========================
+    //  DOM REFERENCES
+    // ========================
+
+    const questionElement   = document.getElementById('question');
+    const optionsElement    = document.getElementById('options');
+    const feedbackElement   = document.getElementById('feedback');
+    const feedbackTitle     = document.getElementById('feedbackTitle');
+    const feedbackText      = document.getElementById('feedbackText');
+    const nextButton        = document.getElementById('nextButton');
+    const questionCounter   = document.getElementById('questionCounter');
+    const questionNumber    = document.getElementById('questionNumber');
+    const scoreDisplay      = document.getElementById('scoreDisplay');
+    const footerScore       = document.getElementById('footerScore');
+    const progressFill      = document.getElementById('progressFill');
+    const quizCard          = document.getElementById('quizCard');
+    const resultCard        = document.getElementById('resultCard');
+    const loadingState      = document.getElementById('loadingState');
+    const emptyState        = document.getElementById('emptyState');
+    const progressSection   = document.getElementById('progressSection');
+    const progressBar       = document.getElementById('progressBar');
+    const modeSelector      = document.getElementById('modeSelector');
+
+
+    // ========================
+    //  SET UP UI FROM TOPIC
+    // ========================
+
+    document.title = topic + ' Quiz | CodeCanvas';
+    document.getElementById('quizTitle').textContent = topic;
+    document.getElementById('breadcrumbTopic').textContent = topic + ' Quiz';
+    document.getElementById('quizSubtitle').textContent =
+        'Practice ' + topic.toLowerCase() + ' concepts. The answer and explanation appear immediately after each question.';
+
+    // Update back link if a lesson page exists for this topic
+    const topicSlugMap = {
+        'Variables & Data Types': '/apcs/variables',
+        'Expressions & Assignment': '/apcs/expressions',
+        'Strings': '/apcs/strings',
+        'Selection': '/apcs/selection',
+        'Iteration': '/apcs/iteration',
+        'Methods': '/apcs/methods',
+        'Classes & Objects': '/apcs/classes',
+        'Arrays': '/apcs/arrays',
+        'OOP & Java Fundamentals': '/icse/learn?unit=1',
+        'Operators & Expressions': '/icse/learn?unit=2',
+        'Conditional Branching & Switch': '/icse/learn?unit=3',
+        'Iterative Constructs & Loops': '/icse/learn?unit=4',
+        'Classic Number Programs': '/icse/learn?unit=5',
+        'Character & String Handling': '/icse/learn?unit=6',
+        'User-Defined Methods & Overloading': '/icse/learn?unit=7',
+        'Arrays, Searching & Sorting': '/icse/learn?unit=8'
+    };
+
+    const isIcseQuiz = (curriculum && curriculum.toUpperCase() === 'ICSE') ||
+        (topicSlugMap[topic] || '').startsWith('/icse');
+    if (isIcseQuiz) {
+        const crumb = document.getElementById('breadcrumbCurriculum');
+        crumb.href = '/icse';
+        crumb.textContent = 'ICSE Java';
+        document.getElementById('backLink').href = '/icse';
+    }
+
+    const lessonUrl = topicSlugMap[topic];
+    if (lessonUrl) {
+        document.getElementById('backLink').href = lessonUrl;
+        document.getElementById('backLink').textContent = '← ' + topic;
+    }
+
+
+    // ========================
+    //  SHUFFLE (Fisher-Yates)
+    // ========================
+
+    function shuffle(array) {
+        const arr = [...array];
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+
+    // ========================
+    //  FETCH & INITIALIZE
+    // ========================
+
+    async function loadQuestions() {
+
+        try {
+
+            let fetchUrl = '/api/questions?topic=' + encodeURIComponent(topic);
+            if (curriculum) {
+                fetchUrl += '&curriculum=' + encodeURIComponent(curriculum);
+            }
+            const response = await fetch(fetchUrl);
+
+            if (!response.ok) {
+                throw new Error('Could not load questions (HTTP ' + response.status + ')');
+            }
+
+            allQuestions = await response.json();
+
+            if (allQuestions.length === 0) {
+                loadingState.style.display = 'none';
+                emptyState.style.display = 'block';
+                modeSelector.style.display = 'none';
+                document.getElementById('emptyMessage').textContent =
+                    'There are no questions for "' + topic + '" yet. Check back later or try a different topic.';
+                return;
+            }
+
+            // Update mode button labels with actual counts
+            updateModeLabels();
+
+            // Auto-start immediately in Practice mode (up to 10 questions) or requested count
+            let count = 10;
+            if (requestedCount) {
+                const parsed = parseInt(requestedCount);
+                if (!isNaN(parsed) && parsed > 0) count = parsed;
+                else count = allQuestions.length;
+            }
+            startQuiz(Math.min(count, allQuestions.length));
+            modeSelector.style.display = 'flex';
+
+        } catch (error) {
+
+            console.error('Error loading questions:', error);
+            loadingState.style.display = 'none';
+            emptyState.style.display = 'block';
+            modeSelector.style.display = 'none';
+            document.getElementById('emptyMessage').textContent =
+                'Unable to load questions. Please check your connection and try again.';
+
+        }
+
+    }
+
+
+    function updateModeLabels() {
+        const total = allQuestions.length;
+        const practiceBtn = modeSelector.querySelector('[data-mode="practice"]');
+        const fullBtn     = modeSelector.querySelector('[data-mode="full"]');
+        const marathonBtn = modeSelector.querySelector('[data-mode="marathon"]');
+
+        const practiceCount = Math.min(10, total);
+        practiceBtn.textContent = 'Practice (' + practiceCount + ' Questions)';
+
+        fullBtn.textContent = 'All Questions (' + total + ')';
+
+        if (total >= 20) {
+            const marathonCount = Math.min(100, total);
+            marathonBtn.textContent = 'Marathon (' + marathonCount + ')';
+            marathonBtn.style.display = '';
+        } else {
+            marathonBtn.style.display = 'none';
+        }
+    }
+
+
+    // ========================
+    //  MODE SELECTION
+    // ========================
+
+    modeSelector.addEventListener('click', function(e) {
+        const btn = e.target.closest('.mode-button');
+        if (!btn) return;
+
+        // Update active state
+        modeSelector.querySelectorAll('.mode-button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        currentMode = btn.dataset.mode;
+        const count = btn.dataset.count;
+
+        let questionCount;
+        if (count === 'all') {
+            questionCount = allQuestions.length;
+        } else {
+            questionCount = Math.min(parseInt(count), allQuestions.length);
+        }
+
+        startQuiz(questionCount);
+    });
+
+
+    // ========================
+    //  START QUIZ
+    // ========================
+
+    function startQuiz(count) {
+        // Shuffle and take only `count` questions (no duplicates)
+        questions = shuffle(allQuestions).slice(0, count);
+        totalSessionQuestions = questions.length;
+        missedQuestions = [];
+        isReviewMode = false;
+
+        currentQuestion = 0;
+        score = 0;
+
+        // Show quiz UI
+        loadingState.style.display = 'none';
+        modeSelector.style.display = 'none';
+        quizCard.style.display = 'block';
+        resultCard.style.display = 'none';
+        progressSection.style.display = 'flex';
+        progressBar.style.display = 'block';
+
+        loadQuestion();
+    }
+
+
+    // ========================
+    //  LOAD QUESTION
+    // ========================
+
+    function loadQuestion() {
+
+        answered = false;
+        nextButton.disabled = true;
+        feedbackElement.style.display = 'none';
+
+        const q = questions[currentQuestion];
+
+        if (isReviewMode) {
+            questionNumber.textContent =
+                'REVIEW ' + String(currentQuestion + 1).padStart(2, '0') + ' (MISSED)';
+            questionCounter.textContent =
+                'Reviewing Missed ' + (currentQuestion + 1) + ' of ' + questions.length;
+        } else {
+            questionNumber.textContent =
+                'QUESTION ' + String(currentQuestion + 1).padStart(2, '0');
+            questionCounter.textContent =
+                'Question ' + (currentQuestion + 1) + ' of ' + questions.length;
+        }
+
+        questionElement.textContent = q.questionText;
+
+        scoreDisplay.textContent = 'Score: ' + score + '/' + totalSessionQuestions;
+
+        footerScore.textContent = isReviewMode ? 'Answer to correct this question.' : 'Select an answer to continue.';
+
+        progressFill.style.width =
+            ((currentQuestion + 1) / questions.length * 100) + '%';
+
+        // Build options
+        optionsElement.innerHTML = '';
+
+        const options = [q.optionA, q.optionB, q.optionC, q.optionD];
+
+        options.forEach(function(option) {
+
+            const button = document.createElement('button');
+            button.className = 'option';
+            button.textContent = option;
+
+            button.addEventListener('click', function() {
+                selectAnswer(option);
+            });
+
+            optionsElement.appendChild(button);
+
+        });
+
+        // Update next button text for last question
+        if (currentQuestion === questions.length - 1) {
+            nextButton.textContent = 'Finish Quiz →';
+        } else {
+            nextButton.textContent = 'Next →';
+        }
+
+    }
+
+
+    // ========================
+    //  SELECT ANSWER
+    // ========================
+
+    async function selectAnswer(selectedAnswer) {
+
+        if (answered) return;
+
+        answered = true;
+
+        const q = questions[currentQuestion];
+        const optionButtons = optionsElement.querySelectorAll('.option');
+
+        // Disable all buttons
+        optionButtons.forEach(function(button) {
+            button.disabled = true;
+        });
+
+        // Answers are graded on the server so they are never exposed to the browser in advance
+        let result;
+        try {
+            const response = await fetch('/api/questions/' + q.id + '/check', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: q.id, answer: selectedAnswer })
+            });
+            if (!response.ok) throw new Error('HTTP ' + response.status);
+            result = await response.json();
+        } catch (error) {
+            console.error('Could not check answer:', error);
+            answered = false;
+            optionButtons.forEach(function(button) { button.disabled = false; });
+            footerScore.textContent = 'Could not check your answer. Please try again.';
+            return;
+        }
+
+        q.correctAnswer = result.correctAnswer;
+        q.explanation = result.explanation;
+
+        // Highlight correct answer
+        optionButtons.forEach(function(button) {
+            if (button.textContent === q.correctAnswer) {
+                button.classList.add('correct');
+            }
+        });
+
+        if (result.correct) {
+
+            score++;
+
+            feedbackTitle.textContent = isReviewMode ? '✓ Corrected! (+1 pt)' : '✓ Correct!';
+            feedbackTitle.style.color = '#86efac';
+            footerScore.textContent = isReviewMode ? 'Great job correcting that error!' : 'Nice! Keep going.';
+
+        } else {
+
+            optionButtons.forEach(function(button) {
+                if (button.textContent === selectedAnswer) {
+                    button.classList.add('wrong');
+                }
+            });
+
+            feedbackTitle.textContent = '✕ Not quite';
+            feedbackTitle.style.color = '#fca5a5';
+            footerScore.textContent = 'Review the explanation below.';
+
+            // Track missed question
+            if (!missedQuestions.some(m => m.id === q.id)) {
+                missedQuestions.push(q);
+            }
+
+        }
+
+        feedbackText.textContent = q.explanation;
+        feedbackElement.style.display = 'block';
+        scoreDisplay.textContent = 'Score: ' + score + '/' + totalSessionQuestions;
+        nextButton.disabled = false;
+
+    }
+
+
+    // ========================
+    //  NEXT QUESTION
+    // ========================
+
+    nextButton.addEventListener('click', function() {
+
+        if (!answered) return;
+
+        currentQuestion++;
+
+        if (currentQuestion < questions.length) {
+            loadQuestion();
+        } else {
+            showResult();
+        }
+
+    });
+
+
+    // ========================
+    //  RESULTS
+    // ========================
+
+    function showResult() {
+
+        quizCard.style.display = 'none';
+        resultCard.style.display = 'block';
+        progressSection.style.display = 'none';
+        progressBar.style.display = 'none';
+
+        document.getElementById('finalScore').textContent =
+            score + '/' + totalSessionQuestions;
+
+        const percentage = (score / totalSessionQuestions) * 100;
+        const isPassed = percentage >= 70; // 7 out of 10 passing mark
+
+        const retryMissedBtn = document.getElementById('retryMissedBtn');
+        if (retryMissedBtn) {
+            if (missedQuestions.length > 0) {
+                retryMissedBtn.style.display = 'inline-block';
+                retryMissedBtn.textContent = `↺ Retry ${missedQuestions.length} Missed Question${missedQuestions.length > 1 ? 's' : ''}`;
+            } else {
+                retryMissedBtn.style.display = 'none';
+            }
+        }
+
+        const statusBadge = document.getElementById('resultStatusBadge');
+        if (statusBadge) {
+            if (isPassed) {
+                statusBadge.textContent = '✓ TOPIC PASSED (70%+ MET)';
+                statusBadge.style.background = 'rgba(34, 197, 94, 0.15)';
+                statusBadge.style.borderColor = 'rgba(34, 197, 94, 0.35)';
+                statusBadge.style.color = '#86efac';
+            } else {
+                statusBadge.textContent = 'PASS MARK IS 70% (7/10) • TRY AGAIN';
+                statusBadge.style.background = 'rgba(245, 158, 11, 0.15)';
+                statusBadge.style.borderColor = 'rgba(245, 158, 11, 0.35)';
+                statusBadge.style.color = '#fcd34d';
+            }
+        }
+
+        // Persist quiz completion and progress
+        try {
+            const completedTopics = JSON.parse(localStorage.getItem('codecanvas_completed_topics') || '{}');
+            const existing = completedTopics[topic] || {};
+            const prevPassed = existing.passed || false;
+            const prevBest = existing.bestScore || 0;
+
+            const nowPassed = isPassed || prevPassed;
+
+            completedTopics[topic] = {
+                lastScore: score,
+                bestScore: Math.max(score, prevBest),
+                total: totalSessionQuestions,
+                percentage: Math.round(percentage),
+                passed: nowPassed,
+                completedAt: new Date().toISOString()
+            };
+            localStorage.setItem('codecanvas_completed_topics', JSON.stringify(completedTopics));
+
+            // Only increment quizzes passed count if this attempt reached passing mark
+            if (isPassed && !prevPassed) {
+                const totalPassedQuizzes = parseInt(localStorage.getItem('codecanvas_quizzes_completed') || '0', 10);
+                localStorage.setItem('codecanvas_quizzes_completed', (totalPassedQuizzes + 1).toString());
+            }
+        } catch (e) {
+            console.error('Could not save progress:', e);
+        }
+
+        let title;
+        let message;
+
+        if (percentage === 100) {
+            title = 'Perfect score! 🏆';
+            message = 'Outstanding! You achieved 100% mastery on ' + topic + '. Topic successfully completed and credited to your course progress!';
+        } else if (percentage >= 80) {
+            title = 'Excellent work! 🎉';
+            message = 'You scored ' + score + '/' + totalSessionQuestions + ' (' + Math.round(percentage) + '%). Passing mark achieved! Topic successfully added to your completed modules.';
+        } else if (percentage >= 70) {
+            title = 'Topic Passed! ✓';
+            message = 'Great job! You met the 70% passing threshold with ' + score + '/' + totalSessionQuestions + '. Topic marked as completed!';
+        } else if (percentage >= 50) {
+            title = 'Almost there!';
+            message = 'You scored ' + score + '/' + totalSessionQuestions + '. A score of at least 70% (7/10) is needed to pass this module. Review the explanations below and try again!';
+        } else {
+            title = 'Review & Try Again';
+            message = 'You scored ' + score + '/' + totalSessionQuestions + '. Pass mark is 7/10. Revisit the ' + topic + ' lesson to reinforce the concepts, then take the quiz again to earn your completion badge!';
+        }
+
+        document.getElementById('resultTitle').textContent = title;
+        document.getElementById('resultMessage').textContent = message;
+
+    }
+
+
+    // ========================
+    //  RETRY MISSED QUESTIONS
+    // ========================
+
+    function retryMissedQuestions() {
+        if (missedQuestions.length === 0) return;
+
+        isReviewMode = true;
+        questions = shuffle([...missedQuestions]);
+        missedQuestions = [];
+        currentQuestion = 0;
+
+        quizCard.style.display = 'block';
+        resultCard.style.display = 'none';
+        progressSection.style.display = 'flex';
+        progressBar.style.display = 'block';
+
+        loadQuestion();
+    }
+
+
+    // ========================
+    //  RESTART
+    // ========================
+
+    function restartQuiz() {
+        startQuiz(totalSessionQuestions);
+    }
+
+
+    // ========================
+    //  INIT
+    // ========================
+
+    loadQuestions();
+
+</script>
+
+
+</body>
+
+</html>
