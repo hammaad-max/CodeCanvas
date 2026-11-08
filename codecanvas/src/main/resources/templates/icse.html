@@ -2,6 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="student-name" th:content="${studentName}">
+    <script src="/js/codecanvas-api.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>ICSE Java (Class 9 &amp; 10) | CodeCanvas</title>
@@ -817,7 +821,8 @@
 <script>
     // Load student avatar
     try {
-        const studentName = localStorage.getItem('codecanvas_student_name');
+        const nameMeta = document.querySelector('meta[name="student-name"]');
+        const studentName = nameMeta ? nameMeta.getAttribute('content') : null;
         if (studentName && studentName.trim() !== '') {
             const avatar = document.getElementById('userProfileAvatar');
             if (avatar) avatar.textContent = studentName.trim().charAt(0).toUpperCase();
@@ -993,6 +998,13 @@
     }
 
     updateIcseProgress();
+    document.addEventListener('codecanvas:progress', function (e) {
+        const avatar = document.getElementById('userProfileAvatar');
+        const name = e.detail && e.detail.displayName;
+        if (avatar && name) avatar.textContent = name.trim().charAt(0).toUpperCase();
+        updateIcseProgress();
+    });
+    CodeCanvasApi.syncProgress();
 </script>
 
 </body>

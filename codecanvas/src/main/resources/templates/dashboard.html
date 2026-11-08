@@ -2,6 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="student-name" th:content="${studentName}">
+    <script src="/js/codecanvas-api.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Dashboard | CodeCanvas</title>
@@ -545,6 +549,9 @@
             <span class="profile-name" id="studentDisplayName">Student</span>
             <div class="avatar" id="studentAvatar">S</div>
         </div>
+        <form th:action="@{/logout}" method="post" style="margin: 0;">
+            <button type="submit" class="nav-link" style="background: none; border: none; padding: 0; cursor: pointer; font-family: inherit; color: #94a3b8; font-size: 14px; font-weight: 500; transition: color 0.2s;">Log out</button>
+        </form>
     </div>
 </nav>
 
@@ -718,16 +725,17 @@
 </main>
 
 <script>
-    // Extract username from query param or localStorage
-    const urlParams = new URLSearchParams(window.location.search);
-    const rawUsername = urlParams.get('username') || localStorage.getItem('codecanvas_student_name');
-    if (rawUsername && rawUsername.trim() !== '') {
-        const cleanName = rawUsername.trim();
-        localStorage.setItem('codecanvas_student_name', cleanName);
-        document.getElementById('studentDisplayName').textContent = cleanName;
-        document.getElementById('studentAvatar').textContent = cleanName.charAt(0).toUpperCase();
-        document.getElementById('welcomeTitle').textContent = `Welcome back, ${cleanName} 👋`;
+    // Student name comes from the signed-in account (server-rendered meta tag)
+    function showStudentName(rawUsername) {
+        if (rawUsername && rawUsername.trim() !== '') {
+            const cleanName = rawUsername.trim();
+            document.getElementById('studentDisplayName').textContent = cleanName;
+            document.getElementById('studentAvatar').textContent = cleanName.charAt(0).toUpperCase();
+            document.getElementById('welcomeTitle').textContent = `Welcome back, ${cleanName} 👋`;
+        }
     }
+    const metaName = document.querySelector('meta[name="student-name"]');
+    showStudentName(metaName ? metaName.getAttribute('content') : null);
 
     // Dynamic progress computation based on student's completed quizzes
     function updateDashboardProgress() {
@@ -844,6 +852,10 @@
     }
 
     updateDashboardProgress();
+
+    // Refresh from the server (source of truth) and re-render
+    document.addEventListener('codecanvas:progress', updateDashboardProgress);
+    CodeCanvasApi.syncProgress();
 </script>
 
 </body>

@@ -2,6 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="student-name" th:content="${studentName}">
+    <script src="/js/codecanvas-api.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AP CS A Mock Exam | CodeCanvas</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1648,11 +1652,12 @@
         // Send all answers to the server; answers and explanations are only revealed after submission
         async function fetchGrades() {
             const payload = examQuestions.map((q, idx) => ({ id: q.id, answer: userAnswers[idx] ?? null }));
-            const response = await fetch('/api/exam/grade', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
+            const response = await CodeCanvasApi.send('/api/exam/grade', 'POST', payload);
+            if (response.status === 409) {
+                const err = new Error('This exam was already submitted or has expired.');
+                err.permanent = true;
+                throw err;
+            }
             if (!response.ok) throw new Error('HTTP ' + response.status);
             const results = await response.json();
             const byId = {};
@@ -1679,6 +1684,11 @@
             } catch (err) {
                 console.error('Failed to grade exam:', err);
                 isSubmitting = false;
+                if (err.permanent) {
+                    alert(err.message + ' Please start a new exam.');
+                    window.location.reload();
+                    return;
+                }
                 alert('Could not reach the grading server. Your answers are still here — please check your connection and press Submit again.');
                 if (totalSeconds > 0) startTimer();
                 return;
@@ -1842,6 +1852,8 @@
             } catch (e) {
                 console.error('Could not save mock exam result:', e);
             }
+            // The attempt was stored by the server during grading; refresh the cached progress
+            CodeCanvasApi.syncProgress();
 
             // Display Report
             diagnosticReport.style.display = 'block';

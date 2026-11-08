@@ -4,6 +4,10 @@
 <head>
 
     <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="student-name" th:content="${studentName}">
+    <script src="/js/codecanvas-api.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Quiz | CodeCanvas</title>
@@ -730,6 +734,7 @@
     let currentMode = 'practice';
     let missedQuestions = [];
     let isReviewMode = false;
+    let sessionAnswers = {};   // { questionId: latest selected answer } for this quiz session
     let totalSessionQuestions = 10;
 
 
@@ -930,6 +935,7 @@
         totalSessionQuestions = questions.length;
         missedQuestions = [];
         isReviewMode = false;
+        sessionAnswers = {};
 
         currentQuestion = 0;
         score = 0;
@@ -1029,13 +1035,12 @@
         // Answers are graded on the server so they are never exposed to the browser in advance
         let result;
         try {
-            const response = await fetch('/api/questions/' + q.id + '/check', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id: q.id, answer: selectedAnswer })
-            });
+            const response = await CodeCanvasApi.send('/api/questions/' + q.id + '/check', 'POST',
+                { id: q.id, answer: selectedAnswer });
             if (!response.ok) throw new Error('HTTP ' + response.status);
             result = await response.json();
+            // Remember the latest answer per question; the server re-grades all of them at the end
+            sessionAnswers[q.id] = selectedAnswer;
         } catch (error) {
             console.error('Could not check answer:', error);
             answered = false;
@@ -1150,33 +1155,8 @@
             }
         }
 
-        // Persist quiz completion and progress
-        try {
-            const completedTopics = JSON.parse(localStorage.getItem('codecanvas_completed_topics') || '{}');
-            const existing = completedTopics[topic] || {};
-            const prevPassed = existing.passed || false;
-            const prevBest = existing.bestScore || 0;
-
-            const nowPassed = isPassed || prevPassed;
-
-            completedTopics[topic] = {
-                lastScore: score,
-                bestScore: Math.max(score, prevBest),
-                total: totalSessionQuestions,
-                percentage: Math.round(percentage),
-                passed: nowPassed,
-                completedAt: new Date().toISOString()
-            };
-            localStorage.setItem('codecanvas_completed_topics', JSON.stringify(completedTopics));
-
-            // Only increment quizzes passed count if this attempt reached passing mark
-            if (isPassed && !prevPassed) {
-                const totalPassedQuizzes = parseInt(localStorage.getItem('codecanvas_quizzes_completed') || '0', 10);
-                localStorage.setItem('codecanvas_quizzes_completed', (totalPassedQuizzes + 1).toString());
-            }
-        } catch (e) {
-            console.error('Could not save progress:', e);
-        }
+        // Persist the attempt: the server re-grades every answer and stores the score for this student
+        saveQuizAttempt();
 
         let title;
         let message;
@@ -1201,6 +1181,22 @@
         document.getElementById('resultTitle').textContent = title;
         document.getElementById('resultMessage').textContent = message;
 
+    }
+
+
+    async function saveQuizAttempt() {
+        const answers = Object.keys(sessionAnswers).map(id => ({ id: Number(id), answer: sessionAnswers[id] }));
+        if (answers.length === 0) return;
+        try {
+            const response = await CodeCanvasApi.send('/api/quiz/submit', 'POST',
+                { topic: topic, curriculum: curriculum, answers: answers });
+            if (!response.ok) throw new Error('HTTP ' + response.status);
+            await CodeCanvasApi.syncProgress();
+        } catch (e) {
+            console.error('Could not save progress:', e);
+            document.getElementById('resultMessage').textContent +=
+                ' (Your result could not be saved. Please check your connection and retake the quiz.)';
+        }
     }
 
 

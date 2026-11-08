@@ -2,6 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="student-name" th:content="${studentName}">
+    <script src="/js/codecanvas-api.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>AP CS Java | CodeCanvas</title>
@@ -1120,6 +1124,8 @@
     }
 
     updateApcsProgress();
+    document.addEventListener('codecanvas:progress', updateApcsProgress);
+    CodeCanvasApi.syncProgress();
 </script>
 </body>
 

@@ -2,6 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="student-name" th:content="${studentName}">
+    <script src="/js/codecanvas-api.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Progress &amp; Analytics | CodeCanvas</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1076,14 +1080,25 @@
             resetModal.style.display = 'none';
         });
 
-        confirmResetBtn.addEventListener('click', () => {
-            localStorage.removeItem('codecanvas_completed_topics');
-            localStorage.removeItem('codecanvas_quizzes_completed');
-            localStorage.removeItem('codecanvas_mock_exam');
-            localStorage.removeItem('codecanvas_icse_mock_exam');
-            resetModal.style.display = 'none';
-            loadProgress();
+        confirmResetBtn.addEventListener('click', async () => {
+            confirmResetBtn.disabled = true;
+            try {
+                // Delete the student's stored attempts on the server, then refresh the cache
+                const response = await CodeCanvasApi.send('/api/progress', 'DELETE');
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+                await CodeCanvasApi.syncProgress();
+                resetModal.style.display = 'none';
+                loadProgress();
+            } catch (e) {
+                console.error('Could not reset progress:', e);
+                alert('Could not reset your progress. Please try again.');
+            } finally {
+                confirmResetBtn.disabled = false;
+            }
         });
+
+        document.addEventListener('codecanvas:progress', loadProgress);
+        CodeCanvasApi.syncProgress();
 
         // Initialize active tab state
         switchCurriculum(currentCurriculum);
