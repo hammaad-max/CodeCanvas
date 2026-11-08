@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}" href="/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OOP &amp; Java Fundamentals | ICSE Java | LoopLab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', Arial, Helvetica, sans-serif;
+            background:
+                    radial-gradient(
+                            circle at 80% 0%,
+                            rgba(99, 102, 241, 0.18),
+                            transparent 30%
+                    ),
+                    radial-gradient(
+                            circle at 0% 50%,
+                            rgba(124, 58, 237, 0.08),
+                            transparent 30%
+                    ),
+                    #080b14;
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            height: 72px;
+            padding: 0 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(8, 11, 20, 0.82);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            color: #ffffff;
+            text-decoration: none;
+            letter-spacing: -0.7px;
+        }
+
+        .logo span {
+            color: #818cf8;
+        }
+
+        .back {
+            color: #a1a1aa;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .back:hover {
+            color: #ffffff;
+        }
+
+        .container {
+            width: min(1000px, 90%);
+            margin: auto;
+            padding: 50px 0 80px;
+        }
+
+        .breadcrumb {
+            color: #71717a;
+            font-size: 13px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumb a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb a:hover {
+            color: #ffffff;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: rgba(129,140,248,0.12);
+            border: 1px solid rgba(129,140,248,0.25);
+            color: #a5b4fc;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 46px;
+            letter-spacing: -1.5px;
+            margin: 0 0 15px;
+            font-weight: 800;
+        }
+
+        .intro {
+            color: #94a3b8;
+            font-size: 17px;
+            line-height: 1.7;
+            max-width: 780px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+
+        .card p {
+            color: #94a3b8;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .concept {
+            padding: 22px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .concept h3 {
+            margin-top: 0;
+            font-size: 16px;
+            color: #e2e8f0;
+        }
+
+        .concept p {
+            margin-bottom: 0;
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        code {
+            color: #c4b5fd;
+            background: rgba(129,140,248,0.1);
+            padding: 3px 7px;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 13px;
+        }
+
+        .code-block {
+            background: #05070d;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 22px;
+            overflow-x: auto;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 14px;
+            line-height: 1.7;
+            margin: 16px 0;
+        }
+
+        .code-block pre {
+            margin: 0;
+        }
+
+        .quiz-button {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 13px 26px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6366f1, #7c3aed);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            box-shadow: 0 10px 25px rgba(99,102,241,0.3);
+            transition: all 0.2s ease;
+        }
+
+        .quiz-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(99,102,241,0.5);
+        }
+
+        @media(max-width: 768px) {
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 34px;
+            }
+            .card {
+                padding: 24px;
+            }
+        }
+
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .lesson-nav a {
+            flex: 1;
+            display: block;
+            padding: 18px 22px;
+            border-radius: 14px;
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #e2e8f0;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .lesson-nav a:hover {
+            border-color: rgba(129,140,248,0.45);
+            transform: translateY(-2px);
+        }
+
+        .lesson-nav .dir {
+            display: block;
+            color: #818cf8;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .lesson-nav .name {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .lesson-nav .next {
+            text-align: right;
+        }
+
+        @media(max-width: 768px) {
+            .lesson-nav {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <a href="/dashboard" class="logo">
+        <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Loop<span>Lab</span>
+    </a>
+    <a href="/icse" class="back">
+        ← Back to ICSE Java
+    </a>
+</nav>
+
+<main class="container">
+
+    <div class="breadcrumb">
+        <a href="/dashboard">Dashboard</a>
+        <span>›</span>
+        <a href="/icse">ICSE Java</a>
+        <span>›</span>
+        <span style="color: #e2e8f0;">OOP &amp; Java Fundamentals</span>
+    </div>
+
+    <div class="badge">
+        ICSE COMPUTER APPLICATIONS • UNIT 1
+    </div>
+
+    <h1>OOP &amp; Java Fundamentals</h1>
+
+    <p class="intro">
+        Java is an object-oriented language: programs are built from classes (blueprints) and objects (real instances created from them). This unit covers how Java code is compiled and run, the four principles of OOP, and how classes, objects and constructors work together.
+    </p>
+
+    <!-- KEY CONCEPTS -->
+    <div class="card">
+        <h2>Core Concepts &amp; Rules</h2>
+        <p>Essential principles tested in ICSE Section A theory and Section B programs:</p>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>Class and Object</h3>
+                <p>A <strong>class</strong> is a blueprint (ICSE calls it an <em>object factory</em>) that defines data members and member methods. An <strong>object</strong> is an instance of a class, created with <code>new</code>, with its own state and behaviour.</p>
+            </div>
+            <div class="concept">
+                <h3>Bytecode and the JVM</h3>
+                <p><code>javac</code> compiles <code>.java</code> source into platform-independent <strong>bytecode</strong> (<code>.class</code>). The <strong>JVM</strong> interprets that bytecode on any computer, which gives Java its "Write Once, Run Anywhere" property.</p>
+            </div>
+            <div class="concept">
+                <h3>Encapsulation</h3>
+                <p>Wrapping data and the methods that use it into one unit (a class). Making data <code>private</code> hides it from other classes; this is <em>data hiding</em>.</p>
+            </div>
+            <div class="concept">
+                <h3>Abstraction</h3>
+                <p>Showing only the essential features of an object and hiding the background details, e.g. calling <code>display()</code> without knowing how it prints.</p>
+            </div>
+            <div class="concept">
+                <h3>Inheritance</h3>
+                <p>One class (subclass) acquires the members of another (superclass) using <code>extends</code>. It promotes code reuse.</p>
+            </div>
+            <div class="concept">
+                <h3>Polymorphism</h3>
+                <p>One name, many forms. In ICSE this is mainly <strong>method overloading</strong>: several methods with the same name but different parameter lists.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CODE PROGRAM -->
+    <div class="card">
+        <h2>Example Program</h2>
+        <p>This program defines a <code>Book</code> class with data members, a parameterised constructor and a method, then creates two separate objects from it.</p>
+        <h3>Complete Java Program</h3>
+        <div class="code-block">
+<pre><code>public class Book {
+
+    // Instance variables: every object gets its own copy
+    String title;
+    int pages;
+    double price;
+
+    // Parameterised constructor: same name as the class, no return type
+    Book(String t, int p, double pr) {
+        title = t;
+        pages = p;
+        price = pr;
+    }
+
+    // Member method that uses the object's own data
+    void display() {
+        System.out.println(title + " has " + pages + " pages and costs Rs. " + price);
+    }
+
+    public static void main(String[] args) {
+        Book b1 = new Book("Java Basics", 240, 350.0);
+        Book b2 = new Book("Data Structures", 410, 525.5);
+        b1.display();
+        b2.display();
+        System.out.println("b1 and b2 are different objects: " + (b1 != b2));
+    }
+}</code></pre>
+        </div>
+    </div>
+
+    <!-- STRUCTURE -->
+    <div class="card">
+        <h2>Understanding the Program Structure</h2>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>1. The Class Definition</h3>
+                <p><code>public class Book</code> declares the blueprint. Its data members (<code>title</code>, <code>pages</code>, <code>price</code>) describe a book; its methods describe what a book can do.</p>
+            </div>
+            <div class="concept">
+                <h3>2. The main Method</h3>
+                <p><code>public static void main(String[] args)</code> is where execution starts. It is <code>static</code> so the JVM can call it without creating a <code>Book</code> object first.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- EXECUTION TRACE -->
+    <div class="card">
+        <h2>How Does Java Execute This Program?</h2>
+        <p>Execution trace showing the order in which statements run and how values change:</p>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>Step 1</h3>
+                <p>The JVM loads <code>Book.class</code> (the bytecode) and calls <code>main</code>.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 2</h3>
+                <p><code>new Book("Java Basics", 240, 350.0)</code> allocates a new object in memory and runs the constructor, which copies the arguments into that object's fields.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 3</h3>
+                <p>A second <code>new</code> creates a completely separate object <code>b2</code> with its own copy of <code>title</code>, <code>pages</code> and <code>price</code>.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 4</h3>
+                <p><code>b1.display()</code> and <code>b2.display()</code> each print their own object's data; finally the two references are compared and found to be different objects.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- LINE BY LINE -->
+    <div class="card">
+        <h2>Line-by-Line Explanation</h2>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 4 — Instance variables</h3>
+            <div class="code-block"><pre><code>String title;</code></pre></div>
+            <p>Declared inside the class but outside any method, so they belong to each object. Their default values are <code>null</code>, <code>0</code> and <code>0.0</code> until the constructor sets them.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 9 — Parameterised constructor</h3>
+            <div class="code-block"><pre><code>Book(String t, int p, double pr) {</code></pre></div>
+            <p>A constructor has the same name as the class and <strong>no return type</strong> (not even <code>void</code>). It runs automatically when an object is created and initialises its fields.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 21 — Creating an object</h3>
+            <div class="code-block"><pre><code>Book b1 = new Book("Java Basics", 240, 350.0);</code></pre></div>
+            <p><code>new</code> allocates memory and calls the constructor. <code>b1</code> is a <em>reference</em> that stores where the object lives.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 23 — Calling a method on an object</h3>
+            <div class="code-block"><pre><code>b1.display();</code></pre></div>
+            <p>The dot operator invokes <code>display()</code> on the object that <code>b1</code> refers to, so it prints <code>b1</code>'s title, pages and price.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 25 — Comparing references</h3>
+            <div class="code-block"><pre><code>System.out.println("b1 and b2 are different objects: " + (b1 != b2));</code></pre></div>
+            <p><code>!=</code> on objects compares references (memory locations), not contents. The two objects are separate, so the result is <code>true</code>.</p>
+        </div>
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="card">
+        <h2>Expected Console Output</h2>
+        <div class="code-block">
+<pre><code>Java Basics has 240 pages and costs Rs. 350.0
+Data Structures has 410 pages and costs Rs. 525.5
+b1 and b2 are different objects: true</code></pre>
+        </div>
+        <p>Each object prints its own values, which shows that objects created from one class keep separate state. Note that <code>350.0</code> prints with <code>.0</code> because it is a <code>double</code>.</p>
+    </div>
+
+    <!-- EXAM TIPS -->
+    <div class="card">
+        <h2>ICSE Board Exam Tips &amp; Common Traps</h2>
+        <p>Keep these frequent exam traps in mind:</p>
+        <div class="concept-grid">
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Constructor vs Method</h3>
+                <p>If you write <code>void Book()</code>, it is an ordinary method, not a constructor. Constructors never have a return type.</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Default Constructor</h3>
+                <p>Java supplies a default (no-argument) constructor <strong>only</strong> if you write no constructor at all. Once you write a parameterised one, <code>new Book()</code> no longer compiles.</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Platform Independence</h3>
+                <p>Bytecode is platform independent; the JVM is platform dependent (each operating system has its own JVM). Board questions often ask which is which.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRACTICE CTA -->
+    <div class="card" style="text-align: center; padding: 45px 30px;">
+        <h2>Ready to Test Your Knowledge?</h2>
+        <p style="max-width: 550px; margin: 10px auto 25px;">
+            Test your understanding with instant feedback, randomized questions, and step-by-step explanations.
+        </p>
+        <a href="/apcs/quiz?topic=OOP%20%26%20Java%20Fundamentals&amp;curriculum=ICSE" class="quiz-button">
+            Start Practice →
+        </a>
+    </div>
+
+    <!-- PREVIOUS / NEXT LESSON -->
+    <nav class="lesson-nav" aria-label="Lesson navigation">
+        <a href="/icse" class="prev">
+            <span class="dir">← PREVIOUS</span>
+            <span class="name">ICSE Java overview</span>
+        </a>
+        <a href="/icse/operators" class="next">
+            <span class="dir">NEXT →</span>
+            <span class="name">Operators &amp; Expressions</span>
+        </a>
+    </nav>
+
+</main>
+
+</body>
+</html>

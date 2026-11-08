@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}" href="/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operators &amp; Expressions | ICSE Java | LoopLab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', Arial, Helvetica, sans-serif;
+            background:
+                    radial-gradient(
+                            circle at 80% 0%,
+                            rgba(99, 102, 241, 0.18),
+                            transparent 30%
+                    ),
+                    radial-gradient(
+                            circle at 0% 50%,
+                            rgba(124, 58, 237, 0.08),
+                            transparent 30%
+                    ),
+                    #080b14;
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            height: 72px;
+            padding: 0 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(8, 11, 20, 0.82);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            color: #ffffff;
+            text-decoration: none;
+            letter-spacing: -0.7px;
+        }
+
+        .logo span {
+            color: #818cf8;
+        }
+
+        .back {
+            color: #a1a1aa;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .back:hover {
+            color: #ffffff;
+        }
+
+        .container {
+            width: min(1000px, 90%);
+            margin: auto;
+            padding: 50px 0 80px;
+        }
+
+        .breadcrumb {
+            color: #71717a;
+            font-size: 13px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumb a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb a:hover {
+            color: #ffffff;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: rgba(129,140,248,0.12);
+            border: 1px solid rgba(129,140,248,0.25);
+            color: #a5b4fc;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 46px;
+            letter-spacing: -1.5px;
+            margin: 0 0 15px;
+            font-weight: 800;
+        }
+
+        .intro {
+            color: #94a3b8;
+            font-size: 17px;
+            line-height: 1.7;
+            max-width: 780px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+
+        .card p {
+            color: #94a3b8;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .concept {
+            padding: 22px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .concept h3 {
+            margin-top: 0;
+            font-size: 16px;
+            color: #e2e8f0;
+        }
+
+        .concept p {
+            margin-bottom: 0;
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        code {
+            color: #c4b5fd;
+            background: rgba(129,140,248,0.1);
+            padding: 3px 7px;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 13px;
+        }
+
+        .code-block {
+            background: #05070d;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 22px;
+            overflow-x: auto;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 14px;
+            line-height: 1.7;
+            margin: 16px 0;
+        }
+
+        .code-block pre {
+            margin: 0;
+        }
+
+        .quiz-button {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 13px 26px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6366f1, #7c3aed);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            box-shadow: 0 10px 25px rgba(99,102,241,0.3);
+            transition: all 0.2s ease;
+        }
+
+        .quiz-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(99,102,241,0.5);
+        }
+
+        @media(max-width: 768px) {
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 34px;
+            }
+            .card {
+                padding: 24px;
+            }
+        }
+
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .lesson-nav a {
+            flex: 1;
+            display: block;
+            padding: 18px 22px;
+            border-radius: 14px;
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #e2e8f0;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .lesson-nav a:hover {
+            border-color: rgba(129,140,248,0.45);
+            transform: translateY(-2px);
+        }
+
+        .lesson-nav .dir {
+            display: block;
+            color: #818cf8;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .lesson-nav .name {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .lesson-nav .next {
+            text-align: right;
+        }
+
+        @media(max-width: 768px) {
+            .lesson-nav {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <a href="/dashboard" class="logo">
+        <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Loop<span>Lab</span>
+    </a>
+    <a href="/icse" class="back">
+        ← Back to ICSE Java
+    </a>
+</nav>
+
+<main class="container">
+
+    <div class="breadcrumb">
+        <a href="/dashboard">Dashboard</a>
+        <span>›</span>
+        <a href="/icse">ICSE Java</a>
+        <span>›</span>
+        <span style="color: #e2e8f0;">Operators &amp; Expressions</span>
+    </div>
+
+    <div class="badge">
+        ICSE COMPUTER APPLICATIONS • UNIT 2
+    </div>
+
+    <h1>Operators &amp; Expressions</h1>
+
+    <p class="intro">
+        Operators combine values into expressions. ICSE Section A regularly tests prefix and postfix increments, integer division, the remainder operator, type casting, the ternary operator and the return types of <code>Math</code> library methods.
+    </p>
+
+    <!-- KEY CONCEPTS -->
+    <div class="card">
+        <h2>Core Concepts &amp; Rules</h2>
+        <p>Essential rules for predicting the value of any expression:</p>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>Prefix vs Postfix</h3>
+                <p><code>++a</code> increments first and then uses the new value. <code>a++</code> uses the current value first and increments afterwards.</p>
+            </div>
+            <div class="concept">
+                <h3>Integer Division</h3>
+                <p>When both operands are <code>int</code>, <code>/</code> discards the fraction: <code>17 / 5</code> is <code>3</code>. The remainder operator <code>%</code> gives what is left: <code>17 % 5</code> is <code>2</code>.</p>
+            </div>
+            <div class="concept">
+                <h3>Type Conversion</h3>
+                <p><strong>Implicit</strong> (widening, automatic): <code>int</code> to <code>double</code>. <strong>Explicit</strong> (narrowing, a cast): <code>(int) 7.9</code> gives <code>7</code> because the decimal part is truncated.</p>
+            </div>
+            <div class="concept">
+                <h3>Ternary Operator</h3>
+                <p><code>condition ? value1 : value2</code> is a compact if-else that produces a value. It is the only operator with three operands.</p>
+            </div>
+            <div class="concept">
+                <h3>Operator Precedence</h3>
+                <p>Unary (<code>++</code>, <code>--</code>, <code>!</code>) first, then <code>* / %</code>, then <code>+ -</code>, then relational, then <code>&amp;&amp;</code>, then <code>||</code>, then <code>?:</code>, and assignment last.</p>
+            </div>
+            <div class="concept">
+                <h3>Math Library</h3>
+                <p><code>Math.pow()</code>, <code>Math.sqrt()</code>, <code>Math.ceil()</code> and <code>Math.floor()</code> return <code>double</code>. <code>Math.round(double)</code> returns <code>long</code>. <code>Math.abs()</code> keeps the argument's type.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CODE PROGRAM -->
+    <div class="card">
+        <h2>Example Program</h2>
+        <p>This program evaluates a mixed prefix/postfix expression, integer and real division, the ternary operator and several <code>Math</code> methods.</p>
+        <h3>Complete Java Program</h3>
+        <div class="code-block">
+<pre><code>public class OperatorDemo {
+
+    public static void main(String[] args) {
+
+        int a = 5;
+        int b = a++ + ++a;      // 5 + 7
+        System.out.println("a = " + a + ", b = " + b);
+
+        int x = 17, y = 5;
+        System.out.println("x / y = " + (x / y));
+        System.out.println("x % y = " + (x % y));
+
+        double avg = (double) x / y;
+        System.out.println("avg = " + avg);
+
+        int big = (x &gt; y) ? x : y;
+        System.out.println("bigger = " + big);
+
+        System.out.println("pow = " + Math.pow(2, 5));
+        System.out.println("sqrt = " + Math.sqrt(81));
+        System.out.println("round = " + Math.round(-2.5));
+        System.out.println("ceil = " + Math.ceil(4.1) + ", floor = " + Math.floor(4.9));
+    }
+}</code></pre>
+        </div>
+    </div>
+
+    <!-- STRUCTURE -->
+    <div class="card">
+        <h2>Understanding the Program Structure</h2>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>1. The Class Definition</h3>
+                <p><code>public class OperatorDemo</code> is the container for the program; all Java code must be inside a class.</p>
+            </div>
+            <div class="concept">
+                <h3>2. The main Method</h3>
+                <p>Statements in <code>main</code> run from top to bottom. Every expression is fully evaluated before its result is printed.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- EXECUTION TRACE -->
+    <div class="card">
+        <h2>How Does Java Execute This Program?</h2>
+        <p>Execution trace showing the order in which statements run and how values change:</p>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>Step 1</h3>
+                <p><code>a++</code> gives <code>5</code> and makes <code>a</code> 6; then <code>++a</code> makes <code>a</code> 7 and gives 7. So <code>b = 5 + 7 = 12</code>.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 2</h3>
+                <p><code>17 / 5</code> is integer division (3) and <code>17 % 5</code> is the remainder (2).</p>
+            </div>
+            <div class="concept">
+                <h3>Step 3</h3>
+                <p><code>(double) x</code> turns 17 into 17.0 before dividing, so <code>avg</code> is 3.4. The ternary picks 17 because <code>17 &gt; 5</code> is true.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 4</h3>
+                <p>The <code>Math</code> calls run: <code>pow</code> and <code>sqrt</code> return doubles (32.0, 9.0), <code>round(-2.5)</code> rounds up to -2, <code>ceil</code> gives 5.0 and <code>floor</code> gives 4.0.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- LINE BY LINE -->
+    <div class="card">
+        <h2>Line-by-Line Explanation</h2>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 6 — Prefix and postfix together</h3>
+            <div class="code-block"><pre><code>int b = a++ + ++a;      // 5 + 7</code></pre></div>
+            <p>Java evaluates operands left to right. The postfix part supplies 5 then increments; the prefix part increments again (to 7) and supplies 7. Final <code>a</code> is 7.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 10 — Integer division</h3>
+            <div class="code-block"><pre><code>System.out.println("x / y = " + (x / y));</code></pre></div>
+            <p>The brackets matter: without them, <code>"x / y = " + x</code> would join text first. Both operands are int, so the result is 3, not 3.4.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 13 — Explicit type cast</h3>
+            <div class="code-block"><pre><code>double avg = (double) x / y;</code></pre></div>
+            <p>The cast applies to <code>x</code> only, but one double operand is enough to make the whole division real: 17.0 / 5 = 3.4.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 16 — Ternary operator</h3>
+            <div class="code-block"><pre><code>int big = (x &gt; y) ? x : y;</code></pre></div>
+            <p>If the condition is true the expression takes the value after <code>?</code>, otherwise the value after <code>:</code>.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 21 — Math.round with a negative half</h3>
+            <div class="code-block"><pre><code>System.out.println("round = " + Math.round(-2.5));</code></pre></div>
+            <p><code>Math.round(x)</code> works like <code>Math.floor(x + 0.5)</code>, so -2.5 becomes -2 (not -3). The result type is <code>long</code>, so no decimal point is printed.</p>
+        </div>
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="card">
+        <h2>Expected Console Output</h2>
+        <div class="code-block">
+<pre><code>a = 7, b = 12
+x / y = 3
+x % y = 2
+avg = 3.4
+bigger = 17
+pow = 32.0
+sqrt = 9.0
+round = -2
+ceil = 5.0, floor = 4.0</code></pre>
+        </div>
+        <p>Look at which results have a decimal point: every <code>double</code> value (including <code>pow</code>, <code>sqrt</code>, <code>ceil</code> and <code>floor</code>) prints with <code>.0</code>, while <code>int</code> and <code>long</code> results do not.</p>
+    </div>
+
+    <!-- EXAM TIPS -->
+    <div class="card">
+        <h2>ICSE Board Exam Tips &amp; Common Traps</h2>
+        <p>Keep these frequent exam traps in mind:</p>
+        <div class="concept-grid">
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Cast Position Trap</h3>
+                <p><code>(double)(17 / 5)</code> is <code>3.0</code>, because the integer division happens first. Cast an operand, not the result, to keep the fraction.</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Math Return Types</h3>
+                <p>Writing <code>int p = Math.pow(2, 3);</code> is a compile error. You need <code>int p = (int) Math.pow(2, 3);</code>.</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Shorthand Assignment</h3>
+                <p><code>a += 2.5</code> compiles even when <code>a</code> is an int (it includes an automatic cast), but <code>a = a + 2.5</code> does not.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRACTICE CTA -->
+    <div class="card" style="text-align: center; padding: 45px 30px;">
+        <h2>Ready to Test Your Knowledge?</h2>
+        <p style="max-width: 550px; margin: 10px auto 25px;">
+            Test your understanding with instant feedback, randomized questions, and step-by-step explanations.
+        </p>
+        <a href="/apcs/quiz?topic=Operators%20%26%20Expressions&amp;curriculum=ICSE" class="quiz-button">
+            Start Practice →
+        </a>
+    </div>
+
+    <!-- PREVIOUS / NEXT LESSON -->
+    <nav class="lesson-nav" aria-label="Lesson navigation">
+        <a href="/icse/oop-fundamentals" class="prev">
+            <span class="dir">← PREVIOUS</span>
+            <span class="name">OOP &amp; Java Fundamentals</span>
+        </a>
+        <a href="/icse/conditionals" class="next">
+            <span class="dir">NEXT →</span>
+            <span class="name">Conditional Branching &amp; Switch</span>
+        </a>
+    </nav>
+
+</main>
+
+</body>
+</html>

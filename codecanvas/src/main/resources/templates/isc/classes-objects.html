@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}" href="/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classes, Objects &amp; Wrapper Classes | ISC Java | LoopLab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', Arial, Helvetica, sans-serif;
+            background:
+                    radial-gradient(
+                            circle at 80% 0%,
+                            rgba(99, 102, 241, 0.18),
+                            transparent 30%
+                    ),
+                    radial-gradient(
+                            circle at 0% 50%,
+                            rgba(124, 58, 237, 0.08),
+                            transparent 30%
+                    ),
+                    #080b14;
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            height: 72px;
+            padding: 0 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(8, 11, 20, 0.82);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            color: #ffffff;
+            text-decoration: none;
+            letter-spacing: -0.7px;
+        }
+
+        .logo span {
+            color: #818cf8;
+        }
+
+        .back {
+            color: #a1a1aa;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .back:hover {
+            color: #ffffff;
+        }
+
+        .container {
+            width: min(1000px, 90%);
+            margin: auto;
+            padding: 50px 0 80px;
+        }
+
+        .breadcrumb {
+            color: #71717a;
+            font-size: 13px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumb a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb a:hover {
+            color: #ffffff;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: rgba(129,140,248,0.12);
+            border: 1px solid rgba(129,140,248,0.25);
+            color: #a5b4fc;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 46px;
+            letter-spacing: -1.5px;
+            margin: 0 0 15px;
+            font-weight: 800;
+        }
+
+        .intro {
+            color: #94a3b8;
+            font-size: 17px;
+            line-height: 1.7;
+            max-width: 780px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+
+        .card p {
+            color: #94a3b8;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .concept {
+            padding: 22px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .concept h3 {
+            margin-top: 0;
+            font-size: 16px;
+            color: #e2e8f0;
+        }
+
+        .concept p {
+            margin-bottom: 0;
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        code {
+            color: #c4b5fd;
+            background: rgba(129,140,248,0.1);
+            padding: 3px 7px;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 13px;
+        }
+
+        .code-block {
+            background: #05070d;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 22px;
+            overflow-x: auto;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 14px;
+            line-height: 1.7;
+            margin: 16px 0;
+        }
+
+        .code-block pre {
+            margin: 0;
+        }
+
+        .quiz-button {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 13px 26px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6366f1, #7c3aed);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            box-shadow: 0 10px 25px rgba(99,102,241,0.3);
+            transition: all 0.2s ease;
+        }
+
+        .quiz-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(99,102,241,0.5);
+        }
+
+        @media(max-width: 768px) {
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 34px;
+            }
+            .card {
+                padding: 24px;
+            }
+        }
+
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .lesson-nav a {
+            flex: 1;
+            display: block;
+            padding: 18px 22px;
+            border-radius: 14px;
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #e2e8f0;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .lesson-nav a:hover {
+            border-color: rgba(129,140,248,0.45);
+            transform: translateY(-2px);
+        }
+
+        .lesson-nav .dir {
+            display: block;
+            color: #818cf8;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .lesson-nav .name {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .lesson-nav .next {
+            text-align: right;
+        }
+
+        @media(max-width: 768px) {
+            .lesson-nav {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <a href="/dashboard" class="logo">
+        <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Loop<span>Lab</span>
+    </a>
+    <a href="/isc" class="back">
+        ← Back to ISC Java
+    </a>
+</nav>
+
+<main class="container">
+
+    <div class="breadcrumb">
+        <a href="/dashboard">Dashboard</a>
+        <span>›</span>
+        <a href="/isc">ISC Java</a>
+        <span>›</span>
+        <span style="color: #e2e8f0;">Classes, Objects &amp; Wrapper Classes</span>
+    </div>
+
+    <div class="badge">
+        ISC COMPUTER SCIENCE • UNIT 1
+    </div>
+
+    <h1>Classes, Objects &amp; Wrapper Classes</h1>
+
+    <p class="intro">
+        ISC builds on ICSE by treating classes as proper data types: private data members, constructor overloading, the <code>this</code> keyword, <code>static</code> members shared by all objects, and wrapper classes that turn primitives into objects.
+    </p>
+
+    <!-- KEY CONCEPTS -->
+    <div class="card">
+        <h2>Core Concepts &amp; Rules</h2>
+        <p>Essential rules tested in ISC Paper 1 and the practical paper:</p>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>Instance vs Static Members</h3>
+                <p>Each object has its own copy of an <strong>instance</strong> variable. A <code>static</code> variable has a single copy shared by every object of the class, and a <code>static</code> method can be called without an object.</p>
+            </div>
+            <div class="concept">
+                <h3>Constructor Overloading</h3>
+                <p>A class can have several constructors with different parameter lists. <code>this(...)</code> lets one constructor call another; it must be the first statement.</p>
+            </div>
+            <div class="concept">
+                <h3>The this Keyword</h3>
+                <p><code>this</code> refers to the current object. <code>this.balance = balance</code> separates the data member from a parameter with the same name.</p>
+            </div>
+            <div class="concept">
+                <h3>Access Specifiers</h3>
+                <p><code>private</code>: same class only. Default (no keyword): same package. <code>protected</code>: same package plus subclasses. <code>public</code>: everywhere.</p>
+            </div>
+            <div class="concept">
+                <h3>toString()</h3>
+                <p>If a class defines <code>public String toString()</code>, printing an object (or joining it to a String) automatically uses that text.</p>
+            </div>
+            <div class="concept">
+                <h3>Wrapper Classes</h3>
+                <p><code>Integer</code>, <code>Double</code>, <code>Character</code>, etc. wrap primitives as objects. <code>Integer.parseInt("125")</code> converts text to a number; <strong>autoboxing</strong> and <strong>unboxing</strong> convert automatically.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CODE PROGRAM -->
+    <div class="card">
+        <h2>Example Program</h2>
+        <p>This program models a bank account with private data, two constructors linked by <code>this(...)</code>, a static object counter and <code>toString()</code>, then shows wrapper-class conversions.</p>
+        <h3>Complete Java Program</h3>
+        <div class="code-block">
+<pre><code>public class Account {
+
+    private String holder;
+    private double balance;
+    private static int count = 0;   // one copy shared by all objects
+
+    // Default constructor delegates to the parameterised one
+    Account() {
+        this("Unknown", 0.0);
+    }
+
+    // Parameterised constructor
+    Account(String holder, double balance) {
+        this.holder = holder;       // 'this' separates field from parameter
+        this.balance = balance;
+        count++;
+    }
+
+    void deposit(double amount) {
+        balance += amount;
+    }
+
+    public String toString() {
+        return holder + ": Rs. " + balance;
+    }
+
+    public static void main(String[] args) {
+        Account a = new Account("Riya", 500.0);
+        Account b = new Account();
+        a.deposit(250.0);
+
+        System.out.println(a);
+        System.out.println(b);
+        System.out.println("Accounts created: " + Account.count);
+
+        // Wrapper classes: converting between text, primitives and objects
+        int n = Integer.parseInt("125");
+        Integer boxed = n;              // autoboxing
+        int back = boxed + 5;           // unboxing
+        System.out.println("parsed + 5 = " + back);
+        System.out.println("Max int = " + Integer.MAX_VALUE);
+        System.out.println("Double.toString(2.5) = " + Double.toString(2.5));
+    }
+}</code></pre>
+        </div>
+    </div>
+
+    <!-- STRUCTURE -->
+    <div class="card">
+        <h2>Understanding the Program Structure</h2>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>1. Encapsulated Data</h3>
+                <p>The data members are <code>private</code>, so other classes can only change them through methods like <code>deposit()</code>. This is encapsulation and data hiding.</p>
+            </div>
+            <div class="concept">
+                <h3>2. Object Lifecycle</h3>
+                <p>Constructors initialise each new object, instance methods act on one object, and the <code>static</code> counter records how many objects have been created in total.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- EXECUTION TRACE -->
+    <div class="card">
+        <h2>How Does Java Execute This Program?</h2>
+        <p>Execution trace showing the order in which statements run and how values change:</p>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>Step 1</h3>
+                <p><code>new Account("Riya", 500.0)</code> runs the parameterised constructor; <code>count</code> becomes 1.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 2</h3>
+                <p><code>new Account()</code> runs the default constructor, which calls <code>this("Unknown", 0.0)</code>; the parameterised constructor runs again and <code>count</code> becomes 2.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 3</h3>
+                <p><code>a.deposit(250.0)</code> changes only <code>a</code>'s balance to 750.0. Printing <code>a</code> and <code>b</code> calls their <code>toString()</code> methods.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 4</h3>
+                <p><code>parseInt</code> turns "125" into 125, it is boxed into an <code>Integer</code> and unboxed again for <code>+ 5</code>, giving 130.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- LINE BY LINE -->
+    <div class="card">
+        <h2>Line-by-Line Explanation</h2>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 5 — Static data member</h3>
+            <div class="code-block"><pre><code>private static int count = 0;   // one copy shared by all objects</code></pre></div>
+            <p>There is only one <code>count</code> no matter how many objects exist, so every constructor call adds to the same variable.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 9 — Constructor chaining</h3>
+            <div class="code-block"><pre><code>this("Unknown", 0.0);</code></pre></div>
+            <p>Calls the other constructor of the same class. It must be the first statement, and it avoids repeating the initialisation code.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 14 — Resolving a name clash</h3>
+            <div class="code-block"><pre><code>this.holder = holder;       // 'this' separates field from parameter</code></pre></div>
+            <p>Inside the constructor, plain <code>holder</code> means the parameter. <code>this.holder</code> means the object's data member.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 23 — Overriding toString()</h3>
+            <div class="code-block"><pre><code>public String toString() {</code></pre></div>
+            <p><code>println(a)</code> calls <code>a.toString()</code> automatically. Without it, Java would print something like <code>Account@1b6d3586</code>.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 38 — Autoboxing</h3>
+            <div class="code-block"><pre><code>Integer boxed = n;              // autoboxing</code></pre></div>
+            <p>Java wraps the <code>int</code> in an <code>Integer</code> object automatically. Using it in arithmetic unboxes it back to an <code>int</code>.</p>
+        </div>
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="card">
+        <h2>Expected Console Output</h2>
+        <div class="code-block">
+<pre><code>Riya: Rs. 750.0
+Unknown: Rs. 0.0
+Accounts created: 2
+parsed + 5 = 130
+Max int = 2147483647
+Double.toString(2.5) = 2.5</code></pre>
+        </div>
+        <p>The counter shows 2 even though <code>this(...)</code> was used, because the counting code lives in one constructor that both objects pass through.</p>
+    </div>
+
+    <!-- EXAM TIPS -->
+    <div class="card">
+        <h2>ISC Board Exam Tips &amp; Common Traps</h2>
+        <p>Keep these frequent exam traps in mind:</p>
+        <div class="concept-grid">
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Static Cannot Use Instance</h3>
+                <p>A <code>static</code> method cannot use instance variables or <code>this</code> directly, because it is not running for any particular object.</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 this() Must Be First</h3>
+                <p><code>this(...)</code> anywhere except the first line of a constructor is a compile error.</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 parseInt Errors</h3>
+                <p><code>Integer.parseInt("12a")</code> compiles but throws <code>NumberFormatException</code> at run time.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRACTICE CTA -->
+    <div class="card" style="text-align: center; padding: 45px 30px;">
+        <h2>Ready to Test Your Knowledge?</h2>
+        <p style="max-width: 550px; margin: 10px auto 25px;">
+            Test your understanding with instant feedback, randomized questions, and step-by-step explanations.
+        </p>
+        <a href="/apcs/quiz?topic=Classes%2C%20Objects%20%26%20Wrapper%20Classes&amp;curriculum=ISC" class="quiz-button">
+            Start Practice →
+        </a>
+    </div>
+
+    <!-- PREVIOUS / NEXT LESSON -->
+    <nav class="lesson-nav" aria-label="Lesson navigation">
+        <a href="/isc" class="prev">
+            <span class="dir">← PREVIOUS</span>
+            <span class="name">ISC Java overview</span>
+        </a>
+        <a href="/isc/strings" class="next">
+            <span class="dir">NEXT →</span>
+            <span class="name">Strings &amp; StringBuffer</span>
+        </a>
+    </nav>
+
+</main>
+
+</body>
+</html>

@@ -1,5 +1,5 @@
 /*
- * CodeCanvas client helpers.
+ * LoopLab client helpers.
  *  - CodeCanvasApi.send(): fetch() with the Spring Security CSRF token (from <meta name="_csrf">).
  *  - CodeCanvasApi.syncProgress(): loads the signed-in student's progress from the server and writes it
  *    into the localStorage keys the existing pages already read, then fires "codecanvas:progress".
@@ -11,7 +11,8 @@
         topics: 'codecanvas_completed_topics',
         quizzes: 'codecanvas_quizzes_completed',
         mock: 'codecanvas_mock_exam',
-        icseMock: 'codecanvas_icse_mock_exam'
+        icseMock: 'codecanvas_icse_mock_exam',
+        iscMock: 'codecanvas_isc_mock_exam'
     };
 
     function meta(name) {
@@ -59,6 +60,7 @@
             store(KEYS.quizzes, String(progress.quizzesCompleted || 0));
             store(KEYS.mock, progress.mockExam);
             store(KEYS.icseMock, progress.icseMockExam);
+            store(KEYS.iscMock, progress.iscMockExam);
             document.dispatchEvent(new CustomEvent('codecanvas:progress', { detail: progress }));
             return progress;
         } catch (e) {

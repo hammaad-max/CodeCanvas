@@ -10,6 +10,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
@@ -31,10 +32,12 @@ public class SecurityConfig {
             "frame-ancestors 'none'");
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, LoginAttemptService loginAttempts) throws Exception {
         http
+                // Locked usernames are turned away before their password is checked (brute-force protection)
+                .addFilterBefore(new LoginThrottleFilter(loginAttempts), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/register", "/error", "/favicon.ico", "/js/**", "/css/**")
+                        .requestMatchers("/", "/login", "/register", "/forgot-password", "/reset-password", "/error", "/favicon.ico", "/favicon.svg", "/js/**", "/css/**", "/images/**")
                         .permitAll()
                         // Health check for load balancers / uptime monitors (status only, no details)
                         .requestMatchers("/actuator/health", "/actuator/health/liveness", "/actuator/health/readiness")

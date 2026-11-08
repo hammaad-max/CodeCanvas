@@ -3,8 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}" href="/favicon.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Selection | CodeCanvas</title>
+    <title>Selection | LoopLab</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -236,6 +237,54 @@
                 padding: 24px;
             }
         }
+
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .lesson-nav a {
+            flex: 1;
+            display: block;
+            padding: 18px 22px;
+            border-radius: 14px;
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #e2e8f0;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .lesson-nav a:hover {
+            border-color: rgba(129,140,248,0.45);
+            transform: translateY(-2px);
+        }
+
+        .lesson-nav .dir {
+            display: block;
+            color: #818cf8;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .lesson-nav .name {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .lesson-nav .next {
+            text-align: right;
+        }
+
+        @media(max-width: 768px) {
+            .lesson-nav {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 
@@ -243,7 +292,7 @@
 
 <nav class="navbar">
     <a href="/dashboard" class="logo">
-        Code<span>Canvas</span>
+        <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Loop<span>Lab</span>
     </a>
     <a href="/apcs" class="back">
         ← Back to AP CS Java
@@ -440,6 +489,17 @@ Dean's List Eligible: true</code></pre>
         </a>
     </div>
 
+    <!-- PREVIOUS / NEXT LESSON -->
+    <nav class="lesson-nav" aria-label="Lesson navigation">
+        <a href="/apcs/strings" class="prev">
+            <span class="dir">← PREVIOUS</span>
+            <span class="name">Strings</span>
+        </a>
+        <a href="/apcs/iteration" class="next">
+            <span class="dir">NEXT →</span>
+            <span class="name">Iteration</span>
+        </a>
+    </nav>
 </main>
 
 </body>

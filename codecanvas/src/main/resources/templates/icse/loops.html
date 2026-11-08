@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}" href="/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iterative Constructs &amp; Loops | ICSE Java | LoopLab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', Arial, Helvetica, sans-serif;
+            background:
+                    radial-gradient(
+                            circle at 80% 0%,
+                            rgba(99, 102, 241, 0.18),
+                            transparent 30%
+                    ),
+                    radial-gradient(
+                            circle at 0% 50%,
+                            rgba(124, 58, 237, 0.08),
+                            transparent 30%
+                    ),
+                    #080b14;
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            height: 72px;
+            padding: 0 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(8, 11, 20, 0.82);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            color: #ffffff;
+            text-decoration: none;
+            letter-spacing: -0.7px;
+        }
+
+        .logo span {
+            color: #818cf8;
+        }
+
+        .back {
+            color: #a1a1aa;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .back:hover {
+            color: #ffffff;
+        }
+
+        .container {
+            width: min(1000px, 90%);
+            margin: auto;
+            padding: 50px 0 80px;
+        }
+
+        .breadcrumb {
+            color: #71717a;
+            font-size: 13px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumb a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb a:hover {
+            color: #ffffff;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: rgba(129,140,248,0.12);
+            border: 1px solid rgba(129,140,248,0.25);
+            color: #a5b4fc;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 46px;
+            letter-spacing: -1.5px;
+            margin: 0 0 15px;
+            font-weight: 800;
+        }
+
+        .intro {
+            color: #94a3b8;
+            font-size: 17px;
+            line-height: 1.7;
+            max-width: 780px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+
+        .card p {
+            color: #94a3b8;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .concept {
+            padding: 22px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .concept h3 {
+            margin-top: 0;
+            font-size: 16px;
+            color: #e2e8f0;
+        }
+
+        .concept p {
+            margin-bottom: 0;
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        code {
+            color: #c4b5fd;
+            background: rgba(129,140,248,0.1);
+            padding: 3px 7px;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 13px;
+        }
+
+        .code-block {
+            background: #05070d;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 22px;
+            overflow-x: auto;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 14px;
+            line-height: 1.7;
+            margin: 16px 0;
+        }
+
+        .code-block pre {
+            margin: 0;
+        }
+
+        .quiz-button {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 13px 26px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6366f1, #7c3aed);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            box-shadow: 0 10px 25px rgba(99,102,241,0.3);
+            transition: all 0.2s ease;
+        }
+
+        .quiz-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(99,102,241,0.5);
+        }
+
+        @media(max-width: 768px) {
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 34px;
+            }
+            .card {
+                padding: 24px;
+            }
+        }
+
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .lesson-nav a {
+            flex: 1;
+            display: block;
+            padding: 18px 22px;
+            border-radius: 14px;
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #e2e8f0;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .lesson-nav a:hover {
+            border-color: rgba(129,140,248,0.45);
+            transform: translateY(-2px);
+        }
+
+        .lesson-nav .dir {
+            display: block;
+            color: #818cf8;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .lesson-nav .name {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .lesson-nav .next {
+            text-align: right;
+        }
+
+        @media(max-width: 768px) {
+            .lesson-nav {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <a href="/dashboard" class="logo">
+        <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Loop<span>Lab</span>
+    </a>
+    <a href="/icse" class="back">
+        ← Back to ICSE Java
+    </a>
+</nav>
+
+<main class="container">
+
+    <div class="breadcrumb">
+        <a href="/dashboard">Dashboard</a>
+        <span>›</span>
+        <a href="/icse">ICSE Java</a>
+        <span>›</span>
+        <span style="color: #e2e8f0;">Iterative Constructs &amp; Loops</span>
+    </div>
+
+    <div class="badge">
+        ICSE COMPUTER APPLICATIONS • UNIT 4
+    </div>
+
+    <h1>Iterative Constructs &amp; Loops</h1>
+
+    <p class="intro">
+        Loops repeat a block of statements. ICSE expects you to choose between <code>for</code>, <code>while</code> and <code>do-while</code>, trace how many times a loop runs, use <code>break</code> and <code>continue</code>, and write nested loops for patterns.
+    </p>
+
+    <!-- KEY CONCEPTS -->
+    <div class="card">
+        <h2>Core Concepts &amp; Rules</h2>
+        <p>Essential rules for writing and tracing loops:</p>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>for Loop</h3>
+                <p>Best when the number of repetitions is known. <code>for (init; test; update)</code> keeps all three parts of the loop control in one line. It is an <em>entry-controlled</em> loop.</p>
+            </div>
+            <div class="concept">
+                <h3>while Loop</h3>
+                <p>Tests the condition <em>before</em> each pass (entry-controlled). Best when the number of repetitions is not known in advance, e.g. processing digits until the number becomes 0.</p>
+            </div>
+            <div class="concept">
+                <h3>do-while Loop</h3>
+                <p>Tests the condition <em>after</em> each pass (exit-controlled), so the body always runs at least once. Note the semicolon after <code>while (condition);</code>.</p>
+            </div>
+            <div class="concept">
+                <h3>break and continue</h3>
+                <p><code>break</code> leaves the loop immediately. <code>continue</code> skips the rest of the current pass and jumps to the next iteration.</p>
+            </div>
+            <div class="concept">
+                <h3>Nested Loops</h3>
+                <p>A loop inside another loop. For each pass of the outer loop, the inner loop runs completely. Used for patterns and tables.</p>
+            </div>
+            <div class="concept">
+                <h3>Infinite and Empty Loops</h3>
+                <p><code>for (;;)</code> or <code>while (true)</code> never stops on its own. A loop whose body is just <code>;</code> is an empty (delay) loop.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CODE PROGRAM -->
+    <div class="card">
+        <h2>Example Program</h2>
+        <p>This program uses all three loop types and a nested loop: a sum with <code>for</code>, digit counting with <code>while</code>, a <code>do-while</code> whose condition is false from the start, and a number triangle.</p>
+        <h3>Complete Java Program</h3>
+        <div class="code-block">
+<pre><code>public class LoopDemo {
+
+    public static void main(String[] args) {
+
+        // for loop: sum of first 5 natural numbers
+        int sum = 0;
+        for (int i = 1; i &lt;= 5; i++) {
+            sum += i;
+        }
+        System.out.println("Sum of 1 to 5 = " + sum);
+
+        // while loop: count the digits of a number
+        int n = 40721, digits = 0;
+        while (n &gt; 0) {
+            digits++;
+            n = n / 10;
+        }
+        System.out.println("Number of digits = " + digits);
+
+        // do-while loop: runs at least once
+        int k = 10;
+        do {
+            System.out.println("do-while ran with k = " + k);
+            k++;
+        } while (k &lt; 5);
+
+        // nested loops: a number triangle
+        for (int row = 1; row &lt;= 3; row++) {
+            for (int col = 1; col &lt;= row; col++) {
+                System.out.print(col + " ");
+            }
+            System.out.println();
+        }
+    }
+}</code></pre>
+        </div>
+    </div>
+
+    <!-- STRUCTURE -->
+    <div class="card">
+        <h2>Understanding the Program Structure</h2>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>1. Loop Control Variables</h3>
+                <p>Each loop has a variable that changes every pass (<code>i</code>, <code>n</code>, <code>k</code>, <code>row</code>, <code>col</code>) and a condition that eventually becomes false.</p>
+            </div>
+            <div class="concept">
+                <h3>2. Accumulators and Counters</h3>
+                <p><code>sum</code> collects a running total and <code>digits</code> counts passes. Both must be initialised (to 0) before the loop starts.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- EXECUTION TRACE -->
+    <div class="card">
+        <h2>How Does Java Execute This Program?</h2>
+        <p>Execution trace showing the order in which statements run and how values change:</p>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>Step 1</h3>
+                <p>The <code>for</code> loop runs with <code>i</code> = 1, 2, 3, 4, 5, adding each to <code>sum</code>: 1 + 2 + 3 + 4 + 5 = 15. It stops when <code>i</code> becomes 6.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 2</h3>
+                <p>The <code>while</code> loop divides 40721 by 10 each pass (4072, 407, 40, 4, 0), counting 5 passes, so the number has 5 digits.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 3</h3>
+                <p>The <code>do-while</code> body runs once with <code>k = 10</code>; then <code>10 &lt; 5</code> is false, so it stops. A <code>while</code> loop would not have run at all.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 4</h3>
+                <p>In the nested loop, row 1 prints one number, row 2 prints two and row 3 prints three; <code>println()</code> moves to a new line after each row.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- LINE BY LINE -->
+    <div class="card">
+        <h2>Line-by-Line Explanation</h2>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 7 — The for loop header</h3>
+            <div class="code-block"><pre><code>for (int i = 1; i &lt;= 5; i++) {</code></pre></div>
+            <p>Initialisation runs once, the test runs before every pass, and the update runs after every pass. <code>i</code> exists only inside this loop.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 16 — Removing the last digit</h3>
+            <div class="code-block"><pre><code>n = n / 10;</code></pre></div>
+            <p>Integer division by 10 drops the last digit (40721 becomes 4072). This is the standard way to walk through the digits of a number.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 25 — Exit-controlled test</h3>
+            <div class="code-block"><pre><code>} while (k &lt; 5);</code></pre></div>
+            <p>The condition is checked only after the body has run. The semicolon at the end is required.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 29 — Inner loop limit</h3>
+            <div class="code-block"><pre><code>for (int col = 1; col &lt;= row; col++) {</code></pre></div>
+            <p>The inner limit depends on the outer variable, which is what makes each row one number longer.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 30 — print vs println</h3>
+            <div class="code-block"><pre><code>System.out.print(col + " ");</code></pre></div>
+            <p><code>print</code> stays on the same line, so a whole row is printed side by side. The separate <code>println()</code> then ends the line.</p>
+        </div>
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="card">
+        <h2>Expected Console Output</h2>
+        <div class="code-block">
+<pre><code>Sum of 1 to 5 = 15
+Number of digits = 5
+do-while ran with k = 10
+1
+1 2
+1 2 3</code></pre>
+        </div>
+        <p>The <code>do-while</code> line proves that the body ran once even though its condition was false. Each triangle row ends with a trailing space from <code>col + " "</code>.</p>
+    </div>
+
+    <!-- EXAM TIPS -->
+    <div class="card">
+        <h2>ICSE Board Exam Tips &amp; Common Traps</h2>
+        <p>Keep these frequent exam traps in mind:</p>
+        <div class="concept-grid">
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Counting Iterations</h3>
+                <p><code>for (i = 1; i &lt;= n; i++)</code> runs n times; <code>for (i = 0; i &lt; n; i++)</code> also runs n times; <code>i &lt;= n</code> starting at 0 runs n + 1 times.</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Stray Semicolon</h3>
+                <p><code>for (i = 1; i &lt;= 5; i++);</code> has an empty body; the block after it runs only once, after the loop finishes.</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Entry vs Exit Controlled</h3>
+                <p>A frequent theory question: <code>for</code> and <code>while</code> are entry-controlled; <code>do-while</code> is exit-controlled and runs at least once.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRACTICE CTA -->
+    <div class="card" style="text-align: center; padding: 45px 30px;">
+        <h2>Ready to Test Your Knowledge?</h2>
+        <p style="max-width: 550px; margin: 10px auto 25px;">
+            Test your understanding with instant feedback, randomized questions, and step-by-step explanations.
+        </p>
+        <a href="/apcs/quiz?topic=Iterative%20Constructs%20%26%20Loops&amp;curriculum=ICSE" class="quiz-button">
+            Start Practice →
+        </a>
+    </div>
+
+    <!-- PREVIOUS / NEXT LESSON -->
+    <nav class="lesson-nav" aria-label="Lesson navigation">
+        <a href="/icse/conditionals" class="prev">
+            <span class="dir">← PREVIOUS</span>
+            <span class="name">Conditional Branching &amp; Switch</span>
+        </a>
+        <a href="/icse/number-programs" class="next">
+            <span class="dir">NEXT →</span>
+            <span class="name">Classic Number Programs</span>
+        </a>
+    </nav>
+
+</main>
+
+</body>
+</html>

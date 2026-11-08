@@ -14,6 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -46,12 +47,47 @@ class QuestionApiTests {
     void pagesRender() throws Exception {
         String[] pages = {"/dashboard", "/apcs", "/apcs/variables", "/apcs/expressions", "/apcs/strings",
                 "/apcs/selection", "/apcs/iteration", "/apcs/methods", "/apcs/classes", "/apcs/arrays",
-                "/apcs/quiz", "/apcs/exam", "/progress", "/icse", "/icse/learn", "/icse/exam"};
+                "/apcs/quiz", "/apcs/exam", "/progress", "/account",
+                "/icse", "/icse/exam", "/icse/oop-fundamentals", "/icse/operators", "/icse/conditionals", "/icse/loops",
+                "/icse/number-programs", "/icse/strings", "/icse/methods", "/icse/arrays",
+                "/isc", "/isc/exam", "/isc/classes-objects", "/isc/strings", "/isc/matrices", "/isc/recursion",
+                "/isc/inheritance", "/isc/interfaces", "/isc/data-structures", "/isc/number-date"};
         for (String page : pages) {
             mockMvc.perform(get(page).with(student)).andExpect(status().isOk());
         }
         // Login page (16th template) is public
         mockMvc.perform(get("/")).andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Old ICSE guide links redirect to the new lesson pages; unknown lessons are 404")
+    void lessonRouting() throws Exception {
+        mockMvc.perform(get("/icse/learn").param("unit", "3").with(student))
+                .andExpect(redirectedUrl("/icse/conditionals"));
+        mockMvc.perform(get("/icse/learn").with(student)).andExpect(redirectedUrl("/icse/oop-fundamentals"));
+        mockMvc.perform(get("/icse/learn").param("unit", "99").with(student)).andExpect(redirectedUrl("/icse"));
+        mockMvc.perform(get("/icse/not-a-lesson").with(student)).andExpect(status().isNotFound());
+        mockMvc.perform(get("/isc/variables").with(student)).andExpect(status().isNotFound());
+        // Lesson pages link to their quiz and to the next lesson
+        mockMvc.perform(get("/isc/recursion").with(student))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("topic=Recursion&amp;curriculum=ISC")))
+                .andExpect(content().string(containsString("href=\"/isc/inheritance\"")));
+        // Lesson pages need a signed-in student like every other page
+        mockMvc.perform(get("/isc/recursion")).andExpect(redirectedUrl("/"));
+    }
+
+    @Test
+    @DisplayName("ISC questions and mock exam are served without answers")
+    void iscApi() throws Exception {
+        mockMvc.perform(get("/api/questions").param("topic", "Recursion").param("curriculum", "ISC").with(student))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(10)))
+                .andExpect(jsonPath("$[0].correctAnswer").doesNotExist());
+        mockMvc.perform(get("/api/exam/isc").with(student))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(40)))
+                .andExpect(jsonPath("$[0].explanation").doesNotExist());
     }
 
     @Test

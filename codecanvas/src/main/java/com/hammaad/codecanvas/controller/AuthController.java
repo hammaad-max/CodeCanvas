@@ -49,6 +49,9 @@ public class AuthController {
         } catch (StudentService.UsernameTakenException e) {
             result.rejectValue("username", "taken", "That username is already taken.");
             return "register";
+        } catch (StudentService.EmailTakenException e) {
+            result.rejectValue("email", "taken", "That email is already used by another account.");
+            return "register";
         }
         return "redirect:/?registered";
     }

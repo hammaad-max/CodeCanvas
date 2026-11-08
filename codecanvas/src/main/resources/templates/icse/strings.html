@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}" href="/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character &amp; String Handling | ICSE Java | LoopLab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', Arial, Helvetica, sans-serif;
+            background:
+                    radial-gradient(
+                            circle at 80% 0%,
+                            rgba(99, 102, 241, 0.18),
+                            transparent 30%
+                    ),
+                    radial-gradient(
+                            circle at 0% 50%,
+                            rgba(124, 58, 237, 0.08),
+                            transparent 30%
+                    ),
+                    #080b14;
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            height: 72px;
+            padding: 0 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(8, 11, 20, 0.82);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            color: #ffffff;
+            text-decoration: none;
+            letter-spacing: -0.7px;
+        }
+
+        .logo span {
+            color: #818cf8;
+        }
+
+        .back {
+            color: #a1a1aa;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .back:hover {
+            color: #ffffff;
+        }
+
+        .container {
+            width: min(1000px, 90%);
+            margin: auto;
+            padding: 50px 0 80px;
+        }
+
+        .breadcrumb {
+            color: #71717a;
+            font-size: 13px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumb a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb a:hover {
+            color: #ffffff;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: rgba(129,140,248,0.12);
+            border: 1px solid rgba(129,140,248,0.25);
+            color: #a5b4fc;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 46px;
+            letter-spacing: -1.5px;
+            margin: 0 0 15px;
+            font-weight: 800;
+        }
+
+        .intro {
+            color: #94a3b8;
+            font-size: 17px;
+            line-height: 1.7;
+            max-width: 780px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+
+        .card p {
+            color: #94a3b8;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .concept {
+            padding: 22px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .concept h3 {
+            margin-top: 0;
+            font-size: 16px;
+            color: #e2e8f0;
+        }
+
+        .concept p {
+            margin-bottom: 0;
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        code {
+            color: #c4b5fd;
+            background: rgba(129,140,248,0.1);
+            padding: 3px 7px;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 13px;
+        }
+
+        .code-block {
+            background: #05070d;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 22px;
+            overflow-x: auto;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 14px;
+            line-height: 1.7;
+            margin: 16px 0;
+        }
+
+        .code-block pre {
+            margin: 0;
+        }
+
+        .quiz-button {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 13px 26px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6366f1, #7c3aed);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            box-shadow: 0 10px 25px rgba(99,102,241,0.3);
+            transition: all 0.2s ease;
+        }
+
+        .quiz-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(99,102,241,0.5);
+        }
+
+        @media(max-width: 768px) {
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 34px;
+            }
+            .card {
+                padding: 24px;
+            }
+        }
+
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .lesson-nav a {
+            flex: 1;
+            display: block;
+            padding: 18px 22px;
+            border-radius: 14px;
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #e2e8f0;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .lesson-nav a:hover {
+            border-color: rgba(129,140,248,0.45);
+            transform: translateY(-2px);
+        }
+
+        .lesson-nav .dir {
+            display: block;
+            color: #818cf8;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .lesson-nav .name {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .lesson-nav .next {
+            text-align: right;
+        }
+
+        @media(max-width: 768px) {
+            .lesson-nav {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <a href="/dashboard" class="logo">
+        <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Loop<span>Lab</span>
+    </a>
+    <a href="/icse" class="back">
+        ← Back to ICSE Java
+    </a>
+</nav>
+
+<main class="container">
+
+    <div class="breadcrumb">
+        <a href="/dashboard">Dashboard</a>
+        <span>›</span>
+        <a href="/icse">ICSE Java</a>
+        <span>›</span>
+        <span style="color: #e2e8f0;">Character &amp; String Handling</span>
+    </div>
+
+    <div class="badge">
+        ICSE COMPUTER APPLICATIONS • UNIT 6
+    </div>
+
+    <h1>Character &amp; String Handling</h1>
+
+    <p class="intro">
+        Text in Java is handled with the <code>char</code> type, the <code>Character</code> wrapper class and the <code>String</code> class. ICSE tests the output of String methods, character testing and conversion, and loop-based programs such as counting vowels and reversing words.
+    </p>
+
+    <!-- KEY CONCEPTS -->
+    <div class="card">
+        <h2>Core Concepts &amp; Rules</h2>
+        <p>Essential String and Character methods and rules:</p>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>Indexing</h3>
+                <p>Characters are numbered from <code>0</code> to <code>length() - 1</code>. <code>charAt(i)</code> returns the character at index <code>i</code>.</p>
+            </div>
+            <div class="concept">
+                <h3>Searching</h3>
+                <p><code>indexOf(ch)</code> returns the first position of a character or string, or <code>-1</code> if it is not found. <code>lastIndexOf()</code> searches from the end.</p>
+            </div>
+            <div class="concept">
+                <h3>Extracting</h3>
+                <p><code>substring(start, end)</code> returns the characters from <code>start</code> up to <strong>but not including</strong> <code>end</code>. <code>substring(start)</code> goes to the end.</p>
+            </div>
+            <div class="concept">
+                <h3>Comparing</h3>
+                <p><code>equals()</code> compares contents (case matters); <code>equalsIgnoreCase()</code> ignores case. <code>compareTo()</code> returns 0 if equal, negative if the first comes earlier in dictionary order, positive if later.</p>
+            </div>
+            <div class="concept">
+                <h3>Character Class</h3>
+                <p><code>Character.isLetter()</code>, <code>isDigit()</code>, <code>isUpperCase()</code>, <code>isWhitespace()</code> test a char; <code>toUpperCase()</code> and <code>toLowerCase()</code> convert it.</p>
+            </div>
+            <div class="concept">
+                <h3>Strings are Immutable</h3>
+                <p>Methods like <code>toUpperCase()</code> and <code>replace()</code> return a <em>new</em> String; the original is unchanged unless you assign the result back.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CODE PROGRAM -->
+    <div class="card">
+        <h2>Example Program</h2>
+        <p>This program demonstrates common String methods, then counts vowels and reverses a word with loops, and finishes with <code>compareTo()</code> and a <code>Character</code> test.</p>
+        <h3>Complete Java Program</h3>
+        <div class="code-block">
+<pre><code>public class StringDemo {
+
+    public static void main(String[] args) {
+
+        String s = "Computer Applications";
+
+        System.out.println("Length: " + s.length());
+        System.out.println("charAt(3): " + s.charAt(3));
+        System.out.println("indexOf('p'): " + s.indexOf('p'));
+        System.out.println("substring(0, 8): " + s.substring(0, 8));
+        System.out.println("toUpperCase(): " + s.toUpperCase());
+
+        // Count vowels using a loop and Character methods
+        int vowels = 0;
+        for (int i = 0; i &lt; s.length(); i++) {
+            char ch = Character.toLowerCase(s.charAt(i));
+            if ("aeiou".indexOf(ch) != -1) {
+                vowels++;
+            }
+        }
+        System.out.println("Vowels: " + vowels);
+
+        // Reverse a word
+        String word = "LEVEL", reversed = "";
+        for (int i = word.length() - 1; i &gt;= 0; i--) {
+            reversed = reversed + word.charAt(i);
+        }
+        System.out.println(word + " reversed is " + reversed);
+        System.out.println("Palindrome word? " + word.equals(reversed));
+
+        System.out.println("compareTo: " + "apple".compareTo("banana"));
+        System.out.println("isDigit('7'): " + Character.isDigit('7'));
+    }
+}</code></pre>
+        </div>
+    </div>
+
+    <!-- STRUCTURE -->
+    <div class="card">
+        <h2>Understanding the Program Structure</h2>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>1. Library Method Calls</h3>
+                <p>The first block calls built-in <code>String</code> methods on the object <code>s</code> using the dot operator.</p>
+            </div>
+            <div class="concept">
+                <h3>2. Character-by-Character Loops</h3>
+                <p>The vowel counter and word reverser visit each index with a <code>for</code> loop and <code>charAt(i)</code>, which is the pattern behind most ICSE string programs.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- EXECUTION TRACE -->
+    <div class="card">
+        <h2>How Does Java Execute This Program?</h2>
+        <p>Execution trace showing the order in which statements run and how values change:</p>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>Step 1</h3>
+                <p><code>"Computer Applications"</code> has 21 characters (8 + 1 space + 12). Index 3 is <code>'p'</code>, which is also the first <code>'p'</code>, so <code>indexOf</code> gives 3.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 2</h3>
+                <p><code>substring(0, 8)</code> takes indexes 0 to 7, giving "Computer"; <code>toUpperCase()</code> returns a new upper-case copy.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 3</h3>
+                <p>The vowel loop lower-cases each character and checks it against "aeiou": o, u, e, a, i, a, i, o give a count of 8.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 4</h3>
+                <p>The reverse loop runs from index 4 down to 0, building "LEVEL", which equals the original, so the word is a palindrome. Finally <code>'a' - 'b'</code> gives -1 for <code>compareTo</code>.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- LINE BY LINE -->
+    <div class="card">
+        <h2>Line-by-Line Explanation</h2>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 7 — Length of a String</h3>
+            <div class="code-block"><pre><code>System.out.println("Length: " + s.length());</code></pre></div>
+            <p><code>length()</code> is a method for Strings (with brackets), unlike <code>arr.length</code> for arrays. Spaces count as characters.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 10 — Substring end index</h3>
+            <div class="code-block"><pre><code>System.out.println("substring(0, 8): " + s.substring(0, 8));</code></pre></div>
+            <p>The end index 8 is excluded, so the result has <code>8 - 0 = 8</code> characters.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 17 — Testing for a vowel</h3>
+            <div class="code-block"><pre><code>if ("aeiou".indexOf(ch) != -1) {</code></pre></div>
+            <p>A neat trick: if <code>ch</code> appears in "aeiou", <code>indexOf</code> returns its position; otherwise it returns -1.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 26 — Building a reversed String</h3>
+            <div class="code-block"><pre><code>reversed = reversed + word.charAt(i);</code></pre></div>
+            <p>Joining a <code>char</code> to a String gives a new, longer String. The loop runs backwards, so characters are added from last to first.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 31 — Dictionary comparison</h3>
+            <div class="code-block"><pre><code>System.out.println("compareTo: " + "apple".compareTo("banana"));</code></pre></div>
+            <p><code>compareTo</code> subtracts the first differing characters: <code>'a' - 'b'</code> is -1. A negative result means "apple" comes first.</p>
+        </div>
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="card">
+        <h2>Expected Console Output</h2>
+        <div class="code-block">
+<pre><code>Length: 21
+charAt(3): p
+indexOf('p'): 3
+substring(0, 8): Computer
+toUpperCase(): COMPUTER APPLICATIONS
+Vowels: 8
+LEVEL reversed is LEVEL
+Palindrome word? true
+compareTo: -1
+isDigit('7'): true</code></pre>
+        </div>
+        <p>Notice that <code>s</code> itself was never changed: <code>toUpperCase()</code> returned a new String, which is why the vowel count still sees the original mixed-case text.</p>
+    </div>
+
+    <!-- EXAM TIPS -->
+    <div class="card">
+        <h2>ICSE Board Exam Tips &amp; Common Traps</h2>
+        <p>Keep these frequent exam traps in mind:</p>
+        <div class="concept-grid">
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 == vs equals()</h3>
+                <p><code>==</code> compares references, not text. Always use <code>equals()</code> (or <code>equalsIgnoreCase()</code>) to compare String contents.</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Out of Range Index</h3>
+                <p><code>s.charAt(s.length())</code> throws <code>StringIndexOutOfBoundsException</code>. The last valid index is <code>length() - 1</code>.</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 char Arithmetic</h3>
+                <p><code>'A' + 1</code> is the int 66, but <code>(char)('A' + 1)</code> is <code>'B'</code>. ASCII values: 'A' = 65, 'a' = 97, '0' = 48.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRACTICE CTA -->
+    <div class="card" style="text-align: center; padding: 45px 30px;">
+        <h2>Ready to Test Your Knowledge?</h2>
+        <p style="max-width: 550px; margin: 10px auto 25px;">
+            Test your understanding with instant feedback, randomized questions, and step-by-step explanations.
+        </p>
+        <a href="/apcs/quiz?topic=Character%20%26%20String%20Handling&amp;curriculum=ICSE" class="quiz-button">
+            Start Practice →
+        </a>
+    </div>
+
+    <!-- PREVIOUS / NEXT LESSON -->
+    <nav class="lesson-nav" aria-label="Lesson navigation">
+        <a href="/icse/number-programs" class="prev">
+            <span class="dir">← PREVIOUS</span>
+            <span class="name">Classic Number Programs</span>
+        </a>
+        <a href="/icse/methods" class="next">
+            <span class="dir">NEXT →</span>
+            <span class="name">User-Defined Methods &amp; Overloading</span>
+        </a>
+    </nav>
+
+</main>
+
+</body>
+</html>

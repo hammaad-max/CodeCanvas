@@ -1,6 +1,6 @@
-# CodeCanvas — Deployment Guide
+# LoopLab — Deployment Guide
 
-How to run CodeCanvas on a staging or production server. Verified locally on 2026-11-08 by running the
+How to run LoopLab (repository: CodeCanvas) on a staging or production server. Verified locally on 2026-11-08 by running the
 packaged jar with `SPRING_PROFILES_ACTIVE=prod` against PostgreSQL 17 (see "Verified" at the end).
 
 ## 1. What you need
@@ -20,6 +20,10 @@ The app is a single self-contained jar: `target/CodeCanvas-0.0.1-SNAPSHOT.jar`.
 | `DB_HOST` / `DB_PORT` / `DB_NAME` | instead of `DB_URL` | `db-host` / `5432` / `codecanvas` | Used when the platform provides separate values (Render) |
 | `DB_USERNAME` | **yes** | `codecanvas` | Database user |
 | `DB_PASSWORD` | **yes** | _(from your secret store)_ | The app refuses to start without it |
+| `APP_BASE_URL` | recommended | `https://looplab-staging.onrender.com` | Public address used in password reset emails |
+| `MAIL_FROM` | for password reset | `LoopLab <no-reply@yourdomain>` | Sender address (must be verified with your email provider) |
+| `SPRING_MAIL_HOST` / `SPRING_MAIL_PORT` | for password reset | `smtp-relay.brevo.com` / `587` | SMTP server |
+| `SPRING_MAIL_USERNAME` / `SPRING_MAIL_PASSWORD` | for password reset | _(from your email provider)_ | SMTP login (store the password as a secret) |
 | `PORT` | no | `8080` | HTTP port (default 8080) |
 | `JAVA_TOOL_OPTIONS` | no | `-Xmx512m` | JVM memory limit |
 
@@ -65,7 +69,7 @@ DB_PASSWORD=<secret>
 `/etc/systemd/system/codecanvas.service`:
 ```ini
 [Unit]
-Description=CodeCanvas
+Description=LoopLab
 After=network-online.target
 
 [Service]
@@ -98,7 +102,7 @@ credentials as environment variables — no secrets in git).
 1. Push the commit containing `render.yaml` to GitHub.
 2. In Render: **New → Blueprint**, connect the `CodeCanvas` GitHub repository, review, **Apply**.
 3. Wait for the first deploy; Render waits for `/actuator/health/readiness` to return 200 before routing traffic.
-4. Open the `https://codecanvas-staging.onrender.com` URL (shown in the dashboard) and smoke test (section 8).
+4. Open the `https://looplab-staging.onrender.com` URL (shown in the dashboard) and smoke test (section 8).
 
 Notes:
 - `autoDeploy` is off: deploy each release with **Manual Deploy → Deploy latest commit**.
@@ -107,6 +111,25 @@ Notes:
   then takes about a minute) and the free database expires after 30 days with **no backups**.
   Use paid plans for anything real students depend on.
 - HTTPS certificates are provided by Render automatically.
+- When applying the Blueprint, Render asks for `APP_BASE_URL` and the email settings (section 5b).
+  Without them the site works, but "Forgot password?" cannot send emails.
+
+## 5b. Email for password reset
+"Forgot password?" emails a one-time link (valid 30 minutes, max 3 per account per hour). Any SMTP provider works;
+a free option that needs no domain is **Brevo**: create an account, verify your sender email address, then create an
+SMTP key under *SMTP & API*. Set:
+
+| Variable | Value |
+|---|---|
+| `SPRING_MAIL_HOST` | `smtp-relay.brevo.com` |
+| `SPRING_MAIL_PORT` | `587` |
+| `SPRING_MAIL_USERNAME` | your Brevo SMTP login |
+| `SPRING_MAIL_PASSWORD` | your Brevo SMTP key (secret) |
+| `MAIL_FROM` | the verified sender, e.g. `LoopLab <you@example.com>` |
+| `APP_BASE_URL` | the site's public `https://` address |
+
+Without `SPRING_MAIL_HOST`, no email is sent: in development the link is printed in the log instead, and in
+production a `mail.not_configured` warning is logged (the link is never logged in production).
 
 ## 6. Health checks and monitoring
 | Endpoint | Use | Response |
@@ -125,6 +148,9 @@ In the prod profile every log line is one JSON object (Elastic Common Schema) on
 | `student.registered id=… username=…` | New account |
 | `attempt.quiz …` / `attempt.exam …` | Graded attempt stored |
 | `progress.reset …` | Student reset their progress |
+| `login.locked username=…` | 5 wrong passwords in 15 minutes; that username is locked for 15 minutes |
+| `password_reset.requested …` / `password_reset.completed …` | Forgot-password flow |
+| `mail.sent` / `mail.failed` / `mail.not_configured` | Outcome of sending a reset email |
 | `Unhandled API error reference=<uuid>` | Unexpected failure; the student sees the same reference id |
 
 Passwords are never logged. Example: `journalctl -u codecanvas -f | grep login.failure`.
@@ -159,5 +185,6 @@ backup, then start the previous jar. For that reason, write migrations so they o
 - Same jar started with `PORT=10000` and `DB_HOST`/`DB_PORT`/`DB_NAME` instead of `DB_URL` (as Render supplies them):
   connected, Flyway validated, readiness `UP`, login page 200.
 
-**Not yet verified:** the Docker image build (Docker is not installed locally; Render builds it on first deploy),
+**Not yet verified:** sending a real email over SMTP (no email account configured yet; the flow was tested with the
+link taken from the dev log), the Docker image build (Docker is not installed locally; Render builds it on first deploy),
 a real staging host, HTTPS certificates, managed database backups and restore.

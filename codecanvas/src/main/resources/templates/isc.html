@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}" href="/favicon.svg">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="student-name" th:content="${studentName}">
+    <script th:src="@{/js/codecanvas-api.js}"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ISC Java (Class 11 &amp; 12) | LoopLab</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background:
+                    radial-gradient(circle at 80% 0%, rgba(99, 102, 241, 0.18), transparent 30%),
+                    radial-gradient(circle at 0% 30%, rgba(59, 130, 246, 0.10), transparent 25%),
+                    #080b14;
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        /* NAVBAR */
+
+        .navbar {
+            height: 72px;
+            padding: 0 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            background: rgba(8, 11, 20, 0.78);
+            backdrop-filter: blur(16px);
+
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: -0.7px;
+        }
+
+        .logo span {
+            color: #818cf8;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+
+        .nav-link {
+            color: #a1a1aa;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .nav-link:hover {
+            color: white;
+        }
+
+        .profile {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            font-weight: 700;
+
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.35);
+        }
+
+        /* MAIN */
+
+        .container {
+            width: min(1180px, 90%);
+            margin: auto;
+            padding: 55px 0 80px;
+        }
+
+        /* HERO */
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1.5fr 0.8fr;
+            gap: 35px;
+            align-items: stretch;
+            margin-bottom: 55px;
+        }
+
+        .hero-main {
+            padding: 42px;
+
+            border-radius: 24px;
+
+            background:
+                    linear-gradient(
+                            135deg,
+                            rgba(99, 102, 241, 0.22),
+                            rgba(30, 41, 59, 0.45)
+                    );
+
+            border: 1px solid rgba(255, 255, 255, 0.09);
+
+            box-shadow:
+                    0 25px 60px rgba(0, 0, 0, 0.35),
+                    inset 0 1px rgba(255, 255, 255, 0.05);
+        }
+
+        .badge {
+            display: inline-block;
+
+            padding: 7px 12px;
+
+            border-radius: 999px;
+
+            background: rgba(129, 140, 248, 0.12);
+            border: 1px solid rgba(129, 140, 248, 0.25);
+
+            color: #a5b4fc;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            margin-bottom: 18px;
+        }
+
+        .hero h1 {
+            font-size: clamp(36px, 5vw, 58px);
+            line-height: 1.05;
+
+            margin: 0 0 18px;
+
+            letter-spacing: -2.5px;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(90deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: #a1a1aa;
+            font-size: 16px;
+            line-height: 1.7;
+            max-width: 620px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .primary-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 12px 20px;
+
+            border-radius: 10px;
+
+            background: linear-gradient(135deg, #6366f1, #7c3aed);
+
+            color: white;
+            text-decoration: none;
+
+            font-weight: 700;
+            font-size: 14px;
+
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.25);
+
+            transition: 0.2s;
+        }
+
+        .primary-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.35);
+        }
+
+        /* STATS CARD */
+
+        .stats-card {
+            border-radius: 24px;
+            padding: 30px;
+
+            background: rgba(15, 23, 42, 0.75);
+
+            border: 1px solid rgba(255, 255, 255, 0.08);
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .stats-title {
+            color: #a1a1aa;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .progress-number {
+            font-size: 40px;
+            font-weight: 800;
+        }
+
+        .progress-bar {
+            height: 9px;
+            width: 100%;
+
+            background: #1e293b;
+
+            border-radius: 999px;
+
+            overflow: hidden;
+
+            margin: 15px 0 10px;
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+
+            background: linear-gradient(90deg, #6366f1, #a855f7);
+
+            border-radius: inherit;
+        }
+
+        .stats-description {
+            color: #71717a;
+            font-size: 13px;
+        }
+
+        /* SEARCH */
+
+        .search-wrapper {
+            position: relative;
+            margin-bottom: 45px;
+        }
+
+        .search {
+            width: 100%;
+
+            padding: 17px 20px 17px 48px;
+
+            border-radius: 13px;
+
+            background: rgba(15, 23, 42, 0.7);
+
+            border: 1px solid rgba(255, 255, 255, 0.08);
+
+            color: white;
+
+            font-size: 15px;
+
+            outline: none;
+
+            transition: 0.2s;
+        }
+
+        .search::placeholder {
+            color: #71717a;
+        }
+
+        .search:focus {
+            border-color: rgba(129, 140, 248, 0.6);
+
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.08);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: #71717a;
+        }
+
+        
+        .clear-search-btn {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #94a3b8;
+            border-radius: 50%;
+            width: 26px;
+            height: 26px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .clear-search-btn:hover {
+            background: rgba(255, 255, 255, 0.16);
+            color: #ffffff;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 55px 20px;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            margin-top: 10px;
+        }
+
+        .no-results-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+
+        .no-results h3 {
+            margin: 0 0 8px;
+            color: #f1f5f9;
+            font-size: 19px;
+            font-weight: 700;
+        }
+
+        .no-results p {
+            color: #94a3b8;
+            font-size: 14px;
+            margin: 0 auto 20px;
+            max-width: 440px;
+            line-height: 1.6;
+        }
+
+        .no-results em {
+            color: #c4b5fd;
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        .reset-search-btn {
+            background: linear-gradient(135deg, #6366f1, #7c3aed);
+            border: none;
+            color: #ffffff;
+            padding: 10px 22px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 6px 18px rgba(99, 102, 241, 0.3);
+            font-family: inherit;
+        }
+
+        .reset-search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.5);
+        }
+
+        /* SECTION */
+
+        .section-header {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+
+            margin-bottom: 20px;
+        }
+
+        .section-header h2 {
+            margin: 0;
+            font-size: 24px;
+            letter-spacing: -0.5px;
+        }
+
+        .section-header p {
+            margin: 5px 0 0;
+            color: #71717a;
+            font-size: 14px;
+        }
+
+        /* TOPICS */
+
+        .topics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .topic-card {
+            position: relative;
+
+            padding: 22px;
+
+            border-radius: 17px;
+
+            background: rgba(15, 23, 42, 0.72);
+
+            border: 1px solid rgba(255, 255, 255, 0.07);
+
+            transition: 0.25s;
+
+            overflow: hidden;
+        }
+
+        .topic-card::before {
+            content: "";
+
+            position: absolute;
+
+            width: 120px;
+            height: 120px;
+
+            background: rgba(99, 102, 241, 0.10);
+
+            filter: blur(35px);
+
+            top: -60px;
+            right: -60px;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-4px);
+
+            border-color: rgba(129, 140, 248, 0.35);
+
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+        }
+
+        .topic-number {
+            color: #818cf8;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .topic-card h3 {
+            margin: 8px 0 7px;
+
+            font-size: 17px;
+        }
+
+        .topic-card p {
+            color: #71717a;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+
+            margin: 0 0 18px;
+        }
+
+        .topic-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .topic-button {
+    padding: 9px 15px;
+
+    border-radius: 8px;
+
+    background: rgba(255, 255, 255, 0.04);
+
+    border: 1px solid rgba(255, 255, 255, 0.09);
+
+    color: #c4b5fd;
+
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1px;
+
+    transition: all 0.2s ease;
+}
+
+.topic-button:hover {
+    background: rgba(129, 140, 248, 0.12);
+
+    border-color: rgba(129, 140, 248, 0.3);
+
+    color: #e0e7ff;
+
+    transform: translateY(-1px);
+}
+
+        /* RESPONSIVE */
+
+        @media (max-width: 850px) {
+
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
+            .topics {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-main {
+                padding: 30px;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .nav-link {
+                display: none;
+            }
+
+            .container {
+                width: 92%;
+                padding-top: 35px;
+            }
+
+            .hero h1 {
+                font-size: 40px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Loop<span>Lab</span>
+    </div>
+
+    <div class="nav-right">
+
+        <a href="/dashboard" class="nav-link">
+            Dashboard
+        </a>
+
+        <a href="/progress" class="nav-link">
+            My Progress
+        </a>
+
+        <div class="profile" th:text="${studentName != null and studentName.length() > 0} ? ${#strings.toUpperCase(#strings.substring(studentName, 0, 1))} : 'S'">
+            S
+        </div>
+
+    </div>
+
+</nav>
+
+
+<main class="container">
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="hero-main">
+
+            <div class="badge">
+                ISC COMPUTER SCIENCE • CLASS 11 &amp; 12
+            </div>
+
+            <h1>
+                Advance with ISC Java.<br>
+                <span>From objects to data structures.</span>
+            </h1>
+
+            <p>
+                Master the ISC Computer Science Java syllabus: classes and wrapper classes,
+                strings, matrices, recursion, inheritance, interfaces, stacks, queues,
+                linked lists and practical-paper number programs.
+            </p>
+
+            <div class="hero-actions">
+
+                <a href="#topicsSection" class="primary-button" id="explorePracticeBtn">
+                    Explore Practice ↓
+                </a>
+
+                <a href="/isc/exam" class="primary-button" style="background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.4); color: #c7d2fe; box-shadow: none;">
+                    ⏱ 40-Question Mock Exam →
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="stats-card">
+
+            <div>
+
+                <div class="stats-title" style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>YOUR ISC PROGRESS</span>
+                    <span id="apcsScoreBadge" style="font-size: 11px; padding: 4px 10px; border-radius: 999px; font-weight: 700; background: rgba(148, 163, 184, 0.16); color: #cbd5e1; border: 1px solid rgba(148, 163, 184, 0.3); transition: all 0.3s ease;">
+                        TARGET: 100/100
+                    </span>
+                </div>
+
+                <div class="progress-number" id="apcsProgressNumber">
+                    0%
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="apcsProgressFill"></div>
+                </div>
+
+                <div class="stats-description" id="apcsProgressDesc">
+                    Complete your first quiz to start tracking progress.
+                </div>
+
+            </div>
+
+            <div class="stats-description" id="apcsScoreTargetNotice" style="margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.08); font-size: 12px; color: #94a3b8; display: flex; justify-content: space-between; align-items: center;">
+                <span>🎯 Goal: 100/100 Board Grade</span>
+                <span id="apcsTargetHint" style="color: #818cf8;">0/8 Units Mastered</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- SEARCH -->
+
+    <div class="search-wrapper">
+
+        <span class="search-icon">
+            🔍
+        </span>
+
+        <input
+                id="topicSearch"
+                class="search"
+                type="text"
+                placeholder="Search ISC Java units (e.g. recursion, matrix, stack, inheritance)..."
+                autocomplete="off">
+
+        <button id="clearSearch" class="clear-search-btn" aria-label="Clear search" title="Clear search">✕</button>
+
+    </div>
+
+
+    <!-- TOPICS -->
+
+    <div class="section-header" id="topicsSection">
+
+        <div>
+            <h2>ISC Java Syllabus Units</h2>
+
+            <p>
+                Choose a topic to learn or practice.
+            </p>
+        </div>
+
+    </div>
+
+
+    <section class="topics">
+
+
+        <div class="topic-card" data-keywords="classes objects constructor overloading this static instance access specifier private protected public tostring wrapper integer parseint autoboxing unboxing">
+
+            <div class="topic-number">
+                01
+            </div>
+
+            <h3>
+                Classes, Objects &amp; Wrapper Classes
+            </h3>
+
+            <p>
+                Constructor overloading, this, static members, access specifiers, toString() and wrapper classes.
+            </p>
+
+            <div class="topic-actions">
+
+                <a href="/isc/classes-objects" class="topic-button">
+                    Learn
+                </a>
+
+                <a href="/apcs/quiz?topic=Classes%2C%20Objects%20%26%20Wrapper%20Classes&amp;curriculum=ISC" class="topic-button">
+                    Practice
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="topic-card" data-keywords="string stringbuffer immutable mutable split stringtokenizer append insert reverse word frequency capitalise sentence">
+
+            <div class="topic-number">
+                02
+            </div>
+
+            <h3>
+                Strings &amp; StringBuffer
+            </h3>
+
+            <p>
+                Sentence and word processing, character frequency, and immutable String vs mutable StringBuffer.
+            </p>
+
+            <div class="topic-actions">
+
+                <a href="/isc/strings" class="topic-button">
+                    Learn
+                </a>
+
+                <a href="/apcs/quiz?topic=Strings%20%26%20StringBuffer&amp;curriculum=ISC" class="topic-button">
+                    Practice
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="topic-card" data-keywords="2d arrays double dimensional matrix rows columns diagonal transpose symmetric boundary row sum column sum">
+
+            <div class="topic-number">
+                03
+            </div>
+
+            <h3>
+                2D Arrays &amp; Matrices
+            </h3>
+
+            <p>
+                Matrix traversal, diagonal sums, transpose, row sums and boundary elements in 2D arrays.
+            </p>
+
+            <div class="topic-actions">
+
+                <a href="/isc/matrices" class="topic-button">
+                    Learn
+                </a>
+
+                <a href="/apcs/quiz?topic=2D%20Arrays%20%26%20Matrices&amp;curriculum=ISC" class="topic-button">
+                    Practice
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="topic-card" data-keywords="recursion recursive base case call stack factorial fibonacci gcd euclid reverse digit sum tracing stackoverflowerror">
+
+            <div class="topic-number">
+                04
+            </div>
+
+            <h3>
+                Recursion
+            </h3>
+
+            <p>
+                Base and recursive cases, the call stack, tracing, and classic recursive methods.
+            </p>
+
+            <div class="topic-actions">
+
+                <a href="/isc/recursion" class="topic-button">
+                    Learn
+                </a>
+
+                <a href="/apcs/quiz?topic=Recursion&amp;curriculum=ISC" class="topic-button">
+                    Practice
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="topic-card" data-keywords="inheritance extends super subclass superclass overriding overloading polymorphism dynamic method dispatch instanceof protected">
+
+            <div class="topic-number">
+                05
+            </div>
+
+            <h3>
+                Inheritance &amp; Polymorphism
+            </h3>
+
+            <p>
+                extends and super, method overriding, dynamic method dispatch and instanceof.
+            </p>
+
+            <div class="topic-actions">
+
+                <a href="/isc/inheritance" class="topic-button">
+                    Learn
+                </a>
+
+                <a href="/apcs/quiz?topic=Inheritance%20%26%20Polymorphism&amp;curriculum=ISC" class="topic-button">
+                    Practice
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="topic-card" data-keywords="interface abstract class abstract method implements multiple inheritance constants public static final">
+
+            <div class="topic-number">
+                06
+            </div>
+
+            <h3>
+                Interfaces &amp; Abstract Classes
+            </h3>
+
+            <p>
+                Abstract classes and methods, interfaces, implements, and when to use each.
+            </p>
+
+            <div class="topic-actions">
+
+                <a href="/isc/interfaces" class="topic-button">
+                    Learn
+                </a>
+
+                <a href="/apcs/quiz?topic=Interfaces%20%26%20Abstract%20Classes&amp;curriculum=ISC" class="topic-button">
+                    Practice
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="topic-card" data-keywords="data structures stack queue push pop enqueue dequeue overflow underflow lifo fifo circular queue deque linked list node">
+
+            <div class="topic-number">
+                07
+            </div>
+
+            <h3>
+                Stacks, Queues &amp; Linked Lists
+            </h3>
+
+            <p>
+                Array-based stacks and queues with overflow/underflow checks, and linked lists of nodes.
+            </p>
+
+            <div class="topic-actions">
+
+                <a href="/isc/data-structures" class="topic-button">
+                    Learn
+                </a>
+
+                <a href="/apcs/quiz?topic=Stacks%2C%20Queues%20%26%20Linked%20Lists&amp;curriculum=ISC" class="topic-button">
+                    Practice
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="topic-card" data-keywords="number date leap year day number binary conversion kaprekar smith practical paper digit sum prime factors">
+
+            <div class="topic-number">
+                08
+            </div>
+
+            <h3>
+                Number &amp; Date Programs
+            </h3>
+
+            <p>
+                Leap years, day numbers, base conversion, and Kaprekar and Smith number programs.
+            </p>
+
+            <div class="topic-actions">
+
+                <a href="/isc/number-date" class="topic-button">
+                    Learn
+                </a>
+
+                <a href="/apcs/quiz?topic=Number%20%26%20Date%20Programs&amp;curriculum=ISC" class="topic-button">
+                    Practice
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- NO RESULTS MESSAGE -->
+    <div id="noResultsMessage" class="no-results" style="display: none;">
+        <div class="no-results-icon">🔎</div>
+        <h3>No matching topics found</h3>
+        <p>No ISC Java topics matched "<span id="searchTermText" style="color:#ffffff; font-weight:600;"></span>". Try searching for <em>recursion</em>, <em>matrix</em>, <em>stack</em>, or <em>interface</em>.</p>
+        <button id="resetSearchBtn" class="reset-search-btn">Show All Topics</button>
+    </div>
+
+</main>
+
+
+<script>
+    const searchInput = document.getElementById('topicSearch');
+    const clearBtn = document.getElementById('clearSearch');
+    const cards = document.querySelectorAll('.topic-card');
+    const noResults = document.getElementById('noResultsMessage');
+    const searchTermSpan = document.getElementById('searchTermText');
+    const resetBtn = document.getElementById('resetSearchBtn');
+    const exploreBtn = document.getElementById('explorePracticeBtn');
+
+    if (exploreBtn) {
+        exploreBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const target = document.getElementById('topicsSection');
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+                setTimeout(() => {
+                    if (searchInput) searchInput.focus();
+                }, 400);
+            }
+        });
+    }
+
+    function filterTopics() {
+        const query = searchInput.value.toLowerCase().trim();
+        let matchCount = 0;
+
+        if (query.length > 0) {
+            clearBtn.style.display = 'flex';
+        } else {
+            clearBtn.style.display = 'none';
+        }
+
+        cards.forEach(card => {
+            const keywords = (card.getAttribute('data-keywords') || '').toLowerCase();
+            const cardText = card.innerText.toLowerCase();
+            const combined = keywords + ' ' + cardText;
+
+            if (query === '' || combined.includes(query)) {
+                card.style.display = 'flex';
+                matchCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        if (matchCount === 0 && query !== '') {
+            noResults.style.display = 'block';
+            searchTermSpan.textContent = query;
+        } else {
+            noResults.style.display = 'none';
+        }
+    }
+
+    if (searchInput) {
+        searchInput.addEventListener('input', filterTopics);
+    }
+
+    if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            filterTopics();
+            searchInput.focus();
+        });
+    }
+
+    if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            filterTopics();
+            searchInput.focus();
+        });
+    }
+
+    // Load actual student progress from completed quizzes
+    function updateCourseProgress() {
+        try {
+            const completedTopics = JSON.parse(localStorage.getItem('codecanvas_completed_topics') || '{}');
+            const totalModules = 8;
+            // Only count this course's topics (the cards on this page) that were passed (score >= 70%)
+            const pageTitles = new Set(Array.from(cards).map(c => c.querySelector('h3')?.textContent?.trim()));
+            const passedTopics = Object.entries(completedTopics)
+                .filter(([title, t]) => pageTitles.has(title) && t && t.passed === true)
+                .map(([, t]) => t);
+            const passedCount = passedTopics.length;
+            const pct = Math.round((passedCount / totalModules) * 100);
+
+            // Compute average accuracy on passed topics
+            let avgAccuracy = 0;
+            if (passedCount > 0) {
+                const totalPct = passedTopics.reduce((sum, t) => sum + (t.percentage || Math.round((t.bestScore / (t.total || 10)) * 100)), 0);
+                avgAccuracy = Math.round(totalPct / passedCount);
+            }
+
+            // Board grade projection (based on units mastered and accuracy)
+            let scoreTitle = 'TARGET: 100/100';
+            let scoreColor = '#cbd5e1';
+            let targetHint = `${passedCount}/8 Units Mastered`;
+
+            if (passedCount === 8 && avgAccuracy >= 90) {
+                scoreTitle = 'GRADE: 100/100 (DISTINCTION ★)';
+                scoreColor = '#fde047';
+                targetHint = '8/8 Units Mastered • Board Ready!';
+            } else if (passedCount >= 6) {
+                scoreTitle = 'GRADE: 90%+ (FIRST CLASS)';
+                scoreColor = '#6ee7b7';
+                targetHint = `${passedCount}/8 Units (${8 - passedCount} more for 100/100)`;
+            } else if (passedCount >= 4) {
+                scoreTitle = 'GRADE: 80%+ (STRONG PASS)';
+                scoreColor = '#a5b4fc';
+                targetHint = `${passedCount}/8 Units (${6 - passedCount} more for 90%+)`;
+            } else if (passedCount >= 1) {
+                scoreTitle = 'GRADE: IN PROGRESS';
+                scoreColor = '#93c5fd';
+                targetHint = `${passedCount}/8 Units (${4 - passedCount} more for 80%+)`;
+            }
+
+            const fillEl = document.getElementById('apcsProgressFill');
+            const numEl = document.getElementById('apcsProgressNumber');
+            const descEl = document.getElementById('apcsProgressDesc');
+            const scoreBadgeEl = document.getElementById('apcsScoreBadge');
+            const targetHintEl = document.getElementById('apcsTargetHint');
+
+            if (fillEl) fillEl.style.width = pct + '%';
+            if (numEl) numEl.textContent = pct + '%';
+            if (scoreBadgeEl) {
+                scoreBadgeEl.textContent = scoreTitle;
+                scoreBadgeEl.style.color = scoreColor;
+                scoreBadgeEl.style.borderColor = scoreColor + '66';
+                scoreBadgeEl.style.background = scoreColor + '1f';
+            }
+            if (targetHintEl) {
+                targetHintEl.textContent = targetHint;
+                targetHintEl.style.color = scoreColor;
+            }
+
+            if (descEl) {
+                if (passedCount === 0) {
+                    descEl.textContent = 'Pass your first ISC quiz with 7/10 (70%) or higher to unlock progress.';
+                } else if (passedCount < totalModules) {
+                    descEl.textContent = `${passedCount} of ${totalModules} units mastered (${avgAccuracy}% avg accuracy). Keep going!`;
+                } else {
+                    descEl.textContent = '🎉 All 8 ISC units mastered with passing scores! Board ready!';
+                }
+            }
+
+            // Mark topic cards with appropriate status
+            cards.forEach(card => {
+                const title = card.querySelector('h3')?.textContent?.trim();
+                const item = title ? completedTopics[title] : null;
+                if (item) {
+                    const numDiv = card.querySelector('.topic-number');
+                    if (numDiv) {
+                        const existingBadge = numDiv.querySelector('.status-badge');
+                        if (existingBadge) existingBadge.remove();
+
+                        const badge = document.createElement('span');
+                        badge.className = 'status-badge';
+                        badge.style.fontSize = '12px';
+                        badge.style.marginLeft = '8px';
+                        badge.style.padding = '2px 8px';
+                        badge.style.borderRadius = '999px';
+                        badge.style.fontWeight = '600';
+
+                        if (item.passed) {
+                            badge.style.background = 'rgba(34, 197, 94, 0.15)';
+                            badge.style.color = '#86efac';
+                            badge.style.border = '1px solid rgba(34, 197, 94, 0.3)';
+                            badge.textContent = `✓ Passed (${item.bestScore}/${item.total})`;
+                        } else {
+                            badge.style.background = 'rgba(245, 158, 11, 0.15)';
+                            badge.style.color = '#fcd34d';
+                            badge.style.border = '1px solid rgba(245, 158, 11, 0.3)';
+                            badge.textContent = `Review (${item.bestScore}/${item.total})`;
+                        }
+                        numDiv.appendChild(badge);
+                    }
+                }
+            });
+        } catch (e) {
+            console.error('Error updating ISC progress:', e);
+        }
+    }
+
+    updateCourseProgress();
+    document.addEventListener('codecanvas:progress', updateCourseProgress);
+    CodeCanvasApi.syncProgress();
+</script>
+</body>
+
+</html>

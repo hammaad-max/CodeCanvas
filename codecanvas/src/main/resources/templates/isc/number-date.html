@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}" href="/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number &amp; Date Programs | ISC Java | LoopLab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', Arial, Helvetica, sans-serif;
+            background:
+                    radial-gradient(
+                            circle at 80% 0%,
+                            rgba(99, 102, 241, 0.18),
+                            transparent 30%
+                    ),
+                    radial-gradient(
+                            circle at 0% 50%,
+                            rgba(124, 58, 237, 0.08),
+                            transparent 30%
+                    ),
+                    #080b14;
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            height: 72px;
+            padding: 0 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(8, 11, 20, 0.82);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            color: #ffffff;
+            text-decoration: none;
+            letter-spacing: -0.7px;
+        }
+
+        .logo span {
+            color: #818cf8;
+        }
+
+        .back {
+            color: #a1a1aa;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .back:hover {
+            color: #ffffff;
+        }
+
+        .container {
+            width: min(1000px, 90%);
+            margin: auto;
+            padding: 50px 0 80px;
+        }
+
+        .breadcrumb {
+            color: #71717a;
+            font-size: 13px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumb a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb a:hover {
+            color: #ffffff;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: rgba(129,140,248,0.12);
+            border: 1px solid rgba(129,140,248,0.25);
+            color: #a5b4fc;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 46px;
+            letter-spacing: -1.5px;
+            margin: 0 0 15px;
+            font-weight: 800;
+        }
+
+        .intro {
+            color: #94a3b8;
+            font-size: 17px;
+            line-height: 1.7;
+            max-width: 780px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+
+        .card p {
+            color: #94a3b8;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .concept {
+            padding: 22px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .concept h3 {
+            margin-top: 0;
+            font-size: 16px;
+            color: #e2e8f0;
+        }
+
+        .concept p {
+            margin-bottom: 0;
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        code {
+            color: #c4b5fd;
+            background: rgba(129,140,248,0.1);
+            padding: 3px 7px;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 13px;
+        }
+
+        .code-block {
+            background: #05070d;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 22px;
+            overflow-x: auto;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 14px;
+            line-height: 1.7;
+            margin: 16px 0;
+        }
+
+        .code-block pre {
+            margin: 0;
+        }
+
+        .quiz-button {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 13px 26px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6366f1, #7c3aed);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            box-shadow: 0 10px 25px rgba(99,102,241,0.3);
+            transition: all 0.2s ease;
+        }
+
+        .quiz-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(99,102,241,0.5);
+        }
+
+        @media(max-width: 768px) {
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 34px;
+            }
+            .card {
+                padding: 24px;
+            }
+        }
+
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .lesson-nav a {
+            flex: 1;
+            display: block;
+            padding: 18px 22px;
+            border-radius: 14px;
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #e2e8f0;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .lesson-nav a:hover {
+            border-color: rgba(129,140,248,0.45);
+            transform: translateY(-2px);
+        }
+
+        .lesson-nav .dir {
+            display: block;
+            color: #818cf8;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .lesson-nav .name {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .lesson-nav .next {
+            text-align: right;
+        }
+
+        @media(max-width: 768px) {
+            .lesson-nav {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <a href="/dashboard" class="logo">
+        <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Loop<span>Lab</span>
+    </a>
+    <a href="/isc" class="back">
+        ← Back to ISC Java
+    </a>
+</nav>
+
+<main class="container">
+
+    <div class="breadcrumb">
+        <a href="/dashboard">Dashboard</a>
+        <span>›</span>
+        <a href="/isc">ISC Java</a>
+        <span>›</span>
+        <span style="color: #e2e8f0;">Number &amp; Date Programs</span>
+    </div>
+
+    <div class="badge">
+        ISC COMPUTER SCIENCE • UNIT 8
+    </div>
+
+    <h1>Number &amp; Date Programs</h1>
+
+    <p class="intro">
+        The ISC practical paper almost always includes a number-based or date-based problem. These combine loops, methods and arrays: leap years, day numbers, base conversion and special numbers such as Kaprekar and Smith numbers.
+    </p>
+
+    <!-- KEY CONCEPTS -->
+    <div class="card">
+        <h2>Core Concepts &amp; Rules</h2>
+        <p>Essential rules and definitions for practical-paper problems:</p>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>Leap Year Rule</h3>
+                <p>Divisible by 4 and not by 100, <strong>or</strong> divisible by 400. So 2024 and 2000 are leap years, but 1900 is not.</p>
+            </div>
+            <div class="concept">
+                <h3>Day Number of a Date</h3>
+                <p>Add the days of all earlier months to the day of the month, using an array of month lengths and 29 for February in leap years.</p>
+            </div>
+            <div class="concept">
+                <h3>Decimal to Binary</h3>
+                <p>Divide by 2 repeatedly; the remainders, read from last to first, form the binary number. 25 → 11001.</p>
+            </div>
+            <div class="concept">
+                <h3>Kaprekar Number</h3>
+                <p>Split the square into a right part with as many digits as the number and a left part; if they add up to the number it is Kaprekar: 45² = 2025 and 20 + 25 = 45.</p>
+            </div>
+            <div class="concept">
+                <h3>Smith Number</h3>
+                <p>A composite number whose digit sum equals the sum of the digits of its prime factors: 666 = 2 × 3 × 3 × 37, and 6 + 6 + 6 = 2 + 3 + 3 + (3 + 7) = 18.</p>
+            </div>
+            <div class="concept">
+                <h3>Modular Approach</h3>
+                <p>Write one small method per idea (<code>isLeap</code>, <code>digitSum</code>, <code>toBinary</code>) and combine them. Examiners award marks for well-defined methods.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CODE PROGRAM -->
+    <div class="card">
+        <h2>Example Program</h2>
+        <p>This program combines five small methods: a leap year test, a day-number calculator, a decimal-to-binary converter, and Kaprekar and Smith number checks.</p>
+        <h3>Complete Java Program</h3>
+        <div class="code-block">
+<pre><code>public class NumberDate {
+
+    static boolean isLeap(int y) {
+        return (y % 4 == 0 &amp;&amp; y % 100 != 0) || y % 400 == 0;
+    }
+
+    // Day number (1-366) of a date within its year
+    static int dayNumber(int day, int month, int year) {
+        int[] days = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        if (isLeap(year)) {
+            days[1] = 29;
+        }
+        int total = day;
+        for (int i = 0; i &lt; month - 1; i++) {
+            total += days[i];
+        }
+        return total;
+    }
+
+    // Decimal to binary by repeated division by 2
+    static String toBinary(int n) {
+        String bin = "";
+        while (n &gt; 0) {
+            bin = (n % 2) + bin;
+            n /= 2;
+        }
+        return bin.isEmpty() ? "0" : bin;
+    }
+
+    // Kaprekar: 45 * 45 = 2025 and 20 + 25 = 45
+    static boolean isKaprekar(int n) {
+        int sq = n * n;
+        int digits = String.valueOf(n).length();
+        int divisor = (int) Math.pow(10, digits);
+        return sq / divisor + sq % divisor == n;
+    }
+
+    static int digitSum(int n) {
+        int s = 0;
+        while (n &gt; 0) {
+            s += n % 10;
+            n /= 10;
+        }
+        return s;
+    }
+
+    // Smith: composite, and digit sum equals digit sum of prime factors
+    static boolean isSmith(int n) {
+        int factorDigits = 0, factorCount = 0, m = n;
+        for (int f = 2; f &lt;= m; f++) {
+            while (m % f == 0) {
+                factorDigits += digitSum(f);
+                factorCount++;
+                m /= f;
+            }
+        }
+        return factorCount &gt; 1 &amp;&amp; factorDigits == digitSum(n);
+    }
+
+    public static void main(String[] args) {
+        System.out.println("2024 is leap: " + isLeap(2024) + ", 1900 is leap: " + isLeap(1900));
+        System.out.println("1 March 2024 is day " + dayNumber(1, 3, 2024));
+        System.out.println("25 in binary: " + toBinary(25));
+        System.out.println("45 is Kaprekar: " + isKaprekar(45));
+        System.out.println("666 is Smith: " + isSmith(666));
+    }
+}</code></pre>
+        </div>
+    </div>
+
+    <!-- STRUCTURE -->
+    <div class="card">
+        <h2>Understanding the Program Structure</h2>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>1. One Method per Task</h3>
+                <p>Each method does one job and returns a value, so <code>main</code> reads like a list of questions and answers.</p>
+            </div>
+            <div class="concept">
+                <h3>2. Methods Calling Methods</h3>
+                <p><code>dayNumber</code> uses <code>isLeap</code>, and <code>isSmith</code> uses <code>digitSum</code>, which is the modular style ISC expects.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- EXECUTION TRACE -->
+    <div class="card">
+        <h2>How Does Java Execute This Program?</h2>
+        <p>Execution trace showing the order in which statements run and how values change:</p>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>Step 1</h3>
+                <p><code>isLeap(2024)</code>: divisible by 4 and not by 100, so true. <code>isLeap(1900)</code>: divisible by 100 but not by 400, so false.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 2</h3>
+                <p><code>dayNumber(1, 3, 2024)</code>: February has 29 days in 2024, so 31 + 29 + 1 = 61.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 3</h3>
+                <p><code>toBinary(25)</code>: remainders 1, 0, 0, 1, 1 are each placed in front, giving "11001". <code>isKaprekar(45)</code>: 2025 / 100 + 2025 % 100 = 20 + 25 = 45.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 4</h3>
+                <p><code>isSmith(666)</code>: the factor loop finds 2, 3, 3 and 37 (digit sums 2 + 3 + 3 + 10 = 18), which equals the digit sum of 666, and there is more than one factor.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- LINE BY LINE -->
+    <div class="card">
+        <h2>Line-by-Line Explanation</h2>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 4 — Leap year condition</h3>
+            <div class="code-block"><pre><code>return (y % 4 == 0 &amp;&amp; y % 100 != 0) || y % 400 == 0;</code></pre></div>
+            <p><code>&amp;&amp;</code> binds tighter than <code>||</code>, but the brackets make the century rule clear to the reader.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 14 — Adding earlier months</h3>
+            <div class="code-block"><pre><code>for (int i = 0; i &lt; month - 1; i++) {</code></pre></div>
+            <p>For March (month 3) the loop adds only <code>days[0]</code> and <code>days[1]</code>, January and February.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 24 — Building binary digits</h3>
+            <div class="code-block"><pre><code>bin = (n % 2) + bin;</code></pre></div>
+            <p>Each new remainder goes on the <em>left</em>, because the last remainder is the most significant bit.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 35 — Splitting the square</h3>
+            <div class="code-block"><pre><code>return sq / divisor + sq % divisor == n;</code></pre></div>
+            <p>With <code>divisor = 100</code>, <code>2025 / 100</code> is the left part (20) and <code>2025 % 100</code> the right part (25).</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 51 — Prime factorisation</h3>
+            <div class="code-block"><pre><code>while (m % f == 0) {</code></pre></div>
+            <p>Dividing out each factor as many times as it appears means only prime factors are ever found.</p>
+        </div>
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="card">
+        <h2>Expected Console Output</h2>
+        <div class="code-block">
+<pre><code>2024 is leap: true, 1900 is leap: false
+1 March 2024 is day 61
+25 in binary: 11001
+45 is Kaprekar: true
+666 is Smith: true</code></pre>
+        </div>
+        <p>Every line is produced by calling a method and joining its return value into the output text, so each method can be tested on its own.</p>
+    </div>
+
+    <!-- EXAM TIPS -->
+    <div class="card">
+        <h2>ISC Board Exam Tips &amp; Common Traps</h2>
+        <p>Keep these frequent exam traps in mind:</p>
+        <div class="concept-grid">
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Century Years</h3>
+                <p>Simply checking <code>y % 4 == 0</code> wrongly treats 1900 as a leap year. Always apply the 100 and 400 rules.</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Primes Are Not Smith</h3>
+                <p>A prime number trivially matches its own digit sum, but Smith numbers must be composite. That is why the code checks <code>factorCount &gt; 1</code>.</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Validate Input</h3>
+                <p>Practical papers award marks for rejecting invalid input, such as month 13 or day 31 in April, with a clear message.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRACTICE CTA -->
+    <div class="card" style="text-align: center; padding: 45px 30px;">
+        <h2>Ready to Test Your Knowledge?</h2>
+        <p style="max-width: 550px; margin: 10px auto 25px;">
+            Test your understanding with instant feedback, randomized questions, and step-by-step explanations.
+        </p>
+        <a href="/apcs/quiz?topic=Number%20%26%20Date%20Programs&amp;curriculum=ISC" class="quiz-button">
+            Start Practice →
+        </a>
+    </div>
+
+    <!-- PREVIOUS / NEXT LESSON -->
+    <nav class="lesson-nav" aria-label="Lesson navigation">
+        <a href="/isc/data-structures" class="prev">
+            <span class="dir">← PREVIOUS</span>
+            <span class="name">Stacks, Queues &amp; Linked Lists</span>
+        </a>
+        <a href="/isc/exam" class="next">
+            <span class="dir">NEXT →</span>
+            <span class="name">ISC Java Mock Exam</span>
+        </a>
+    </nav>
+
+</main>
+
+</body>
+</html>

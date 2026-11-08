@@ -77,6 +77,12 @@ public class QuestionController {
         return issue("ICSE", questionService.getIcseMockExam(clamp(questionsPerTopic)), session);
     }
 
+    @GetMapping("/api/exam/isc")
+    public List<QuestionView> getIscMockExam(
+            @RequestParam(defaultValue = "5") int questionsPerTopic, HttpSession session) {
+        return issue("ISC", questionService.getIscMockExam(clamp(questionsPerTopic)), session);
+    }
+
     /** Check a single quiz answer (immediate feedback, not stored). Body: {"answer": "..."} */
     @PostMapping("/api/questions/{id}/check")
     public ResponseEntity<AnswerResult> checkAnswer(

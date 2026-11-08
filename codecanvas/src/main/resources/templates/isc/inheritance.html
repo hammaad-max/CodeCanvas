@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}" href="/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inheritance &amp; Polymorphism | ISC Java | LoopLab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', Arial, Helvetica, sans-serif;
+            background:
+                    radial-gradient(
+                            circle at 80% 0%,
+                            rgba(99, 102, 241, 0.18),
+                            transparent 30%
+                    ),
+                    radial-gradient(
+                            circle at 0% 50%,
+                            rgba(124, 58, 237, 0.08),
+                            transparent 30%
+                    ),
+                    #080b14;
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            height: 72px;
+            padding: 0 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(8, 11, 20, 0.82);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            color: #ffffff;
+            text-decoration: none;
+            letter-spacing: -0.7px;
+        }
+
+        .logo span {
+            color: #818cf8;
+        }
+
+        .back {
+            color: #a1a1aa;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .back:hover {
+            color: #ffffff;
+        }
+
+        .container {
+            width: min(1000px, 90%);
+            margin: auto;
+            padding: 50px 0 80px;
+        }
+
+        .breadcrumb {
+            color: #71717a;
+            font-size: 13px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumb a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb a:hover {
+            color: #ffffff;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: rgba(129,140,248,0.12);
+            border: 1px solid rgba(129,140,248,0.25);
+            color: #a5b4fc;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 46px;
+            letter-spacing: -1.5px;
+            margin: 0 0 15px;
+            font-weight: 800;
+        }
+
+        .intro {
+            color: #94a3b8;
+            font-size: 17px;
+            line-height: 1.7;
+            max-width: 780px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+
+        .card p {
+            color: #94a3b8;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .concept {
+            padding: 22px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .concept h3 {
+            margin-top: 0;
+            font-size: 16px;
+            color: #e2e8f0;
+        }
+
+        .concept p {
+            margin-bottom: 0;
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        code {
+            color: #c4b5fd;
+            background: rgba(129,140,248,0.1);
+            padding: 3px 7px;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 13px;
+        }
+
+        .code-block {
+            background: #05070d;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 22px;
+            overflow-x: auto;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 14px;
+            line-height: 1.7;
+            margin: 16px 0;
+        }
+
+        .code-block pre {
+            margin: 0;
+        }
+
+        .quiz-button {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 13px 26px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6366f1, #7c3aed);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            box-shadow: 0 10px 25px rgba(99,102,241,0.3);
+            transition: all 0.2s ease;
+        }
+
+        .quiz-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(99,102,241,0.5);
+        }
+
+        @media(max-width: 768px) {
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 34px;
+            }
+            .card {
+                padding: 24px;
+            }
+        }
+
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .lesson-nav a {
+            flex: 1;
+            display: block;
+            padding: 18px 22px;
+            border-radius: 14px;
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #e2e8f0;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .lesson-nav a:hover {
+            border-color: rgba(129,140,248,0.45);
+            transform: translateY(-2px);
+        }
+
+        .lesson-nav .dir {
+            display: block;
+            color: #818cf8;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .lesson-nav .name {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .lesson-nav .next {
+            text-align: right;
+        }
+
+        @media(max-width: 768px) {
+            .lesson-nav {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <a href="/dashboard" class="logo">
+        <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Loop<span>Lab</span>
+    </a>
+    <a href="/isc" class="back">
+        ← Back to ISC Java
+    </a>
+</nav>
+
+<main class="container">
+
+    <div class="breadcrumb">
+        <a href="/dashboard">Dashboard</a>
+        <span>›</span>
+        <a href="/isc">ISC Java</a>
+        <span>›</span>
+        <span style="color: #e2e8f0;">Inheritance &amp; Polymorphism</span>
+    </div>
+
+    <div class="badge">
+        ISC COMPUTER SCIENCE • UNIT 5
+    </div>
+
+    <h1>Inheritance &amp; Polymorphism</h1>
+
+    <p class="intro">
+        Inheritance lets a subclass reuse and extend a superclass. Combined with method overriding it gives run-time polymorphism: one superclass reference can call the right version of a method for whatever object it points to. ISC regularly asks for a superclass and subclass program in Section C.
+    </p>
+
+    <!-- KEY CONCEPTS -->
+    <div class="card">
+        <h2>Core Concepts &amp; Rules</h2>
+        <p>Essential rules for inheritance questions:</p>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>extends</h3>
+                <p><code>class Rectangle extends Shape</code> makes Rectangle a subclass. It inherits all non-private members of Shape. Java supports single inheritance of classes only.</p>
+            </div>
+            <div class="concept">
+                <h3>super Keyword</h3>
+                <p><code>super(...)</code> calls the superclass constructor and must be the first statement. <code>super.method()</code> calls the superclass version of an overridden method.</p>
+            </div>
+            <div class="concept">
+                <h3>Method Overriding</h3>
+                <p>A subclass method with the <em>same signature</em> as a superclass method replaces it for subclass objects. <code>@Override</code> asks the compiler to check this.</p>
+            </div>
+            <div class="concept">
+                <h3>Overloading vs Overriding</h3>
+                <p>Overloading: same name, different parameters, same class, decided at compile time. Overriding: same signature, subclass, decided at run time.</p>
+            </div>
+            <div class="concept">
+                <h3>Dynamic Method Dispatch</h3>
+                <p>With <code>Shape s = new Circle(2);</code>, calling <code>s.area()</code> runs <code>Circle</code>'s <code>area()</code>, because the <em>object's</em> type decides at run time.</p>
+            </div>
+            <div class="concept">
+                <h3>protected and instanceof</h3>
+                <p><code>protected</code> members are visible in subclasses. <code>obj instanceof Type</code> tests whether an object is of a type or one of its subtypes.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CODE PROGRAM -->
+    <div class="card">
+        <h2>Example Program</h2>
+        <p>This program defines a <code>Shape</code> superclass and two subclasses that override <code>area()</code>, then processes them through an array of superclass references.</p>
+        <h3>Complete Java Program</h3>
+        <div class="code-block">
+<pre><code>class Shape {
+    protected String name;
+
+    Shape(String name) {
+        this.name = name;
+    }
+
+    double area() {
+        return 0.0;
+    }
+
+    void describe() {
+        System.out.println(name + " with area " + area());
+    }
+}
+
+class Rectangle extends Shape {
+    private double length, breadth;
+
+    Rectangle(double length, double breadth) {
+        super("Rectangle");              // must be the first statement
+        this.length = length;
+        this.breadth = breadth;
+    }
+
+    @Override
+    double area() {
+        return length * breadth;
+    }
+}
+
+class Circle extends Shape {
+    private double radius;
+
+    Circle(double radius) {
+        super("Circle");
+        this.radius = radius;
+    }
+
+    @Override
+    double area() {
+        return 3.14 * radius * radius;
+    }
+}
+
+public class ShapeTest {
+    public static void main(String[] args) {
+        Shape[] shapes = { new Rectangle(4, 5), new Circle(2), new Shape("Blank") };
+        for (Shape s : shapes) {
+            s.describe();                // each object's own area() runs
+        }
+        Shape s = new Circle(1);
+        System.out.println(s instanceof Circle);
+        System.out.println(s instanceof Shape);
+    }
+}</code></pre>
+        </div>
+    </div>
+
+    <!-- STRUCTURE -->
+    <div class="card">
+        <h2>Understanding the Program Structure</h2>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>1. A Class Hierarchy</h3>
+                <p><code>Shape</code> holds what every shape shares (a name and <code>describe()</code>). <code>Rectangle</code> and <code>Circle</code> add their own data and override <code>area()</code>.</p>
+            </div>
+            <div class="concept">
+                <h3>2. Superclass References</h3>
+                <p>The array has type <code>Shape[]</code> but stores subclass objects. This is legal because a Rectangle <em>is a</em> Shape.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- EXECUTION TRACE -->
+    <div class="card">
+        <h2>How Does Java Execute This Program?</h2>
+        <p>Execution trace showing the order in which statements run and how values change:</p>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>Step 1</h3>
+                <p><code>new Rectangle(4, 5)</code> first runs <code>super("Rectangle")</code> to set the name, then stores length and breadth. <code>Circle(2)</code> works the same way.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 2</h3>
+                <p>The loop calls <code>describe()</code>, which is only written in <code>Shape</code>, on every element.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 3</h3>
+                <p>Inside <code>describe()</code>, the call <code>area()</code> is dispatched at run time: Rectangle gives 20.0, Circle gives 12.56, and the plain Shape gives 0.0.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 4</h3>
+                <p><code>s</code> refers to a Circle, so it is an instance of both <code>Circle</code> and its superclass <code>Shape</code>.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- LINE BY LINE -->
+    <div class="card">
+        <h2>Line-by-Line Explanation</h2>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 17 — Inheriting from a superclass</h3>
+            <div class="code-block"><pre><code>class Rectangle extends Shape {</code></pre></div>
+            <p>Rectangle automatically has <code>name</code> and <code>describe()</code> without redeclaring them.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 21 — Calling the superclass constructor</h3>
+            <div class="code-block"><pre><code>super("Rectangle");              // must be the first statement</code></pre></div>
+            <p>Constructors are not inherited, so the subclass constructor passes the name up to <code>Shape</code>'s constructor.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 26 — Overriding a method</h3>
+            <div class="code-block"><pre><code>@Override</code></pre></div>
+            <p>The annotation makes the compiler confirm that a matching superclass method exists, which catches spelling mistakes in the signature.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 50 — Polymorphic call</h3>
+            <div class="code-block"><pre><code>s.describe();                // each object's own area() runs</code></pre></div>
+            <p>The same line of code produces different results for each element, depending on the actual object.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 53 — Type testing</h3>
+            <div class="code-block"><pre><code>System.out.println(s instanceof Circle);</code></pre></div>
+            <p><code>instanceof</code> checks the object, not the reference variable, so it is true even though <code>s</code> is declared as a <code>Shape</code>.</p>
+        </div>
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="card">
+        <h2>Expected Console Output</h2>
+        <div class="code-block">
+<pre><code>Rectangle with area 20.0
+Circle with area 12.56
+Blank with area 0.0
+true
+true</code></pre>
+        </div>
+        <p><code>describe()</code> exists only in <code>Shape</code>, yet it prints the correct area for each subclass. That is dynamic method dispatch in action.</p>
+    </div>
+
+    <!-- EXAM TIPS -->
+    <div class="card">
+        <h2>ISC Board Exam Tips &amp; Common Traps</h2>
+        <p>Keep these frequent exam traps in mind:</p>
+        <div class="concept-grid">
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Reference Type Limits</h3>
+                <p>Through a <code>Shape</code> reference you can only call methods that <code>Shape</code> declares. Subclass-only methods need a cast: <code>((Circle) s).method()</code>.</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Private Members</h3>
+                <p>Private members of the superclass are not accessible in the subclass, even though they exist in the object. Use <code>protected</code> or a getter.</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Static Methods</h3>
+                <p>Static methods are not overridden (they are hidden), so dynamic dispatch does not apply to them.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRACTICE CTA -->
+    <div class="card" style="text-align: center; padding: 45px 30px;">
+        <h2>Ready to Test Your Knowledge?</h2>
+        <p style="max-width: 550px; margin: 10px auto 25px;">
+            Test your understanding with instant feedback, randomized questions, and step-by-step explanations.
+        </p>
+        <a href="/apcs/quiz?topic=Inheritance%20%26%20Polymorphism&amp;curriculum=ISC" class="quiz-button">
+            Start Practice →
+        </a>
+    </div>
+
+    <!-- PREVIOUS / NEXT LESSON -->
+    <nav class="lesson-nav" aria-label="Lesson navigation">
+        <a href="/isc/recursion" class="prev">
+            <span class="dir">← PREVIOUS</span>
+            <span class="name">Recursion</span>
+        </a>
+        <a href="/isc/interfaces" class="next">
+            <span class="dir">NEXT →</span>
+            <span class="name">Interfaces &amp; Abstract Classes</span>
+        </a>
+    </nav>
+
+</main>
+
+</body>
+</html>

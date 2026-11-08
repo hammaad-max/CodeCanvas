@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}" href="/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recursion | ISC Java | LoopLab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', Arial, Helvetica, sans-serif;
+            background:
+                    radial-gradient(
+                            circle at 80% 0%,
+                            rgba(99, 102, 241, 0.18),
+                            transparent 30%
+                    ),
+                    radial-gradient(
+                            circle at 0% 50%,
+                            rgba(124, 58, 237, 0.08),
+                            transparent 30%
+                    ),
+                    #080b14;
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            height: 72px;
+            padding: 0 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(8, 11, 20, 0.82);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            color: #ffffff;
+            text-decoration: none;
+            letter-spacing: -0.7px;
+        }
+
+        .logo span {
+            color: #818cf8;
+        }
+
+        .back {
+            color: #a1a1aa;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .back:hover {
+            color: #ffffff;
+        }
+
+        .container {
+            width: min(1000px, 90%);
+            margin: auto;
+            padding: 50px 0 80px;
+        }
+
+        .breadcrumb {
+            color: #71717a;
+            font-size: 13px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumb a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb a:hover {
+            color: #ffffff;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: rgba(129,140,248,0.12);
+            border: 1px solid rgba(129,140,248,0.25);
+            color: #a5b4fc;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 46px;
+            letter-spacing: -1.5px;
+            margin: 0 0 15px;
+            font-weight: 800;
+        }
+
+        .intro {
+            color: #94a3b8;
+            font-size: 17px;
+            line-height: 1.7;
+            max-width: 780px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+
+        .card p {
+            color: #94a3b8;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .concept {
+            padding: 22px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .concept h3 {
+            margin-top: 0;
+            font-size: 16px;
+            color: #e2e8f0;
+        }
+
+        .concept p {
+            margin-bottom: 0;
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        code {
+            color: #c4b5fd;
+            background: rgba(129,140,248,0.1);
+            padding: 3px 7px;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 13px;
+        }
+
+        .code-block {
+            background: #05070d;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 22px;
+            overflow-x: auto;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 14px;
+            line-height: 1.7;
+            margin: 16px 0;
+        }
+
+        .code-block pre {
+            margin: 0;
+        }
+
+        .quiz-button {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 13px 26px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6366f1, #7c3aed);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            box-shadow: 0 10px 25px rgba(99,102,241,0.3);
+            transition: all 0.2s ease;
+        }
+
+        .quiz-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(99,102,241,0.5);
+        }
+
+        @media(max-width: 768px) {
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 34px;
+            }
+            .card {
+                padding: 24px;
+            }
+        }
+
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .lesson-nav a {
+            flex: 1;
+            display: block;
+            padding: 18px 22px;
+            border-radius: 14px;
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #e2e8f0;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .lesson-nav a:hover {
+            border-color: rgba(129,140,248,0.45);
+            transform: translateY(-2px);
+        }
+
+        .lesson-nav .dir {
+            display: block;
+            color: #818cf8;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .lesson-nav .name {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .lesson-nav .next {
+            text-align: right;
+        }
+
+        @media(max-width: 768px) {
+            .lesson-nav {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <a href="/dashboard" class="logo">
+        <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Loop<span>Lab</span>
+    </a>
+    <a href="/isc" class="back">
+        ← Back to ISC Java
+    </a>
+</nav>
+
+<main class="container">
+
+    <div class="breadcrumb">
+        <a href="/dashboard">Dashboard</a>
+        <span>›</span>
+        <a href="/isc">ISC Java</a>
+        <span>›</span>
+        <span style="color: #e2e8f0;">Recursion</span>
+    </div>
+
+    <div class="badge">
+        ISC COMPUTER SCIENCE • UNIT 4
+    </div>
+
+    <h1>Recursion</h1>
+
+    <p class="intro">
+        A recursive method solves a problem by calling itself on a smaller version of the same problem. ISC asks you to write recursive methods and, very often, to trace them by hand and give the output.
+    </p>
+
+    <!-- KEY CONCEPTS -->
+    <div class="card">
+        <h2>Core Concepts &amp; Rules</h2>
+        <p>Essential ideas for writing and tracing recursion:</p>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>Base Case</h3>
+                <p>The condition where the method returns an answer directly without calling itself. Without it, recursion never stops and causes <code>StackOverflowError</code>.</p>
+            </div>
+            <div class="concept">
+                <h3>Recursive Case</h3>
+                <p>The method calls itself with a smaller input (e.g. <code>n - 1</code> or <code>n / 10</code>) so that the base case is eventually reached.</p>
+            </div>
+            <div class="concept">
+                <h3>The Call Stack</h3>
+                <p>Each call waits on the stack until the call it made returns. Results are then combined in reverse order as the calls "unwind".</p>
+            </div>
+            <div class="concept">
+                <h3>Tracing</h3>
+                <p>Write each call on its own line with its argument, go down to the base case, then work back up substituting returned values: <code>fact(3) = 3 * fact(2) = 3 * 2 * fact(1) = 6</code>.</p>
+            </div>
+            <div class="concept">
+                <h3>Recursion vs Iteration</h3>
+                <p>Any loop can be written recursively and vice versa. Recursion is often shorter and clearer; loops use less memory.</p>
+            </div>
+            <div class="concept">
+                <h3>Classic Examples</h3>
+                <p>Factorial, Fibonacci, sum or reverse of digits, GCD (Euclid), power, binary search, string reversal and palindrome checks.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CODE PROGRAM -->
+    <div class="card">
+        <h2>Example Program</h2>
+        <p>This program contains five classic recursive methods: factorial, Fibonacci, sum of digits, string reversal and GCD.</p>
+        <h3>Complete Java Program</h3>
+        <div class="code-block">
+<pre><code>public class RecursionDemo {
+
+    // n! = n * (n-1)!, with 1! = 1 as the base case
+    static long factorial(int n) {
+        if (n &lt;= 1) {
+            return 1;                    // base case stops the recursion
+        }
+        return n * factorial(n - 1);     // recursive case
+    }
+
+    // nth Fibonacci term: 0, 1, 1, 2, 3, 5, 8, 13, ...
+    static int fib(int n) {
+        if (n &lt;= 1) {
+            return n;
+        }
+        return fib(n - 1) + fib(n - 2);
+    }
+
+    // Sum of digits, e.g. 4721 -&gt; 4 + 7 + 2 + 1
+    static int digitSum(int n) {
+        if (n == 0) {
+            return 0;
+        }
+        return n % 10 + digitSum(n / 10);
+    }
+
+    // Reverse a string recursively
+    static String reverse(String s) {
+        if (s.length() &lt;= 1) {
+            return s;
+        }
+        return reverse(s.substring(1)) + s.charAt(0);
+    }
+
+    // GCD by Euclid's algorithm
+    static int gcd(int a, int b) {
+        return (b == 0) ? a : gcd(b, a % b);
+    }
+
+    public static void main(String[] args) {
+        System.out.println("5! = " + factorial(5));
+        System.out.println("fib(7) = " + fib(7));
+        System.out.println("digitSum(4721) = " + digitSum(4721));
+        System.out.println("reverse(\"ISC\") = " + reverse("ISC"));
+        System.out.println("gcd(48, 18) = " + gcd(48, 18));
+    }
+}</code></pre>
+        </div>
+    </div>
+
+    <!-- STRUCTURE -->
+    <div class="card">
+        <h2>Understanding the Program Structure</h2>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>1. Each Method Has Two Parts</h3>
+                <p>Every method starts with a base case (<code>if ... return</code>) and ends with a recursive call on a smaller input.</p>
+            </div>
+            <div class="concept">
+                <h3>2. Called from main</h3>
+                <p><code>main</code> makes one call to each method; all the further calls happen inside the methods themselves.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- EXECUTION TRACE -->
+    <div class="card">
+        <h2>How Does Java Execute This Program?</h2>
+        <p>Execution trace showing the order in which statements run and how values change:</p>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>Step 1</h3>
+                <p><code>factorial(5)</code> calls <code>factorial(4)</code>, ... down to <code>factorial(1)</code>, which returns 1. Unwinding gives 2, 6, 24 and finally 120.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 2</h3>
+                <p><code>fib(7)</code> branches into <code>fib(6) + fib(5)</code> and so on until <code>fib(1)</code> and <code>fib(0)</code>; the results add up to 13.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 3</h3>
+                <p><code>digitSum(4721)</code> becomes <code>1 + digitSum(472)</code> = 1 + 2 + 7 + 4 + 0 = 14.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 4</h3>
+                <p><code>reverse("ISC")</code> = <code>reverse("SC") + 'I'</code> = "CS" + "I" = "CSI". <code>gcd(48, 18)</code> → <code>gcd(18, 12)</code> → <code>gcd(12, 6)</code> → <code>gcd(6, 0)</code> = 6.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- LINE BY LINE -->
+    <div class="card">
+        <h2>Line-by-Line Explanation</h2>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 5 — The base case</h3>
+            <div class="code-block"><pre><code>if (n &lt;= 1) {</code></pre></div>
+            <p>When <code>n</code> reaches 1 (or 0), the method returns 1 without recursing, which stops the chain of calls.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 8 — The recursive call</h3>
+            <div class="code-block"><pre><code>return n * factorial(n - 1);     // recursive case</code></pre></div>
+            <p>The multiplication cannot happen until <code>factorial(n - 1)</code> returns, so each call waits on the stack.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 16 — Two recursive calls</h3>
+            <div class="code-block"><pre><code>return fib(n - 1) + fib(n - 2);</code></pre></div>
+            <p>Each call makes two more, so the number of calls grows very quickly. This is why recursive Fibonacci is slow for large <code>n</code>.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 32 — Shrinking a String</h3>
+            <div class="code-block"><pre><code>return reverse(s.substring(1)) + s.charAt(0);</code></pre></div>
+            <p>The rest of the string is reversed first, and the first character is attached at the end.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 37 — Recursion with the ternary operator</h3>
+            <div class="code-block"><pre><code>return (b == 0) ? a : gcd(b, a % b);</code></pre></div>
+            <p>Euclid's rule: gcd(a, b) = gcd(b, a mod b), and gcd(a, 0) = a. The second argument shrinks every call.</p>
+        </div>
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="card">
+        <h2>Expected Console Output</h2>
+        <div class="code-block">
+<pre><code>5! = 120
+fib(7) = 13
+digitSum(4721) = 14
+reverse("ISC") = CSI
+gcd(48, 18) = 6</code></pre>
+        </div>
+        <p>Each result is built while the calls return, not while they are made. Tracing on paper in two passes (down to the base case, then back up) avoids mistakes.</p>
+    </div>
+
+    <!-- EXAM TIPS -->
+    <div class="card">
+        <h2>ISC Board Exam Tips &amp; Common Traps</h2>
+        <p>Keep these frequent exam traps in mind:</p>
+        <div class="concept-grid">
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Missing or Wrong Base Case</h3>
+                <p>If the base case can never be reached (for example <code>n == 1</code> when called with 0), the method recurses forever and throws <code>StackOverflowError</code>.</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Order of Printing</h3>
+                <p>In a method that prints <em>after</em> its recursive call, output appears in reverse order. Check where the print statement is before tracing.</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 long for Factorials</h3>
+                <p>Factorials grow fast: 13! no longer fits in an <code>int</code>. Use <code>long</code> for results above 12!.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRACTICE CTA -->
+    <div class="card" style="text-align: center; padding: 45px 30px;">
+        <h2>Ready to Test Your Knowledge?</h2>
+        <p style="max-width: 550px; margin: 10px auto 25px;">
+            Test your understanding with instant feedback, randomized questions, and step-by-step explanations.
+        </p>
+        <a href="/apcs/quiz?topic=Recursion&amp;curriculum=ISC" class="quiz-button">
+            Start Practice →
+        </a>
+    </div>
+
+    <!-- PREVIOUS / NEXT LESSON -->
+    <nav class="lesson-nav" aria-label="Lesson navigation">
+        <a href="/isc/matrices" class="prev">
+            <span class="dir">← PREVIOUS</span>
+            <span class="name">2D Arrays &amp; Matrices</span>
+        </a>
+        <a href="/isc/inheritance" class="next">
+            <span class="dir">NEXT →</span>
+            <span class="name">Inheritance &amp; Polymorphism</span>
+        </a>
+    </nav>
+
+</main>
+
+</body>
+</html>

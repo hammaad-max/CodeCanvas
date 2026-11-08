@@ -1,13 +1,32 @@
 package com.hammaad.codecanvas.controller;
 
+import com.hammaad.codecanvas.security.StudentPrincipal;
+import com.hammaad.codecanvas.service.StudentService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @Controller
 public class HomeController {
 
+    private final StudentService studentService;
+
+    public HomeController(StudentService studentService) {
+        this.studentService = studentService;
+    }
+
     @GetMapping("/dashboard")
-    public String dashboard() {
+    public String dashboard(@AuthenticationPrincipal StudentPrincipal principal, Model model) {
+        // Accounts created before email was required are asked to add one (needed for password reset)
+        model.addAttribute("needsEmail", principal != null
+                && studentService.get(principal.getStudentId()).getEmail() == null);
         return "dashboard";
     }
 
@@ -92,9 +111,55 @@ public class HomeController {
         return "exam";
     }
 
-    // ICSE Java Complete Curriculum Learning & Concept Guides
+    // Old tabbed ICSE guide (/icse/learn?unit=N) now lives on one page per unit; keep old links working
     @GetMapping("/icse/learn")
-    public String icseLearn() {
-        return "icse-learn";
+    public String icseLearn(@RequestParam(required = false) Integer unit) {
+        int index = unit == null ? 0 : unit - 1;
+        if (index < 0 || index >= ICSE_LESSONS.size()) {
+            return "redirect:/icse";
+        }
+        return "redirect:/icse/" + ICSE_LESSONS.get(index);
     }
+
+    // ICSE lesson pages (one per syllabus unit), styled like the AP CS lessons
+    @GetMapping("/icse/{slug}")
+    public String icseLesson(@PathVariable String slug) {
+        return lesson("icse", ICSE_LESSONS, slug);
+    }
+
+    // ISC Java (Class 11 & 12) Curriculum Hub
+    @GetMapping("/isc")
+    public String isc() {
+        return "isc";
+    }
+
+    // Timed ISC Java Mock Exam (shares the exam page; it detects the curriculum from the URL)
+    @GetMapping("/isc/exam")
+    public String iscExam() {
+        return "exam";
+    }
+
+    // ISC lesson pages (one per syllabus unit)
+    @GetMapping("/isc/{slug}")
+    public String iscLesson(@PathVariable String slug) {
+        return lesson("isc", ISC_LESSONS, slug);
+    }
+
+    /** Only known lesson slugs map to templates; anything else is a 404. */
+    private static String lesson(String folder, List<String> slugs, String slug) {
+        if (!slugs.contains(slug)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        return folder + "/" + slug;
+    }
+
+    /** ICSE units in syllabus order (index + 1 = unit number). */
+    static final List<String> ICSE_LESSONS = List.of(
+            "oop-fundamentals", "operators", "conditionals", "loops",
+            "number-programs", "strings", "methods", "arrays");
+
+    /** ISC units in syllabus order. */
+    static final List<String> ISC_LESSONS = List.of(
+            "classes-objects", "strings", "matrices", "recursion",
+            "inheritance", "interfaces", "data-structures", "number-date");
 }

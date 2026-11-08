@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}" href="/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User-Defined Methods &amp; Overloading | ICSE Java | LoopLab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', Arial, Helvetica, sans-serif;
+            background:
+                    radial-gradient(
+                            circle at 80% 0%,
+                            rgba(99, 102, 241, 0.18),
+                            transparent 30%
+                    ),
+                    radial-gradient(
+                            circle at 0% 50%,
+                            rgba(124, 58, 237, 0.08),
+                            transparent 30%
+                    ),
+                    #080b14;
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            height: 72px;
+            padding: 0 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(8, 11, 20, 0.82);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            color: #ffffff;
+            text-decoration: none;
+            letter-spacing: -0.7px;
+        }
+
+        .logo span {
+            color: #818cf8;
+        }
+
+        .back {
+            color: #a1a1aa;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .back:hover {
+            color: #ffffff;
+        }
+
+        .container {
+            width: min(1000px, 90%);
+            margin: auto;
+            padding: 50px 0 80px;
+        }
+
+        .breadcrumb {
+            color: #71717a;
+            font-size: 13px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumb a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb a:hover {
+            color: #ffffff;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: rgba(129,140,248,0.12);
+            border: 1px solid rgba(129,140,248,0.25);
+            color: #a5b4fc;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 46px;
+            letter-spacing: -1.5px;
+            margin: 0 0 15px;
+            font-weight: 800;
+        }
+
+        .intro {
+            color: #94a3b8;
+            font-size: 17px;
+            line-height: 1.7;
+            max-width: 780px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+
+        .card p {
+            color: #94a3b8;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .concept {
+            padding: 22px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .concept h3 {
+            margin-top: 0;
+            font-size: 16px;
+            color: #e2e8f0;
+        }
+
+        .concept p {
+            margin-bottom: 0;
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        code {
+            color: #c4b5fd;
+            background: rgba(129,140,248,0.1);
+            padding: 3px 7px;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 13px;
+        }
+
+        .code-block {
+            background: #05070d;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 22px;
+            overflow-x: auto;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 14px;
+            line-height: 1.7;
+            margin: 16px 0;
+        }
+
+        .code-block pre {
+            margin: 0;
+        }
+
+        .quiz-button {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 13px 26px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6366f1, #7c3aed);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            box-shadow: 0 10px 25px rgba(99,102,241,0.3);
+            transition: all 0.2s ease;
+        }
+
+        .quiz-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(99,102,241,0.5);
+        }
+
+        @media(max-width: 768px) {
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 34px;
+            }
+            .card {
+                padding: 24px;
+            }
+        }
+
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .lesson-nav a {
+            flex: 1;
+            display: block;
+            padding: 18px 22px;
+            border-radius: 14px;
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #e2e8f0;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .lesson-nav a:hover {
+            border-color: rgba(129,140,248,0.45);
+            transform: translateY(-2px);
+        }
+
+        .lesson-nav .dir {
+            display: block;
+            color: #818cf8;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .lesson-nav .name {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .lesson-nav .next {
+            text-align: right;
+        }
+
+        @media(max-width: 768px) {
+            .lesson-nav {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <a href="/dashboard" class="logo">
+        <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Loop<span>Lab</span>
+    </a>
+    <a href="/icse" class="back">
+        ← Back to ICSE Java
+    </a>
+</nav>
+
+<main class="container">
+
+    <div class="breadcrumb">
+        <a href="/dashboard">Dashboard</a>
+        <span>›</span>
+        <a href="/icse">ICSE Java</a>
+        <span>›</span>
+        <span style="color: #e2e8f0;">User-Defined Methods &amp; Overloading</span>
+    </div>
+
+    <div class="badge">
+        ICSE COMPUTER APPLICATIONS • UNIT 7
+    </div>
+
+    <h1>User-Defined Methods &amp; Overloading</h1>
+
+    <p class="intro">
+        Methods break a program into named, reusable blocks. ICSE tests method prototypes and signatures, actual and formal parameters, return values, pure and impure methods, call by value, and function overloading.
+    </p>
+
+    <!-- KEY CONCEPTS -->
+    <div class="card">
+        <h2>Core Concepts &amp; Rules</h2>
+        <p>Essential vocabulary and rules for user-defined methods:</p>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>Method Header (Prototype)</h3>
+                <p>The first line of a method: access specifier, modifier, return type, name and parameter list, e.g. <code>static int square(int n)</code>.</p>
+            </div>
+            <div class="concept">
+                <h3>Method Signature</h3>
+                <p>The method name plus its parameter list (number, types and order of parameters). The return type is <strong>not</strong> part of the signature.</p>
+            </div>
+            <div class="concept">
+                <h3>Actual vs Formal Parameters</h3>
+                <p><strong>Actual</strong> parameters (arguments) are the values in the call: <code>square(7)</code>. <strong>Formal</strong> parameters are the variables in the header that receive them: <code>int n</code>.</p>
+            </div>
+            <div class="concept">
+                <h3>return Statement</h3>
+                <p>Sends a value back to the caller and ends the method immediately. A <code>void</code> method returns no value.</p>
+            </div>
+            <div class="concept">
+                <h3>Pure vs Impure Methods</h3>
+                <p>A <strong>pure</strong> method does not change the state of any object or variable outside it (e.g. <code>isEven</code>). An <strong>impure</strong> method changes state, e.g. a setter.</p>
+            </div>
+            <div class="concept">
+                <h3>Function Overloading</h3>
+                <p>Several methods with the same name but different parameter lists. Java chooses which one to run from the arguments in the call. This is compile-time polymorphism.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CODE PROGRAM -->
+    <div class="card">
+        <h2>Example Program</h2>
+        <p>This program defines a returning method, three overloaded <code>area()</code> methods, a pure boolean method and a method that shows call by value.</p>
+        <h3>Complete Java Program</h3>
+        <div class="code-block">
+<pre><code>public class MethodDemo {
+
+    // Method with a parameter and a return value
+    static int square(int n) {
+        return n * n;
+    }
+
+    // Overloaded area() methods: same name, different parameter lists
+    static double area(double radius) {
+        return 3.14 * radius * radius;
+    }
+
+    static int area(int side) {
+        return side * side;
+    }
+
+    static int area(int length, int breadth) {
+        return length * breadth;
+    }
+
+    // Pure method: uses its parameter but changes nothing outside itself
+    static boolean isEven(int n) {
+        return n % 2 == 0;
+    }
+
+    // Call by value: changing the parameter does not change the caller's variable
+    static void tryToChange(int x) {
+        x = 100;
+    }
+
+    public static void main(String[] args) {
+        System.out.println("square(7) = " + square(7));
+        System.out.println("area(2.0) = " + area(2.0));
+        System.out.println("area(5) = " + area(5));
+        System.out.println("area(4, 6) = " + area(4, 6));
+        System.out.println("isEven(9) = " + isEven(9));
+
+        int value = 10;
+        tryToChange(value);
+        System.out.println("value after call = " + value);
+    }
+}</code></pre>
+        </div>
+    </div>
+
+    <!-- STRUCTURE -->
+    <div class="card">
+        <h2>Understanding the Program Structure</h2>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>1. Method Definitions</h3>
+                <p>All the helper methods are written inside the class, outside <code>main</code>. They are <code>static</code>, so <code>main</code> can call them without creating an object.</p>
+            </div>
+            <div class="concept">
+                <h3>2. Method Calls in main</h3>
+                <p><code>main</code> calls each method by name with actual parameters and prints the values they return.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- EXECUTION TRACE -->
+    <div class="card">
+        <h2>How Does Java Execute This Program?</h2>
+        <p>Execution trace showing the order in which statements run and how values change:</p>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>Step 1</h3>
+                <p><code>square(7)</code> copies 7 into <code>n</code>, computes 49 and returns it to the print statement.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 2</h3>
+                <p>For each <code>area</code> call, Java matches the arguments to a signature: <code>2.0</code> (a double) chooses the circle version, <code>5</code> the square version and <code>4, 6</code> the rectangle version.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 3</h3>
+                <p><code>isEven(9)</code> returns <code>9 % 2 == 0</code>, which is <code>false</code>.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 4</h3>
+                <p><code>tryToChange(value)</code> copies 10 into <code>x</code> and changes only that copy to 100, so <code>value</code> in <code>main</code> is still 10.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- LINE BY LINE -->
+    <div class="card">
+        <h2>Line-by-Line Explanation</h2>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 4 — Method header</h3>
+            <div class="code-block"><pre><code>static int square(int n) {</code></pre></div>
+            <p><code>int</code> is the return type, <code>square</code> the name and <code>int n</code> the formal parameter. The signature is <code>square(int)</code>.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 5 — Returning a value</h3>
+            <div class="code-block"><pre><code>return n * n;</code></pre></div>
+            <p>The expression is evaluated, the result is sent back to the caller, and the method ends.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 17 — Overload with two parameters</h3>
+            <div class="code-block"><pre><code>static int area(int length, int breadth) {</code></pre></div>
+            <p>Same name as the other two <code>area</code> methods but a different number of parameters, so it is a valid overload.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 23 — Boolean method</h3>
+            <div class="code-block"><pre><code>return n % 2 == 0;</code></pre></div>
+            <p>The comparison already produces <code>true</code> or <code>false</code>, so no if-else is needed.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 39 — Call by value</h3>
+            <div class="code-block"><pre><code>tryToChange(value);</code></pre></div>
+            <p>Primitive arguments are passed by value: the method gets a copy. Changes to <code>x</code> are lost when the method returns.</p>
+        </div>
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="card">
+        <h2>Expected Console Output</h2>
+        <div class="code-block">
+<pre><code>square(7) = 49
+area(2.0) = 12.56
+area(5) = 25
+area(4, 6) = 24
+isEven(9) = false
+value after call = 10</code></pre>
+        </div>
+        <p>Only the circle version prints a decimal result, because it is the only overload that returns a <code>double</code>. The last line proves that a primitive passed to a method cannot be changed by it.</p>
+    </div>
+
+    <!-- EXAM TIPS -->
+    <div class="card">
+        <h2>ICSE Board Exam Tips &amp; Common Traps</h2>
+        <p>Keep these frequent exam traps in mind:</p>
+        <div class="concept-grid">
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Return Type is Not Enough</h3>
+                <p>Two methods that differ only in return type (<code>int f(int)</code> and <code>double f(int)</code>) are a compile error, not an overload.</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Objects vs Primitives</h3>
+                <p>Primitives are passed by value. When an array or object is passed, the method gets a copy of the reference, so it <em>can</em> change the array's contents (often called call by reference in ICSE).</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Unreachable Code</h3>
+                <p>A statement placed directly after <code>return</code> in the same block is a compile error because it can never run.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRACTICE CTA -->
+    <div class="card" style="text-align: center; padding: 45px 30px;">
+        <h2>Ready to Test Your Knowledge?</h2>
+        <p style="max-width: 550px; margin: 10px auto 25px;">
+            Test your understanding with instant feedback, randomized questions, and step-by-step explanations.
+        </p>
+        <a href="/apcs/quiz?topic=User-Defined%20Methods%20%26%20Overloading&amp;curriculum=ICSE" class="quiz-button">
+            Start Practice →
+        </a>
+    </div>
+
+    <!-- PREVIOUS / NEXT LESSON -->
+    <nav class="lesson-nav" aria-label="Lesson navigation">
+        <a href="/icse/strings" class="prev">
+            <span class="dir">← PREVIOUS</span>
+            <span class="name">Character &amp; String Handling</span>
+        </a>
+        <a href="/icse/arrays" class="next">
+            <span class="dir">NEXT →</span>
+            <span class="name">Arrays, Searching &amp; Sorting</span>
+        </a>
+    </nav>
+
+</main>
+
+</body>
+</html>

@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}" href="/favicon.svg">
     <meta name="_csrf" th:content="${_csrf.token}">
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <meta name="student-name" th:content="${studentName}">
     <script th:src="@{/js/codecanvas-api.js}"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Dashboard | CodeCanvas</title>
+    <title>Dashboard | LoopLab</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -532,6 +533,16 @@
                 padding: 0 20px;
             }
         }
+
+        /* Phones: keep the nav on one line (the avatar initial still identifies the student) */
+        @media (max-width: 600px) {
+            .nav-actions {
+                gap: 12px !important;
+            }
+            .nav-actions .profile-name {
+                display: none;
+            }
+        }
     </style>
 </head>
 
@@ -540,11 +551,12 @@
 <!-- NAVIGATION -->
 <nav class="navbar">
     <a href="/dashboard" class="logo">
-        Code<span>Canvas</span>
+        <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Loop<span>Lab</span>
     </a>
 
-    <div style="display: flex; align-items: center; gap: 20px;">
+    <div class="nav-actions" style="display: flex; align-items: center; gap: 20px;">
         <a href="/progress" class="nav-link" style="color: #94a3b8; text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s;">My Progress</a>
+        <a href="/account" class="nav-link" style="color: #94a3b8; text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s;">Account</a>
         <div class="profile-container">
             <span class="profile-name" id="studentDisplayName">Student</span>
             <div class="avatar" id="studentAvatar">S</div>
@@ -558,12 +570,18 @@
 <!-- MAIN CONTENT -->
 <main class="container">
 
+    <!-- ADD-EMAIL REMINDER (older accounts) -->
+    <div th:if="${needsEmail}" style="margin-bottom: 24px; padding: 14px 18px; border-radius: 14px; border: 1px solid rgba(250, 204, 21, 0.35); background: rgba(250, 204, 21, 0.08); color: #fde68a; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+        <span>📧 Add your email address so you can reset your password if you ever forget it.</span>
+        <a href="/account" style="color: #0b1020; background: #fde68a; padding: 8px 14px; border-radius: 10px; text-decoration: none; font-weight: 700;">Add email</a>
+    </div>
+
     <!-- HERO HEADER -->
     <div class="welcome-header">
         <div class="welcome-badge">
             ⚡ Advanced Java Learning Engine
         </div>
-        <h1 id="welcomeTitle">Welcome to CodeCanvas 👋</h1>
+        <h1 id="welcomeTitle">Welcome to LoopLab 👋</h1>
         <p>
             Master Java through structured concept guides, interactive line-by-line code breakdowns, and targeted AP/exam-level quizzes.
         </p>
@@ -593,6 +611,7 @@
                 <div class="card-meta">
                     <span>📚 8 Modules</span>
                     <span>⚡ Interactive Quizzes</span>
+                    <span id="courseProgressAPCS">✅ 0/8 mastered</span>
                 </div>
                 <div style="display: flex; gap: 8px;">
                     <a href="/apcs" class="card-button" style="flex: 1.2;">
@@ -618,10 +637,16 @@
                 <div class="card-meta">
                     <span>📚 Class 9 & 10</span>
                     <span>⚡ Practice Drills</span>
+                    <span id="courseProgressICSE">✅ 0/8 mastered</span>
                 </div>
-                <a href="/icse" class="card-button">
-                    Explore ICSE
-                </a>
+                <div style="display: flex; gap: 8px;">
+                    <a href="/icse" class="card-button" style="flex: 1.2;">
+                        Explore ICSE
+                    </a>
+                    <a href="/icse/exam" class="card-button" style="flex: 0.9; background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.4); color: #c7d2fe; box-shadow: none;">
+                        ⏱ Mock Exam
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -631,17 +656,23 @@
                 <span class="card-pill">Advanced High School</span>
                 <h3>ISC Java</h3>
                 <p>
-                    In-depth syllabus for Class 11 & 12 ISC, exploring recursion, inheritance, data structures, and complex algorithm problems.
+                    In-depth syllabus for Class 11 & 12 ISC, exploring classes, recursion, inheritance, interfaces, matrices, and stacks, queues &amp; linked lists.
                 </p>
             </div>
             <div>
                 <div class="card-meta">
                     <span>📚 Class 11 & 12</span>
                     <span>⚡ Exam Prep</span>
+                    <span id="courseProgressISC">✅ 0/8 mastered</span>
                 </div>
-                <button class="card-button" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); color: #94a3b8; cursor: not-allowed; box-shadow: none;" disabled>
-                    🔒 Coming Soon (Class 11 &amp; 12)
-                </button>
+                <div style="display: flex; gap: 8px;">
+                    <a href="/isc" class="card-button" style="flex: 1.2;">
+                        Explore ISC
+                    </a>
+                    <a href="/isc/exam" class="card-button" style="flex: 0.9; background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.4); color: #c7d2fe; box-shadow: none;">
+                        ⏱ Mock Exam
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -744,8 +775,17 @@
             const quizzesCompleted = parseInt(localStorage.getItem('codecanvas_quizzes_completed') || '0', 10);
 
             const totalModules = 8;
-            // Only count topics that were passed (score >= 70%)
-            const passedTopics = Object.values(completedTopics).filter(t => t && t.passed === true);
+            // The journey below tracks AP CS; only AP CS topics that were passed (score >= 70%) count
+            const isCourse = (t, code) => (t.curriculum || 'APCS') === code;
+            const passedTopics = Object.values(completedTopics).filter(t => t && t.passed === true && isCourse(t, 'APCS'));
+
+            // Per-course "x/8 mastered" line on each curriculum card
+            ['APCS', 'ICSE', 'ISC'].forEach(code => {
+                const el = document.getElementById('courseProgress' + code);
+                if (!el) return;
+                const mastered = Object.values(completedTopics).filter(t => t && t.passed === true && isCourse(t, code)).length;
+                el.textContent = `✅ ${mastered}/8 mastered`;
+            });
             const passedCount = passedTopics.length;
             const pct = Math.round((passedCount / totalModules) * 100);
 

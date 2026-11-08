@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}" href="/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stacks, Queues &amp; Linked Lists | ISC Java | LoopLab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', Arial, Helvetica, sans-serif;
+            background:
+                    radial-gradient(
+                            circle at 80% 0%,
+                            rgba(99, 102, 241, 0.18),
+                            transparent 30%
+                    ),
+                    radial-gradient(
+                            circle at 0% 50%,
+                            rgba(124, 58, 237, 0.08),
+                            transparent 30%
+                    ),
+                    #080b14;
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            height: 72px;
+            padding: 0 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(8, 11, 20, 0.82);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            color: #ffffff;
+            text-decoration: none;
+            letter-spacing: -0.7px;
+        }
+
+        .logo span {
+            color: #818cf8;
+        }
+
+        .back {
+            color: #a1a1aa;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .back:hover {
+            color: #ffffff;
+        }
+
+        .container {
+            width: min(1000px, 90%);
+            margin: auto;
+            padding: 50px 0 80px;
+        }
+
+        .breadcrumb {
+            color: #71717a;
+            font-size: 13px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumb a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb a:hover {
+            color: #ffffff;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: rgba(129,140,248,0.12);
+            border: 1px solid rgba(129,140,248,0.25);
+            color: #a5b4fc;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 46px;
+            letter-spacing: -1.5px;
+            margin: 0 0 15px;
+            font-weight: 800;
+        }
+
+        .intro {
+            color: #94a3b8;
+            font-size: 17px;
+            line-height: 1.7;
+            max-width: 780px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+
+        .card p {
+            color: #94a3b8;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .concept {
+            padding: 22px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .concept h3 {
+            margin-top: 0;
+            font-size: 16px;
+            color: #e2e8f0;
+        }
+
+        .concept p {
+            margin-bottom: 0;
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        code {
+            color: #c4b5fd;
+            background: rgba(129,140,248,0.1);
+            padding: 3px 7px;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 13px;
+        }
+
+        .code-block {
+            background: #05070d;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 22px;
+            overflow-x: auto;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 14px;
+            line-height: 1.7;
+            margin: 16px 0;
+        }
+
+        .code-block pre {
+            margin: 0;
+        }
+
+        .quiz-button {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 13px 26px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6366f1, #7c3aed);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            box-shadow: 0 10px 25px rgba(99,102,241,0.3);
+            transition: all 0.2s ease;
+        }
+
+        .quiz-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(99,102,241,0.5);
+        }
+
+        @media(max-width: 768px) {
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 34px;
+            }
+            .card {
+                padding: 24px;
+            }
+        }
+
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .lesson-nav a {
+            flex: 1;
+            display: block;
+            padding: 18px 22px;
+            border-radius: 14px;
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #e2e8f0;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .lesson-nav a:hover {
+            border-color: rgba(129,140,248,0.45);
+            transform: translateY(-2px);
+        }
+
+        .lesson-nav .dir {
+            display: block;
+            color: #818cf8;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .lesson-nav .name {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .lesson-nav .next {
+            text-align: right;
+        }
+
+        @media(max-width: 768px) {
+            .lesson-nav {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <a href="/dashboard" class="logo">
+        <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Loop<span>Lab</span>
+    </a>
+    <a href="/isc" class="back">
+        ← Back to ISC Java
+    </a>
+</nav>
+
+<main class="container">
+
+    <div class="breadcrumb">
+        <a href="/dashboard">Dashboard</a>
+        <span>›</span>
+        <a href="/isc">ISC Java</a>
+        <span>›</span>
+        <span style="color: #e2e8f0;">Stacks, Queues &amp; Linked Lists</span>
+    </div>
+
+    <div class="badge">
+        ISC COMPUTER SCIENCE • UNIT 7
+    </div>
+
+    <h1>Stacks, Queues &amp; Linked Lists</h1>
+
+    <p class="intro">
+        Data structures organise data for efficient access. ISC requires array-based stacks and queues with overflow and underflow checks, and linked lists built from self-referential node classes.
+    </p>
+
+    <!-- KEY CONCEPTS -->
+    <div class="card">
+        <h2>Core Concepts &amp; Rules</h2>
+        <p>Essential definitions and operations:</p>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>Stack (LIFO)</h3>
+                <p>Last In, First Out. Items are added with <strong>push</strong> and removed with <strong>pop</strong> at one end, the <code>top</code>. Used for undo, recursion and expression evaluation.</p>
+            </div>
+            <div class="concept">
+                <h3>Queue (FIFO)</h3>
+                <p>First In, First Out. Items are added at the <code>rear</code> (enqueue) and removed from the <code>front</code> (dequeue), like a line of people.</p>
+            </div>
+            <div class="concept">
+                <h3>Overflow and Underflow</h3>
+                <p><strong>Overflow</strong>: adding to a full structure. <strong>Underflow</strong>: removing from an empty one. Both must be checked before every push/pop or enqueue/dequeue.</p>
+            </div>
+            <div class="concept">
+                <h3>Circular Queue and Deque</h3>
+                <p>A circular queue reuses freed space with <code>rear = (rear + 1) % size</code>. A deque (double-ended queue) allows insertion and deletion at both ends.</p>
+            </div>
+            <div class="concept">
+                <h3>Linked List</h3>
+                <p>A chain of <strong>nodes</strong>, each holding data and a reference (<code>next</code>) to the following node. The list grows and shrinks at run time, unlike a fixed-size array.</p>
+            </div>
+            <div class="concept">
+                <h3>Self-Referential Class</h3>
+                <p><code>class Node { int data; Node next; }</code> contains a reference to its own type. The last node's <code>next</code> is <code>null</code>.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CODE PROGRAM -->
+    <div class="card">
+        <h2>Example Program</h2>
+        <p>This program implements an array-based stack and queue with overflow and underflow checks, and builds and traverses a three-node linked list.</p>
+        <h3>Complete Java Program</h3>
+        <div class="code-block">
+<pre><code>class Stack {
+    private int[] arr;
+    private int top;
+
+    Stack(int size) {
+        arr = new int[size];
+        top = -1;                        // -1 means the stack is empty
+    }
+
+    void push(int v) {
+        if (top == arr.length - 1) {
+            System.out.println("Stack Overflow");
+            return;
+        }
+        arr[++top] = v;
+    }
+
+    int pop() {
+        if (top == -1) {
+            System.out.println("Stack Underflow");
+            return -9999;
+        }
+        return arr[top--];
+    }
+}
+
+class Queue {
+    private int[] arr;
+    private int front, rear;
+
+    Queue(int size) {
+        arr = new int[size];
+        front = 0;
+        rear = -1;
+    }
+
+    void enqueue(int v) {
+        if (rear == arr.length - 1) {
+            System.out.println("Queue Overflow");
+            return;
+        }
+        arr[++rear] = v;
+    }
+
+    int dequeue() {
+        if (front &gt; rear) {
+            System.out.println("Queue Underflow");
+            return -9999;
+        }
+        return arr[front++];
+    }
+}
+
+class Node {
+    int data;
+    Node next;                           // reference to the next node
+
+    Node(int data) {
+        this.data = data;
+    }
+}
+
+public class DataStructures {
+    public static void main(String[] args) {
+        Stack s = new Stack(3);
+        s.push(10);
+        s.push(20);
+        s.push(30);
+        s.push(40);
+        System.out.println("Popped: " + s.pop() + ", " + s.pop());
+
+        Queue q = new Queue(3);
+        q.enqueue(1);
+        q.enqueue(2);
+        q.enqueue(3);
+        System.out.println("Dequeued: " + q.dequeue() + ", " + q.dequeue());
+
+        // Linked list 5 -&gt; 15 -&gt; 25, then traverse it
+        Node head = new Node(5);
+        head.next = new Node(15);
+        head.next.next = new Node(25);
+        System.out.print("Linked list: ");
+        for (Node cur = head; cur != null; cur = cur.next) {
+            System.out.print(cur.data + (cur.next != null ? " -&gt; " : "\n"));
+        }
+    }
+}</code></pre>
+        </div>
+    </div>
+
+    <!-- STRUCTURE -->
+    <div class="card">
+        <h2>Understanding the Program Structure</h2>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>1. Data Structure Classes</h3>
+                <p><code>Stack</code>, <code>Queue</code> and <code>Node</code> each keep their data private (or simple) and expose only the operations that make sense for that structure.</p>
+            </div>
+            <div class="concept">
+                <h3>2. The Test Driver</h3>
+                <p><code>DataStructures.main</code> exercises each structure, including a push onto a full stack to show the overflow check.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- EXECUTION TRACE -->
+    <div class="card">
+        <h2>How Does Java Execute This Program?</h2>
+        <p>Execution trace showing the order in which statements run and how values change:</p>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>Step 1</h3>
+                <p>Pushing 10, 20 and 30 fills the 3-slot stack (<code>top</code> becomes 2). Pushing 40 finds <code>top == 2</code> and prints "Stack Overflow" instead.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 2</h3>
+                <p>Two pops return the most recent items first: 30 then 20 (LIFO).</p>
+            </div>
+            <div class="concept">
+                <h3>Step 3</h3>
+                <p>Enqueuing 1, 2, 3 fills the queue; two dequeues return the oldest items first: 1 then 2 (FIFO).</p>
+            </div>
+            <div class="concept">
+                <h3>Step 4</h3>
+                <p>Three nodes are linked with <code>next</code> references; the loop follows them from <code>head</code> until it reaches <code>null</code>.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- LINE BY LINE -->
+    <div class="card">
+        <h2>Line-by-Line Explanation</h2>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 11 — Overflow check</h3>
+            <div class="code-block"><pre><code>if (top == arr.length - 1) {</code></pre></div>
+            <p>The stack is full when <code>top</code> is the last valid index. Checking first prevents an <code>ArrayIndexOutOfBoundsException</code>.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 15 — Push with pre-increment</h3>
+            <div class="code-block"><pre><code>arr[++top] = v;</code></pre></div>
+            <p><code>top</code> moves up first and then the value is stored there, so the first push uses index 0.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 23 — Pop with post-decrement</h3>
+            <div class="code-block"><pre><code>return arr[top--];</code></pre></div>
+            <p>The top value is returned and then <code>top</code> moves down. The array slot is not erased; it is simply no longer part of the stack.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 46 — Underflow check for a queue</h3>
+            <div class="code-block"><pre><code>if (front &gt; rear) {</code></pre></div>
+            <p>When <code>front</code> has moved past <code>rear</code>, every item has been removed and the queue is empty.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 83 — Traversing a linked list</h3>
+            <div class="code-block"><pre><code>for (Node cur = head; cur != null; cur = cur.next) {</code></pre></div>
+            <p>Start at the head and follow each <code>next</code> reference. Losing <code>head</code> would make the whole list unreachable.</p>
+        </div>
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="card">
+        <h2>Expected Console Output</h2>
+        <div class="code-block">
+<pre><code>Stack Overflow
+Popped: 30, 20
+Dequeued: 1, 2
+Linked list: 5 -&gt; 15 -&gt; 25</code></pre>
+        </div>
+        <p>The overflow message appears first because it is printed during the fourth push, before any pop happens. The pop and dequeue lines show LIFO and FIFO order side by side.</p>
+    </div>
+
+    <!-- EXAM TIPS -->
+    <div class="card">
+        <h2>ISC Board Exam Tips &amp; Common Traps</h2>
+        <p>Keep these frequent exam traps in mind:</p>
+        <div class="concept-grid">
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Empty Stack Value</h3>
+                <p>Memorise the conventions: an empty stack has <code>top = -1</code>; a simple queue is empty when <code>front &gt; rear</code> (or when both are -1, depending on the textbook version).</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Simple Queue Wastes Space</h3>
+                <p>In a linear array queue, slots freed by dequeue are never reused. That is the reason circular queues exist, and a common theory question.</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Inserting into a Linked List</h3>
+                <p>To insert at the beginning: <code>newNode.next = head; head = newNode;</code> in that order. Reversing the order loses the rest of the list.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRACTICE CTA -->
+    <div class="card" style="text-align: center; padding: 45px 30px;">
+        <h2>Ready to Test Your Knowledge?</h2>
+        <p style="max-width: 550px; margin: 10px auto 25px;">
+            Test your understanding with instant feedback, randomized questions, and step-by-step explanations.
+        </p>
+        <a href="/apcs/quiz?topic=Stacks%2C%20Queues%20%26%20Linked%20Lists&amp;curriculum=ISC" class="quiz-button">
+            Start Practice →
+        </a>
+    </div>
+
+    <!-- PREVIOUS / NEXT LESSON -->
+    <nav class="lesson-nav" aria-label="Lesson navigation">
+        <a href="/isc/interfaces" class="prev">
+            <span class="dir">← PREVIOUS</span>
+            <span class="name">Interfaces &amp; Abstract Classes</span>
+        </a>
+        <a href="/isc/number-date" class="next">
+            <span class="dir">NEXT →</span>
+            <span class="name">Number &amp; Date Programs</span>
+        </a>
+    </nav>
+
+</main>
+
+</body>
+</html>

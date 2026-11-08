@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}" href="/favicon.svg">
     <meta name="_csrf" th:content="${_csrf.token}">
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <meta name="student-name" th:content="${studentName}">
     <script th:src="@{/js/codecanvas-api.js}"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>AP CS Java | CodeCanvas</title>
+    <title>AP CS Java | LoopLab</title>
 
     <style>
         * {
@@ -553,7 +554,7 @@
 <nav class="navbar">
 
     <div class="logo">
-        Code<span>Canvas</span>
+        <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Loop<span>Lab</span>
     </div>
 
     <div class="nav-right">
@@ -566,8 +567,8 @@
             My Progress
         </a>
 
-        <div class="profile">
-            H
+        <div class="profile" th:text="${studentName != null and studentName.length() > 0} ? ${#strings.toUpperCase(#strings.substring(studentName, 0, 1))} : 'S'">
+            S
         </div>
 
     </div>
@@ -1016,8 +1017,11 @@
         try {
             const completedTopics = JSON.parse(localStorage.getItem('codecanvas_completed_topics') || '{}');
             const totalModules = 8;
-            // Only count topics that were passed (score >= 70%)
-            const passedTopics = Object.values(completedTopics).filter(t => t && t.passed === true);
+            // Only count this course's topics (the cards on this page) that were passed (score >= 70%)
+            const pageTitles = new Set(Array.from(cards).map(c => c.querySelector('h3')?.textContent?.trim()));
+            const passedTopics = Object.entries(completedTopics)
+                .filter(([title, t]) => pageTitles.has(title) && t && t.passed === true)
+                .map(([, t]) => t);
             const passedCount = passedTopics.length;
             const pct = Math.round((passedCount / totalModules) * 100);
 

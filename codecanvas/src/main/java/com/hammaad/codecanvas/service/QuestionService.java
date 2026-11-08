@@ -42,6 +42,10 @@ public class QuestionService {
         return questionRepository.generateIcseMockExam(questionsPerTopic);
     }
 
+    public List<Question> getIscMockExam(int questionsPerTopic) {
+        return questionRepository.generateIscMockExam(questionsPerTopic);
+    }
+
     /** Grades one answer; empty if the question id does not exist. */
     public Optional<AnswerResult> checkAnswer(Long id, String answer) {
         return questionRepository.findById(id).map(q -> AnswerResult.grade(q, answer));

@@ -26,6 +26,7 @@ final class TestStudents {
         RegistrationForm form = new RegistrationForm();
         form.setDisplayName("Test Student");
         form.setUsername(username);
+        form.setEmail(username + "@example.test");
         form.setPassword(PASSWORD);
         form.setConfirmPassword(PASSWORD);
         return service.register(form);

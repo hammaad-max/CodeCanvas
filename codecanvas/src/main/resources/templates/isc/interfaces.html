@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}" href="/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interfaces &amp; Abstract Classes | ISC Java | LoopLab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', Arial, Helvetica, sans-serif;
+            background:
+                    radial-gradient(
+                            circle at 80% 0%,
+                            rgba(99, 102, 241, 0.18),
+                            transparent 30%
+                    ),
+                    radial-gradient(
+                            circle at 0% 50%,
+                            rgba(124, 58, 237, 0.08),
+                            transparent 30%
+                    ),
+                    #080b14;
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            height: 72px;
+            padding: 0 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(8, 11, 20, 0.82);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            color: #ffffff;
+            text-decoration: none;
+            letter-spacing: -0.7px;
+        }
+
+        .logo span {
+            color: #818cf8;
+        }
+
+        .back {
+            color: #a1a1aa;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .back:hover {
+            color: #ffffff;
+        }
+
+        .container {
+            width: min(1000px, 90%);
+            margin: auto;
+            padding: 50px 0 80px;
+        }
+
+        .breadcrumb {
+            color: #71717a;
+            font-size: 13px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumb a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb a:hover {
+            color: #ffffff;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: rgba(129,140,248,0.12);
+            border: 1px solid rgba(129,140,248,0.25);
+            color: #a5b4fc;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 46px;
+            letter-spacing: -1.5px;
+            margin: 0 0 15px;
+            font-weight: 800;
+        }
+
+        .intro {
+            color: #94a3b8;
+            font-size: 17px;
+            line-height: 1.7;
+            max-width: 780px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+
+        .card p {
+            color: #94a3b8;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .concept {
+            padding: 22px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .concept h3 {
+            margin-top: 0;
+            font-size: 16px;
+            color: #e2e8f0;
+        }
+
+        .concept p {
+            margin-bottom: 0;
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        code {
+            color: #c4b5fd;
+            background: rgba(129,140,248,0.1);
+            padding: 3px 7px;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 13px;
+        }
+
+        .code-block {
+            background: #05070d;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 22px;
+            overflow-x: auto;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 14px;
+            line-height: 1.7;
+            margin: 16px 0;
+        }
+
+        .code-block pre {
+            margin: 0;
+        }
+
+        .quiz-button {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 13px 26px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6366f1, #7c3aed);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            box-shadow: 0 10px 25px rgba(99,102,241,0.3);
+            transition: all 0.2s ease;
+        }
+
+        .quiz-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(99,102,241,0.5);
+        }
+
+        @media(max-width: 768px) {
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 34px;
+            }
+            .card {
+                padding: 24px;
+            }
+        }
+
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .lesson-nav a {
+            flex: 1;
+            display: block;
+            padding: 18px 22px;
+            border-radius: 14px;
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #e2e8f0;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .lesson-nav a:hover {
+            border-color: rgba(129,140,248,0.45);
+            transform: translateY(-2px);
+        }
+
+        .lesson-nav .dir {
+            display: block;
+            color: #818cf8;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .lesson-nav .name {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .lesson-nav .next {
+            text-align: right;
+        }
+
+        @media(max-width: 768px) {
+            .lesson-nav {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <a href="/dashboard" class="logo">
+        <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Loop<span>Lab</span>
+    </a>
+    <a href="/isc" class="back">
+        ← Back to ISC Java
+    </a>
+</nav>
+
+<main class="container">
+
+    <div class="breadcrumb">
+        <a href="/dashboard">Dashboard</a>
+        <span>›</span>
+        <a href="/isc">ISC Java</a>
+        <span>›</span>
+        <span style="color: #e2e8f0;">Interfaces &amp; Abstract Classes</span>
+    </div>
+
+    <div class="badge">
+        ISC COMPUTER SCIENCE • UNIT 6
+    </div>
+
+    <h1>Interfaces &amp; Abstract Classes</h1>
+
+    <p class="intro">
+        Abstract classes and interfaces describe what objects must be able to do without fixing exactly how. They are how Java models general ideas such as "an employee" or "something that can be paid", and ISC tests their rules and differences.
+    </p>
+
+    <!-- KEY CONCEPTS -->
+    <div class="card">
+        <h2>Core Concepts &amp; Rules</h2>
+        <p>Essential rules for abstract classes and interfaces:</p>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>Abstract Class</h3>
+                <p>Declared with <code>abstract</code>. It cannot be instantiated with <code>new</code>, may contain both abstract and normal methods, and can have constructors and instance variables.</p>
+            </div>
+            <div class="concept">
+                <h3>Abstract Method</h3>
+                <p>A method with no body, e.g. <code>abstract String role();</code>. Every concrete (non-abstract) subclass must override it.</p>
+            </div>
+            <div class="concept">
+                <h3>Interface</h3>
+                <p>Declared with <code>interface</code>. Its methods are <code>public</code> and abstract by default, and its variables are <code>public static final</code> constants.</p>
+            </div>
+            <div class="concept">
+                <h3>implements</h3>
+                <p>A class uses <code>implements</code> to promise it provides all the interface's methods. A class can implement <strong>several</strong> interfaces, which is how Java achieves multiple inheritance of type.</p>
+            </div>
+            <div class="concept">
+                <h3>Abstract Class vs Interface</h3>
+                <p>Use an abstract class for closely related classes that share code and state. Use an interface for a capability that unrelated classes can share.</p>
+            </div>
+            <div class="concept">
+                <h3>References to Abstract Types</h3>
+                <p>You cannot write <code>new Employee()</code>, but you can declare <code>Employee e = new Manager(...);</code> or <code>Payable p = new Intern(...);</code>.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CODE PROGRAM -->
+    <div class="card">
+        <h2>Example Program</h2>
+        <p>This program combines an interface, an abstract class that implements it, and two concrete subclasses, then uses both abstract types as references.</p>
+        <h3>Complete Java Program</h3>
+        <div class="code-block">
+<pre><code>interface Payable {
+    double TAX_RATE = 0.10;              // public static final constant
+    double pay();                        // public and abstract by default
+}
+
+abstract class Employee implements Payable {
+    protected String name;
+
+    Employee(String name) {
+        this.name = name;
+    }
+
+    abstract String role();              // subclasses must implement this
+
+    void show() {
+        System.out.println(name + " (" + role() + ") earns " + pay());
+    }
+}
+
+class Manager extends Employee {
+    private double salary;
+
+    Manager(String name, double salary) {
+        super(name);
+        this.salary = salary;
+    }
+
+    String role() {
+        return "Manager";
+    }
+
+    public double pay() {
+        return salary - salary * TAX_RATE;
+    }
+}
+
+class Intern extends Employee {
+    private int hours;
+
+    Intern(String name, int hours) {
+        super(name);
+        this.hours = hours;
+    }
+
+    String role() {
+        return "Intern";
+    }
+
+    public double pay() {
+        return hours * 200.0;
+    }
+}
+
+public class PayrollTest {
+    public static void main(String[] args) {
+        Employee[] staff = { new Manager("Asha", 50000), new Intern("Ravi", 40) };
+        for (Employee e : staff) {
+            e.show();
+        }
+        Payable p = new Intern("Meera", 10);
+        System.out.println("Payable pay = " + p.pay());
+    }
+}</code></pre>
+        </div>
+    </div>
+
+    <!-- STRUCTURE -->
+    <div class="card">
+        <h2>Understanding the Program Structure</h2>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>1. Contract and Partial Implementation</h3>
+                <p><code>Payable</code> defines what must exist (a <code>pay()</code> method). <code>Employee</code> implements part of the behaviour (<code>show()</code>) but leaves <code>role()</code> and <code>pay()</code> to its subclasses.</p>
+            </div>
+            <div class="concept">
+                <h3>2. Concrete Classes</h3>
+                <p><code>Manager</code> and <code>Intern</code> fill in every missing method, so only they can be created with <code>new</code>.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- EXECUTION TRACE -->
+    <div class="card">
+        <h2>How Does Java Execute This Program?</h2>
+        <p>Execution trace showing the order in which statements run and how values change:</p>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>Step 1</h3>
+                <p>Creating a <code>Manager</code> runs <code>Employee</code>'s constructor through <code>super(name)</code>, then stores the salary.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 2</h3>
+                <p><code>show()</code> (written in <code>Employee</code>) calls <code>role()</code> and <code>pay()</code>, which are dispatched to the Manager versions: 50000 − 5000 = 45000.0.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 3</h3>
+                <p>For the intern, <code>pay()</code> is 40 × 200.0 = 8000.0, so the second line shows Ravi's pay.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 4</h3>
+                <p>A <code>Payable</code> reference can hold any implementing object; <code>p.pay()</code> runs <code>Intern</code>'s version and gives 2000.0.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- LINE BY LINE -->
+    <div class="card">
+        <h2>Line-by-Line Explanation</h2>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 2 — Interface constant</h3>
+            <div class="code-block"><pre><code>double TAX_RATE = 0.10;              // public static final constant</code></pre></div>
+            <p>Interface variables are automatically constants. Every implementing class can use <code>TAX_RATE</code> directly but cannot change it.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 6 — Abstract class implementing an interface</h3>
+            <div class="code-block"><pre><code>abstract class Employee implements Payable {</code></pre></div>
+            <p>An abstract class does not have to implement every interface method; it can leave <code>pay()</code> to its subclasses.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 13 — Abstract method</h3>
+            <div class="code-block"><pre><code>abstract String role();              // subclasses must implement this</code></pre></div>
+            <p>No body, just a semicolon. <code>Manager</code> and <code>Intern</code> would fail to compile without their own <code>role()</code>.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 32 — public is required</h3>
+            <div class="code-block"><pre><code>public double pay() {</code></pre></div>
+            <p>Interface methods are public, and an overriding method cannot be less accessible, so the <code>public</code> keyword is mandatory here.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 60 — Interface as a type</h3>
+            <div class="code-block"><pre><code>Payable p = new Intern("Meera", 10);</code></pre></div>
+            <p>The variable can only call <code>Payable</code> methods, but the object is a full <code>Intern</code>.</p>
+        </div>
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="card">
+        <h2>Expected Console Output</h2>
+        <div class="code-block">
+<pre><code>Asha (Manager) earns 45000.0
+Ravi (Intern) earns 8000.0
+Payable pay = 2000.0</code></pre>
+        </div>
+        <p>One <code>show()</code> method produces the right role and pay for each subclass, because the abstract methods are filled in differently in each one.</p>
+    </div>
+
+    <!-- EXAM TIPS -->
+    <div class="card">
+        <h2>ISC Board Exam Tips &amp; Common Traps</h2>
+        <p>Keep these frequent exam traps in mind:</p>
+        <div class="concept-grid">
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Cannot Instantiate</h3>
+                <p><code>new Employee("X")</code> and <code>new Payable()</code> are compile errors, even though both types can be used for variables and arrays.</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Weaker Access Error</h3>
+                <p>Implementing an interface method without <code>public</code> is a compile error ("attempting to assign weaker access privileges").</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Abstract Needs No Abstract Methods</h3>
+                <p>A class can be declared <code>abstract</code> with no abstract methods, purely to stop it being instantiated. But any class with an abstract method must be abstract.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRACTICE CTA -->
+    <div class="card" style="text-align: center; padding: 45px 30px;">
+        <h2>Ready to Test Your Knowledge?</h2>
+        <p style="max-width: 550px; margin: 10px auto 25px;">
+            Test your understanding with instant feedback, randomized questions, and step-by-step explanations.
+        </p>
+        <a href="/apcs/quiz?topic=Interfaces%20%26%20Abstract%20Classes&amp;curriculum=ISC" class="quiz-button">
+            Start Practice →
+        </a>
+    </div>
+
+    <!-- PREVIOUS / NEXT LESSON -->
+    <nav class="lesson-nav" aria-label="Lesson navigation">
+        <a href="/isc/inheritance" class="prev">
+            <span class="dir">← PREVIOUS</span>
+            <span class="name">Inheritance &amp; Polymorphism</span>
+        </a>
+        <a href="/isc/data-structures" class="next">
+            <span class="dir">NEXT →</span>
+            <span class="name">Stacks, Queues &amp; Linked Lists</span>
+        </a>
+    </nav>
+
+</main>
+
+</body>
+</html>

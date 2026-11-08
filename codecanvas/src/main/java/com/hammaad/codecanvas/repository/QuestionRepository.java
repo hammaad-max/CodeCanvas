@@ -1110,6 +1110,11 @@ public class QuestionRepository {
                 "Arrays, Searching & Sorting", "ICSE"
         ));
 
+        // ICSE units 1-8: questions 129-160 (brings every ICSE unit to 10 questions)
+        questions.addAll(IcseExtraQuestions.all());
+
+        // ISC Computer Science (Class 11 & 12): questions 201-280, 10 per unit
+        questions.addAll(IscQuestions.all());
     }
 
     public List<Question> findAll() {
@@ -1202,6 +1207,18 @@ public class QuestionRepository {
             examQuestions.addAll(topicPool.subList(0, take));
         }
 
+        Collections.shuffle(examQuestions);
+        return examQuestions;
+    }
+
+    /** ISC mock exam: {@code questionsPerTopic} random questions from each of the 8 ISC units, shuffled. */
+    public List<Question> generateIscMockExam(int questionsPerTopic) {
+        List<Question> examQuestions = new ArrayList<>();
+        for (String topic : IscQuestions.TOPICS) {
+            List<Question> topicPool = new ArrayList<>(findByTopicAndCurriculum(topic, IscQuestions.ISC));
+            Collections.shuffle(topicPool);
+            examQuestions.addAll(topicPool.subList(0, Math.min(questionsPerTopic, topicPool.size())));
+        }
         Collections.shuffle(examQuestions);
         return examQuestions;
     }

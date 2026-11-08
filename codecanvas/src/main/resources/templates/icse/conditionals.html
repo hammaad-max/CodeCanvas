@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}" href="/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conditional Branching &amp; Switch | ICSE Java | LoopLab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', Arial, Helvetica, sans-serif;
+            background:
+                    radial-gradient(
+                            circle at 80% 0%,
+                            rgba(99, 102, 241, 0.18),
+                            transparent 30%
+                    ),
+                    radial-gradient(
+                            circle at 0% 50%,
+                            rgba(124, 58, 237, 0.08),
+                            transparent 30%
+                    ),
+                    #080b14;
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            height: 72px;
+            padding: 0 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(8, 11, 20, 0.82);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            color: #ffffff;
+            text-decoration: none;
+            letter-spacing: -0.7px;
+        }
+
+        .logo span {
+            color: #818cf8;
+        }
+
+        .back {
+            color: #a1a1aa;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .back:hover {
+            color: #ffffff;
+        }
+
+        .container {
+            width: min(1000px, 90%);
+            margin: auto;
+            padding: 50px 0 80px;
+        }
+
+        .breadcrumb {
+            color: #71717a;
+            font-size: 13px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumb a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb a:hover {
+            color: #ffffff;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: rgba(129,140,248,0.12);
+            border: 1px solid rgba(129,140,248,0.25);
+            color: #a5b4fc;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 46px;
+            letter-spacing: -1.5px;
+            margin: 0 0 15px;
+            font-weight: 800;
+        }
+
+        .intro {
+            color: #94a3b8;
+            font-size: 17px;
+            line-height: 1.7;
+            max-width: 780px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+
+        .card p {
+            color: #94a3b8;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .concept {
+            padding: 22px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .concept h3 {
+            margin-top: 0;
+            font-size: 16px;
+            color: #e2e8f0;
+        }
+
+        .concept p {
+            margin-bottom: 0;
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        code {
+            color: #c4b5fd;
+            background: rgba(129,140,248,0.1);
+            padding: 3px 7px;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 13px;
+        }
+
+        .code-block {
+            background: #05070d;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 22px;
+            overflow-x: auto;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 14px;
+            line-height: 1.7;
+            margin: 16px 0;
+        }
+
+        .code-block pre {
+            margin: 0;
+        }
+
+        .quiz-button {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 13px 26px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6366f1, #7c3aed);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            box-shadow: 0 10px 25px rgba(99,102,241,0.3);
+            transition: all 0.2s ease;
+        }
+
+        .quiz-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(99,102,241,0.5);
+        }
+
+        @media(max-width: 768px) {
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 34px;
+            }
+            .card {
+                padding: 24px;
+            }
+        }
+
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .lesson-nav a {
+            flex: 1;
+            display: block;
+            padding: 18px 22px;
+            border-radius: 14px;
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #e2e8f0;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .lesson-nav a:hover {
+            border-color: rgba(129,140,248,0.45);
+            transform: translateY(-2px);
+        }
+
+        .lesson-nav .dir {
+            display: block;
+            color: #818cf8;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .lesson-nav .name {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .lesson-nav .next {
+            text-align: right;
+        }
+
+        @media(max-width: 768px) {
+            .lesson-nav {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <a href="/dashboard" class="logo">
+        <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Loop<span>Lab</span>
+    </a>
+    <a href="/icse" class="back">
+        ← Back to ICSE Java
+    </a>
+</nav>
+
+<main class="container">
+
+    <div class="breadcrumb">
+        <a href="/dashboard">Dashboard</a>
+        <span>›</span>
+        <a href="/icse">ICSE Java</a>
+        <span>›</span>
+        <span style="color: #e2e8f0;">Conditional Branching &amp; Switch</span>
+    </div>
+
+    <div class="badge">
+        ICSE COMPUTER APPLICATIONS • UNIT 3
+    </div>
+
+    <h1>Conditional Branching &amp; Switch</h1>
+
+    <p class="intro">
+        Conditional statements let a program choose what to do. ICSE programs use <code>if</code>, <code>if-else</code>, the <code>if-else-if</code> ladder, the ternary operator and menu-driven <code>switch</code> statements with <code>break</code> and <code>default</code>.
+    </p>
+
+    <!-- KEY CONCEPTS -->
+    <div class="card">
+        <h2>Core Concepts &amp; Rules</h2>
+        <p>Essential rules for writing and tracing decision-making programs:</p>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>if and if-else</h3>
+                <p>An <code>if</code> runs its block only when the condition is true. An <code>else</code> block runs when it is false. Conditions must be <code>boolean</code> expressions.</p>
+            </div>
+            <div class="concept">
+                <h3>if-else-if Ladder</h3>
+                <p>Conditions are tested from top to bottom; the <strong>first</strong> true one runs and the rest are skipped. A final <code>else</code> catches every remaining case.</p>
+            </div>
+            <div class="concept">
+                <h3>switch-case</h3>
+                <p>Compares one value (<code>int</code>, <code>char</code>, <code>String</code>, etc.) against constant <code>case</code> labels. It is ideal for menu-driven programs.</p>
+            </div>
+            <div class="concept">
+                <h3>break and Fall-Through</h3>
+                <p>Without <code>break</code>, execution "falls through" into the next case. Fall-through is sometimes used on purpose to share code between cases.</p>
+            </div>
+            <div class="concept">
+                <h3>default</h3>
+                <p>Runs when no case matches. It is optional and can appear anywhere, but is usually written last.</p>
+            </div>
+            <div class="concept">
+                <h3>Logical Operators</h3>
+                <p><code>&amp;&amp;</code> (AND), <code>||</code> (OR) and <code>!</code> (NOT) combine conditions. <code>&amp;&amp;</code> and <code>||</code> short-circuit: the right side is skipped when the left side already decides the result.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CODE PROGRAM -->
+    <div class="card">
+        <h2>Example Program</h2>
+        <p>This program assigns a grade with an if-else-if ladder, runs a menu choice with <code>switch</code>, uses the ternary operator, and shows intentional fall-through.</p>
+        <h3>Complete Java Program</h3>
+        <div class="code-block">
+<pre><code>public class GradeAndMenu {
+
+    public static void main(String[] args) {
+
+        int marks = 78;
+        char grade;
+
+        if (marks &gt;= 90) {
+            grade = 'A';
+        } else if (marks &gt;= 75) {
+            grade = 'B';
+        } else if (marks &gt;= 60) {
+            grade = 'C';
+        } else {
+            grade = 'D';
+        }
+        System.out.println("Marks: " + marks + "  Grade: " + grade);
+
+        int choice = 2;
+        switch (choice) {
+            case 1:
+                System.out.println("Area of circle selected");
+                break;
+            case 2:
+                System.out.println("Area of square selected");
+                break;
+            default:
+                System.out.println("Invalid choice");
+        }
+
+        String result = (marks &gt;= 40) ? "Pass" : "Fail";
+        System.out.println("Result: " + result);
+
+        int day = 6;
+        switch (day) {
+            case 6:
+            case 7:
+                System.out.println("Weekend");
+                break;
+            default:
+                System.out.println("Weekday");
+        }
+    }
+}</code></pre>
+        </div>
+    </div>
+
+    <!-- STRUCTURE -->
+    <div class="card">
+        <h2>Understanding the Program Structure</h2>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>1. Decision with Ranges</h3>
+                <p>The if-else-if ladder handles <em>ranges</em> of marks, which <code>switch</code> cannot do because case labels must be single constant values.</p>
+            </div>
+            <div class="concept">
+                <h3>2. Decision with Exact Values</h3>
+                <p>The two <code>switch</code> statements handle exact values (a menu choice and a day number), which is where <code>switch</code> is clearest.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- EXECUTION TRACE -->
+    <div class="card">
+        <h2>How Does Java Execute This Program?</h2>
+        <p>Execution trace showing the order in which statements run and how values change:</p>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>Step 1</h3>
+                <p><code>marks = 78</code>: <code>78 &gt;= 90</code> is false, <code>78 &gt;= 75</code> is true, so <code>grade</code> becomes <code>'B'</code> and the remaining conditions are never tested.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 2</h3>
+                <p><code>switch (choice)</code> jumps straight to <code>case 2</code>, prints its message and <code>break</code> leaves the switch.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 3</h3>
+                <p>The ternary operator checks <code>78 &gt;= 40</code>, which is true, so <code>result</code> is <code>"Pass"</code>.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 4</h3>
+                <p><code>day = 6</code> matches <code>case 6</code>, which is empty, so execution falls through into <code>case 7</code>, prints "Weekend" and stops at <code>break</code>.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- LINE BY LINE -->
+    <div class="card">
+        <h2>Line-by-Line Explanation</h2>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 8 — First condition tested</h3>
+            <div class="code-block"><pre><code>if (marks &gt;= 90) {</code></pre></div>
+            <p>Relational operators produce a <code>boolean</code>. Because 78 is not at least 90, Java moves on to the next <code>else if</code>.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 10 — The matching branch</h3>
+            <div class="code-block"><pre><code>} else if (marks &gt;= 75) {</code></pre></div>
+            <p>This is the first true condition, so its block runs. Even though <code>marks &gt;= 60</code> is also true, that branch is skipped.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 24 — Case with break</h3>
+            <div class="code-block"><pre><code>case 2:</code></pre></div>
+            <p>When <code>choice</code> is 2, execution starts here. The <code>break</code> after the print statement stops it from running the <code>default</code> code too.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 31 — Ternary in place of if-else</h3>
+            <div class="code-block"><pre><code>String result = (marks &gt;= 40) ? "Pass" : "Fail";</code></pre></div>
+            <p>A one-line choice between two values. Both possible values must be compatible with the variable type (here, <code>String</code>).</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 36 — Intentional fall-through</h3>
+            <div class="code-block"><pre><code>case 6:</code></pre></div>
+            <p>An empty case with no <code>break</code> falls into the next one, so days 6 and 7 share the same code.</p>
+        </div>
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="card">
+        <h2>Expected Console Output</h2>
+        <div class="code-block">
+<pre><code>Marks: 78  Grade: B
+Area of square selected
+Result: Pass
+Weekend</code></pre>
+        </div>
+        <p>Only one message is printed per decision. If the <code>break</code> in <code>case 2</code> were removed, "Invalid choice" would also be printed.</p>
+    </div>
+
+    <!-- EXAM TIPS -->
+    <div class="card">
+        <h2>ICSE Board Exam Tips &amp; Common Traps</h2>
+        <p>Keep these frequent exam traps in mind:</p>
+        <div class="concept-grid">
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Missing break</h3>
+                <p>A favourite output question: a <code>switch</code> without <code>break</code> keeps running every following case, including <code>default</code>.</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Order of the Ladder</h3>
+                <p>Write range conditions from the most restrictive to the least. Testing <code>marks &gt;= 60</code> first would give 95 marks a C.</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 switch Limits</h3>
+                <p>Case labels must be constants and unique. <code>switch</code> cannot test <code>boolean</code>, <code>long</code>, <code>double</code> or ranges like <code>marks &gt; 90</code>.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRACTICE CTA -->
+    <div class="card" style="text-align: center; padding: 45px 30px;">
+        <h2>Ready to Test Your Knowledge?</h2>
+        <p style="max-width: 550px; margin: 10px auto 25px;">
+            Test your understanding with instant feedback, randomized questions, and step-by-step explanations.
+        </p>
+        <a href="/apcs/quiz?topic=Conditional%20Branching%20%26%20Switch&amp;curriculum=ICSE" class="quiz-button">
+            Start Practice →
+        </a>
+    </div>
+
+    <!-- PREVIOUS / NEXT LESSON -->
+    <nav class="lesson-nav" aria-label="Lesson navigation">
+        <a href="/icse/operators" class="prev">
+            <span class="dir">← PREVIOUS</span>
+            <span class="name">Operators &amp; Expressions</span>
+        </a>
+        <a href="/icse/loops" class="next">
+            <span class="dir">NEXT →</span>
+            <span class="name">Iterative Constructs &amp; Loops</span>
+        </a>
+    </nav>
+
+</main>
+
+</body>
+</html>

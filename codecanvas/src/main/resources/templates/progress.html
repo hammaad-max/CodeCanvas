@@ -2,12 +2,13 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}" href="/favicon.svg">
     <meta name="_csrf" th:content="${_csrf.token}">
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <meta name="student-name" th:content="${studentName}">
     <script th:src="@{/js/codecanvas-api.js}"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Progress &amp; Analytics | CodeCanvas</title>
+    <title>My Progress &amp; Analytics | LoopLab</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -564,9 +565,21 @@
             box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35);
         }
 
+        .curriculum-tab.active.isc {
+            background: linear-gradient(135deg, #0ea5e9, #2563eb);
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.35);
+        }
+
         @media (max-width: 600px) {
             .kpi-grid {
                 grid-template-columns: 1fr;
+            }
+            /* Let the study-plan button drop below long unit names instead of overflowing */
+            .plan-item {
+                flex-wrap: wrap;
+            }
+            .curriculum-tabs {
+                flex-wrap: wrap;
             }
             .navbar {
                 padding: 0 20px;
@@ -579,7 +592,7 @@
     <!-- NAVBAR -->
     <nav class="navbar">
         <a href="/dashboard" class="logo">
-            Code<span>Canvas</span>
+            <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Loop<span>Lab</span>
         </a>
 
         <div class="profile-container">
@@ -615,6 +628,9 @@
             </button>
             <button class="curriculum-tab" id="tabIcse" onclick="switchCurriculum('ICSE')">
                 ICSE Java (Class 9 &amp; 10)
+            </button>
+            <button class="curriculum-tab" id="tabIsc" onclick="switchCurriculum('ISC')">
+                ISC Java (Class 11 &amp; 12)
             </button>
         </div>
 
@@ -721,32 +737,49 @@
         ];
 
         const icseUnits = [
-            { id: 1, title: 'OOP & Java Fundamentals', slug: '/icse/learn?unit=1', desc: 'Bytecode, javac, JVM, class as object factory & 4 OOP pillars' },
-            { id: 2, title: 'Operators & Expressions', slug: '/icse/learn?unit=2', desc: 'Arithmetic, logical, ++x vs x++, precedence & Math functions' },
-            { id: 3, title: 'Conditional Branching & Switch', slug: '/icse/learn?unit=3', desc: 'if-else ladders, switch-case, fall-through & ternary ?:' },
-            { id: 4, title: 'Iterative Constructs & Loops', slug: '/icse/learn?unit=4', desc: 'for, while, do-while, jump statements & triangle patterns' },
-            { id: 5, title: 'Classic Number Programs', slug: '/icse/learn?unit=5', desc: 'Armstrong, palindrome, prime, spy, automorphic & digit extraction' },
-            { id: 6, title: 'Character & String Handling', slug: '/icse/learn?unit=6', desc: 'Character wrapper functions, substring, compareTo & Piglatin' },
-            { id: 7, title: 'User-Defined Methods & Overloading', slug: '/icse/learn?unit=7', desc: 'Method signatures, pass-by-value, pure/impure & overloading' },
-            { id: 8, title: 'Arrays, Searching & Sorting', slug: '/icse/learn?unit=8', desc: '1D arrays, Linear Search, Binary Search, Bubble Sort & 2D matrices' }
+            { id: 1, title: 'OOP & Java Fundamentals', slug: '/icse/oop-fundamentals', desc: 'Bytecode, javac, JVM, class as object factory & 4 OOP pillars' },
+            { id: 2, title: 'Operators & Expressions', slug: '/icse/operators', desc: 'Arithmetic, logical, ++x vs x++, precedence & Math functions' },
+            { id: 3, title: 'Conditional Branching & Switch', slug: '/icse/conditionals', desc: 'if-else ladders, switch-case, fall-through & ternary ?:' },
+            { id: 4, title: 'Iterative Constructs & Loops', slug: '/icse/loops', desc: 'for, while, do-while, jump statements & triangle patterns' },
+            { id: 5, title: 'Classic Number Programs', slug: '/icse/number-programs', desc: 'Armstrong, palindrome, prime, spy, automorphic & digit extraction' },
+            { id: 6, title: 'Character & String Handling', slug: '/icse/strings', desc: 'Character wrapper functions, substring, compareTo & Piglatin' },
+            { id: 7, title: 'User-Defined Methods & Overloading', slug: '/icse/methods', desc: 'Method signatures, pass-by-value, pure/impure & overloading' },
+            { id: 8, title: 'Arrays, Searching & Sorting', slug: '/icse/arrays', desc: '1D arrays, Linear Search, Binary Search, Bubble Sort & 2D matrices' }
         ];
 
+        const iscUnits = [
+            { id: 1, title: 'Classes, Objects & Wrapper Classes', slug: '/isc/classes-objects', desc: 'Constructor overloading, this, static members & wrapper classes' },
+            { id: 2, title: 'Strings & StringBuffer', slug: '/isc/strings', desc: 'Sentence processing, word manipulation & mutable StringBuffer' },
+            { id: 3, title: '2D Arrays & Matrices', slug: '/isc/matrices', desc: 'Matrix traversal, diagonals, transpose & boundary elements' },
+            { id: 4, title: 'Recursion', slug: '/isc/recursion', desc: 'Base cases, the call stack, tracing & classic recursive methods' },
+            { id: 5, title: 'Inheritance & Polymorphism', slug: '/isc/inheritance', desc: 'extends, super, overriding & dynamic method dispatch' },
+            { id: 6, title: 'Interfaces & Abstract Classes', slug: '/isc/interfaces', desc: 'Abstract methods, interfaces, implements & constants' },
+            { id: 7, title: 'Stacks, Queues & Linked Lists', slug: '/isc/data-structures', desc: 'Push/pop, enqueue/dequeue, overflow/underflow & nodes' },
+            { id: 8, title: 'Number & Date Programs', slug: '/isc/number-date', desc: 'Leap years, day numbers, base conversion, Kaprekar & Smith' }
+        ];
+
+        // Course settings for the three tabs. ICSE and ISC are "board" courses with grade projections.
+        const COURSES = {
+            APCS: { units: apcsUnits, mockKey: 'codecanvas_mock_exam', hub: '/apcs', name: 'AP CS', board: false },
+            ICSE: { units: icseUnits, mockKey: 'codecanvas_icse_mock_exam', hub: '/icse', name: 'ICSE', board: true,
+                    subtitle: 'Real-time mastery tracking across the 8 ICSE Computer Applications Java units.',
+                    matrix: '8 Official ICSE Class 9 & 10 Computer Applications Units' },
+            ISC: { units: iscUnits, mockKey: 'codecanvas_isc_mock_exam', hub: '/isc', name: 'ISC', board: true,
+                   subtitle: 'Real-time mastery tracking across the 8 ISC Computer Science Java units.',
+                   matrix: '8 ISC Class 11 & 12 Computer Science Java Units' }
+        };
+
         let currentCurriculum = localStorage.getItem('codecanvas_selected_curriculum') || 'APCS';
+        if (!COURSES[currentCurriculum]) currentCurriculum = 'APCS';
+        const quizParam = () => currentCurriculum === 'APCS' ? '' : '&curriculum=' + currentCurriculum;
 
         function switchCurriculum(curr) {
             currentCurriculum = curr;
             localStorage.setItem('codecanvas_selected_curriculum', curr);
 
-            const tabApcs = document.getElementById('tabApcs');
-            const tabIcse = document.getElementById('tabIcse');
-
-            if (curr === 'ICSE') {
-                tabApcs.className = 'curriculum-tab';
-                tabIcse.className = 'curriculum-tab active icse';
-            } else {
-                tabApcs.className = 'curriculum-tab active';
-                tabIcse.className = 'curriculum-tab';
-            }
+            document.getElementById('tabApcs').className = 'curriculum-tab' + (curr === 'APCS' ? ' active' : '');
+            document.getElementById('tabIcse').className = 'curriculum-tab' + (curr === 'ICSE' ? ' active icse' : '');
+            document.getElementById('tabIsc').className = 'curriculum-tab' + (curr === 'ISC' ? ' active isc' : '');
 
             loadProgress();
         }
@@ -754,10 +787,10 @@
         function loadProgress() {
             try {
                 const completedTopics = JSON.parse(localStorage.getItem('codecanvas_completed_topics') || '{}');
-                const mockExam = JSON.parse(localStorage.getItem(
-                    currentCurriculum === 'ICSE' ? 'codecanvas_icse_mock_exam' : 'codecanvas_mock_exam') || 'null');
+                const course = COURSES[currentCurriculum];
+                const mockExam = JSON.parse(localStorage.getItem(course.mockKey) || 'null');
 
-                const unitsData = currentCurriculum === 'ICSE' ? icseUnits : apcsUnits;
+                const unitsData = course.units;
                 const totalUnits = unitsData.length;
 
                 // Filter passed units specific to the active curriculum
@@ -779,9 +812,9 @@
                 // Subtitle updates
                 const subTitleEl = document.getElementById('pageHeaderSubtitle');
                 const matrixSubtitleEl = document.getElementById('matrixSubtitle');
-                if (currentCurriculum === 'ICSE') {
-                    subTitleEl.textContent = 'Real-time mastery tracking across the 8 ICSE Computer Applications Java units.';
-                    matrixSubtitleEl.textContent = '8 Official ICSE Class 9 & 10 Computer Applications Units';
+                if (course.board) {
+                    subTitleEl.textContent = course.subtitle;
+                    matrixSubtitleEl.textContent = course.matrix;
                 } else {
                     subTitleEl.textContent = 'Real-time mastery tracking across the 8 College Board AP Computer Science A units.';
                     matrixSubtitleEl.textContent = '8 Official AP Computer Science A Units';
@@ -793,7 +826,7 @@
                 const scoreEl = document.getElementById('kpiProjectedScore');
                 const scoreTitleEl = document.getElementById('kpiProjectedScoreTitle');
 
-                if (currentCurriculum === 'ICSE') {
+                if (course.board) {
                     scoreTitleLabelEl.textContent = 'Projected Board Grade';
                     scorePillEl.textContent = 'CISCE Standard';
                     scorePillEl.style.background = 'rgba(16,185,129,0.2)';
@@ -818,7 +851,7 @@
                     } else {
                         scoreEl.textContent = '—';
                         scoreEl.style.color = '#cbd5e1';
-                        scoreTitleEl.textContent = 'Pass 1 ICSE unit for projected grade';
+                        scoreTitleEl.textContent = `Pass 1 ${course.name} unit for projected grade`;
                     }
                 } else {
                     scoreTitleLabelEl.textContent = 'Projected AP Score';
@@ -874,19 +907,19 @@
                 const mockScoreEl = document.getElementById('kpiMockScore');
                 const mockSubtextEl = document.getElementById('kpiMockSubtext');
 
-                if (currentCurriculum === 'ICSE') {
-                    mockTitleLabelEl.textContent = 'ICSE Board Practice';
+                if (course.board) {
+                    mockTitleLabelEl.textContent = `${course.name} Board Practice`;
                     mockPillEl.textContent = 'Interactive';
                     mockPillEl.style.background = 'rgba(16,185,129,0.15)';
                     mockPillEl.style.color = '#6ee7b7';
                     if (mockExam) {
                         mockScoreEl.textContent = `${mockExam.score}/${mockExam.total} (${mockExam.percentage}%)`;
                         mockScoreEl.style.color = mockExam.percentage >= 70 ? '#86efac' : '#fcd34d';
-                        mockSubtextEl.innerHTML = `Board Mock Exam • <a href="/icse/exam" style="color: #34d399; text-decoration: none;">Retake Exam →</a>`;
+                        mockSubtextEl.innerHTML = `Board Mock Exam • <a href="${course.hub}/exam" style="color: #34d399; text-decoration: none;">Retake Exam →</a>`;
                     } else {
                         mockScoreEl.textContent = `${passedCount}/8 Units`;
                         mockScoreEl.style.color = passedCount === 8 ? '#86efac' : '#cbd5e1';
-                        mockSubtextEl.innerHTML = `<a href="/icse/exam" style="color: #34d399; text-decoration: none; font-weight: 600;">Take ICSE Mock Exam →</a>`;
+                        mockSubtextEl.innerHTML = `<a href="${course.hub}/exam" style="color: #34d399; text-decoration: none; font-weight: 600;">Take ${course.name} Mock Exam →</a>`;
                     }
                 } else {
                     mockTitleLabelEl.textContent = 'Diagnostic Mock Exam';
@@ -970,7 +1003,7 @@
                     </div>
                     <div class="unit-actions-row">
                         <a href="${unit.slug}" class="unit-action-btn btn-learn">Study Unit →</a>
-                        <a href="/apcs/quiz?topic=${encodeURIComponent(unit.title)}${currentCurriculum === 'ICSE' ? '&curriculum=ICSE' : ''}" class="unit-action-btn btn-quiz">Take Quiz ⚡</a>
+                        <a href="/apcs/quiz?topic=${encodeURIComponent(unit.title)}${quizParam()}" class="unit-action-btn btn-quiz">Take Quiz ⚡</a>
                     </div>
                 `;
 
@@ -991,7 +1024,7 @@
                     recommendations.push({
                         priority: 'high',
                         text: `<strong>${unit.title}:</strong> You scored ${item.bestScore}/${item.total || 10}. Pass mark is 70% (7/10). Revisit the concepts and retry the quiz to earn unit credit.`,
-                        link: `/apcs/quiz?topic=${encodeURIComponent(unit.title)}${currentCurriculum === 'ICSE' ? '&curriculum=ICSE' : ''}`,
+                        link: `/apcs/quiz?topic=${encodeURIComponent(unit.title)}${quizParam()}`,
                         actionText: 'Retry Quiz →'
                     });
                 }
@@ -1004,7 +1037,7 @@
                     recommendations.push({
                         priority: 'med',
                         text: `<strong>${unit.title}:</strong> Not attempted yet. Complete this unit to advance your syllabus mastery toward 100%.`,
-                        link: `/apcs/quiz?topic=${encodeURIComponent(unit.title)}${currentCurriculum === 'ICSE' ? '&curriculum=ICSE' : ''}`,
+                        link: `/apcs/quiz?topic=${encodeURIComponent(unit.title)}${quizParam()}`,
                         actionText: 'Practice Quiz ⚡'
                     });
                 }
@@ -1028,19 +1061,20 @@
                     });
                 }
             } else {
+                const course = COURSES[currentCurriculum];
                 if (!mockExam) {
                     recommendations.push({
                         priority: 'med',
-                        text: '<strong>ICSE Board Mock Exam:</strong> Take the timed 40-question board simulation to benchmark your knowledge across all 8 units.',
-                        link: '/icse/exam',
+                        text: `<strong>${course.name} Board Mock Exam:</strong> Take the timed 40-question board simulation to benchmark your knowledge across all 8 units.`,
+                        link: `${course.hub}/exam`,
                         actionText: 'Take Mock Exam →'
                     });
                 } else if (passedCount === 8) {
                     recommendations.push({
                         priority: 'good',
-                        text: '🎉 Outstanding! All 8 ICSE units mastered with passing scores! You are ready for 100/100 on your board exams.',
-                        link: '/icse',
-                        actionText: 'Review ICSE Syllabus →'
+                        text: `🎉 Outstanding! All 8 ${course.name} units mastered with passing scores! You are ready for 100/100 on your board exams.`,
+                        link: course.hub,
+                        actionText: `Review ${course.name} Syllabus →`
                     });
                 }
             }

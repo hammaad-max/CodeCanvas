@@ -31,7 +31,7 @@ class CodeCanvasApplicationTests {
     void testAllQuestionsIntegrity() {
         List<Question> all = questionRepository.findAll();
         assertFalse(all.isEmpty(), "Question bank must not be empty");
-        assertEquals(128, all.size(), "Should contain exactly 128 total questions (80 AP CS + 48 ICSE)");
+        assertEquals(240, all.size(), "Should contain exactly 240 total questions (80 AP CS + 80 ICSE + 80 ISC)");
 
         Set<Long> ids = new HashSet<>();
 
@@ -60,6 +60,10 @@ class CodeCanvasApplicationTests {
             assertTrue(matchesOption,
                     String.format("Question ID %d correct answer '%s' does not match any of its 4 options!",
                             q.getId(), q.getCorrectAnswer()));
+
+            // The 4 options must be different, otherwise two choices would both be "correct"
+            assertEquals(4, Set.of(q.getOptionA(), q.getOptionB(), q.getOptionC(), q.getOptionD()).size(),
+                    "Question ID " + q.getId() + " has duplicate options");
         }
     }
 
@@ -67,7 +71,7 @@ class CodeCanvasApplicationTests {
     @DisplayName("Verify ICSE curriculum question bank covers all 8 ICSE units")
     void testIcseQuestionsCoverage() {
         List<Question> icseQuestions = questionRepository.findByCurriculum("ICSE");
-        assertEquals(48, icseQuestions.size(), "ICSE must have 48 questions");
+        assertEquals(80, icseQuestions.size(), "ICSE must have 80 questions");
 
         String[] icseUnits = {
                 "OOP & Java Fundamentals",
@@ -84,7 +88,7 @@ class CodeCanvasApplicationTests {
             List<Question> unitQuestions = icseQuestions.stream()
                     .filter(q -> q.getTopic().equalsIgnoreCase(unit))
                     .toList();
-            assertEquals(6, unitQuestions.size(), "ICSE Unit '" + unit + "' must have exactly 6 questions");
+            assertEquals(10, unitQuestions.size(), "ICSE Unit '" + unit + "' must have exactly 10 questions");
         }
     }
 
@@ -136,7 +140,7 @@ class CodeCanvasApplicationTests {
         assertTrue(wrongCombo.isEmpty(), "ICSE does not have a topic named exactly 'Arrays'");
 
         List<Question> icseArrays = questionRepository.findByTopicAndCurriculum("Arrays, Searching & Sorting", "ICSE");
-        assertEquals(6, icseArrays.size(), "Should find 6 ICSE Arrays questions");
+        assertEquals(10, icseArrays.size(), "Should find 10 ICSE Arrays questions");
     }
 
     @Test
@@ -151,5 +155,34 @@ class CodeCanvasApplicationTests {
             topicsCovered.add(q.getTopic());
         }
         assertEquals(8, topicsCovered.size(), "ICSE mock exam must cover all 8 ICSE units");
+    }
+
+    @Test
+    @DisplayName("Verify ISC curriculum question bank has 10 questions in each of the 8 ISC units")
+    void testIscQuestionsCoverage() {
+        List<Question> iscQuestions = questionRepository.findByCurriculum("ISC");
+        assertEquals(80, iscQuestions.size(), "ISC must have 80 questions");
+        String[] iscUnits = {
+                "Classes, Objects & Wrapper Classes", "Strings & StringBuffer", "2D Arrays & Matrices", "Recursion",
+                "Inheritance & Polymorphism", "Interfaces & Abstract Classes", "Stacks, Queues & Linked Lists",
+                "Number & Date Programs"
+        };
+        for (String unit : iscUnits) {
+            assertEquals(10, questionRepository.findByTopicAndCurriculum(unit, "ISC").size(),
+                    "ISC Unit '" + unit + "' must have exactly 10 questions");
+        }
+    }
+
+    @Test
+    @DisplayName("Verify ISC mock exam generation creates 40 questions covering all 8 ISC units")
+    void testIscMockExamGeneration() {
+        List<Question> exam = questionRepository.generateIscMockExam(5);
+        assertEquals(40, exam.size(), "ISC mock exam must generate exactly 40 questions");
+        Set<String> topicsCovered = new HashSet<>();
+        for (Question q : exam) {
+            assertEquals("ISC", q.getCurriculum(), "All questions must belong to ISC curriculum");
+            topicsCovered.add(q.getTopic());
+        }
+        assertEquals(8, topicsCovered.size(), "ISC mock exam must cover all 8 ISC units");
     }
 }

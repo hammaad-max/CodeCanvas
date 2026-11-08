@@ -26,6 +26,10 @@ public class Student {
     @Column(name = "password_hash", nullable = false, length = 100)
     private String passwordHash;
 
+    /** Lower-case; empty for accounts created before email was required. Used for password reset. */
+    @Column(length = 254, unique = true)
+    private String email;
+
     @Column(nullable = false, length = 20)
     private String role = "STUDENT";
 
@@ -44,10 +48,18 @@ public class Student {
         this.passwordHash = passwordHash;
     }
 
+    public Student(String username, String displayName, String email, String passwordHash) {
+        this(username, displayName, passwordHash);
+        this.email = email;
+    }
+
     public Long getId() { return id; }
     public String getUsername() { return username; }
     public String getDisplayName() { return displayName; }
     public String getPasswordHash() { return passwordHash; }
+    public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
     public String getRole() { return role; }
     public boolean isEnabled() { return enabled; }
     public Instant getCreatedAt() { return createdAt; }

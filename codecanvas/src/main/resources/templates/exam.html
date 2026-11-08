@@ -2,12 +2,13 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}" href="/favicon.svg">
     <meta name="_csrf" th:content="${_csrf.token}">
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <meta name="student-name" th:content="${studentName}">
     <script th:src="@{/js/codecanvas-api.js}"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AP CS A Mock Exam | CodeCanvas</title>
+    <title>AP CS A Mock Exam | LoopLab</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -1073,7 +1074,7 @@
     <header class="exam-navbar">
         <div class="exam-brand">
             <a href="/dashboard" class="logo">
-                Code<span>Canvas</span>
+                <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Loop<span>Lab</span>
             </a>
             <span class="exam-badge">Diagnostic Mock Exam</span>
         </div>
@@ -1327,8 +1328,31 @@
         let isPaused = false;
         let startTime = null;
 
-        const isIcseExam = window.location.pathname.includes('/icse') || 
-            new URLSearchParams(window.location.search).get('curriculum') === 'ICSE';
+        // Which course this exam is for: /apcs/exam, /icse/exam or /isc/exam
+        const EXAM_COURSES = {
+            ICSE: {
+                code: 'ICSE', hub: '/icse', endpoint: '/api/exam/icse?questionsPerTopic=5', storageKey: 'codecanvas_icse_mock_exam',
+                title: 'ICSE Class 10 Java Board Mock Exam | LoopLab', badge: 'ICSE BOARD SIMULATION', heading: 'ICSE Class 10 Java',
+                desc: 'This exam contains 40 multiple-choice questions representative of the official ICSE Computer Applications examination format, balanced across all 8 syllabus units.',
+                units: 'All 8 ICSE Units',
+                greeting: 'ICSE Board Diagnostic Complete! 🎉',
+                summary: 'You completed the 40-question ICSE Class 10 Java Board Diagnostic Exam. Review your performance breakdown across all 8 syllabus units below to target your practice.'
+            },
+            ISC: {
+                code: 'ISC', hub: '/isc', endpoint: '/api/exam/isc?questionsPerTopic=5', storageKey: 'codecanvas_isc_mock_exam',
+                title: 'ISC Class 12 Java Board Mock Exam | LoopLab', badge: 'ISC BOARD SIMULATION', heading: 'ISC Class 11 & 12 Java',
+                desc: 'This exam contains 40 multiple-choice questions on the ISC Computer Science Java syllabus, balanced across all 8 units: from classes and recursion to data structures.',
+                units: 'All 8 ISC Units',
+                greeting: 'ISC Board Diagnostic Complete! 🎉',
+                summary: 'You completed the 40-question ISC Computer Science Java Diagnostic Exam. Review your performance breakdown across all 8 syllabus units below to target your practice.'
+            }
+        };
+        const examPath = window.location.pathname;
+        const examParam = (new URLSearchParams(window.location.search).get('curriculum') || '').toUpperCase();
+        const examCourse = examPath.startsWith('/isc') || examParam === 'ISC' ? EXAM_COURSES.ISC
+            : examPath.startsWith('/icse') || examParam === 'ICSE' ? EXAM_COURSES.ICSE : null;
+        // ICSE and ISC share the board-style grading and layout; AP CS keeps its 1-5 score
+        const isIcseExam = examCourse !== null;
 
         const topicSlugMap = {
             'Variables & Data Types': '/apcs/variables',
@@ -1339,14 +1363,22 @@
             'Methods': '/apcs/methods',
             'Classes & Objects': '/apcs/classes',
             'Arrays': '/apcs/arrays',
-            'OOP & Java Fundamentals': '/icse/learn?unit=1',
-            'Operators & Expressions': '/icse/learn?unit=2',
-            'Conditional Branching & Switch': '/icse/learn?unit=3',
-            'Iterative Constructs & Loops': '/icse/learn?unit=4',
-            'Classic Number Programs': '/icse/learn?unit=5',
-            'Character & String Handling': '/icse/learn?unit=6',
-            'User-Defined Methods & Overloading': '/icse/learn?unit=7',
-            'Arrays, Searching & Sorting': '/icse/learn?unit=8'
+            'OOP & Java Fundamentals': '/icse/oop-fundamentals',
+            'Operators & Expressions': '/icse/operators',
+            'Conditional Branching & Switch': '/icse/conditionals',
+            'Iterative Constructs & Loops': '/icse/loops',
+            'Classic Number Programs': '/icse/number-programs',
+            'Character & String Handling': '/icse/strings',
+            'User-Defined Methods & Overloading': '/icse/methods',
+            'Arrays, Searching & Sorting': '/icse/arrays',
+            'Classes, Objects & Wrapper Classes': '/isc/classes-objects',
+            'Strings & StringBuffer': '/isc/strings',
+            '2D Arrays & Matrices': '/isc/matrices',
+            'Recursion': '/isc/recursion',
+            'Inheritance & Polymorphism': '/isc/inheritance',
+            'Interfaces & Abstract Classes': '/isc/interfaces',
+            'Stacks, Queues & Linked Lists': '/isc/data-structures',
+            'Number & Date Programs': '/isc/number-date'
         };
 
         // DOM elements
@@ -1378,27 +1410,31 @@
         // Fetch exam questions (5 per each of the 8 topics = 40 total)
         async function loadExam() {
             try {
-                if (isIcseExam) {
-                    document.title = 'ICSE Class 10 Java Board Mock Exam | CodeCanvas';
+                if (examCourse) {
+                    document.title = examCourse.title;
                     const startBadge = document.querySelector('#examStartScreen .exam-badge');
-                    if (startBadge) startBadge.textContent = 'ICSE BOARD SIMULATION';
+                    if (startBadge) startBadge.textContent = examCourse.badge;
                     const heading = document.querySelector('#examStartScreen h1');
-                    if (heading) heading.textContent = 'ICSE Class 10 Java';
+                    if (heading) heading.textContent = examCourse.heading;
                     const subheading = document.querySelector('#examStartScreen h2');
                     if (subheading) subheading.textContent = 'Diagnostic Mock Exam • 40 Questions';
                     const desc = document.querySelector('#examStartScreen p');
-                    if (desc) desc.textContent = 'This exam contains 40 multiple-choice questions representative of the official ICSE Computer Applications examination format, balanced across all 8 syllabus units.';
+                    if (desc) desc.textContent = examCourse.desc;
                     const chipUnits = document.querySelectorAll('#examStartScreen .chip-lbl')[1];
-                    if (chipUnits) chipUnits.textContent = 'All 8 ICSE Units';
+                    if (chipUnits) chipUnits.textContent = examCourse.units;
                     const chipScore = document.querySelectorAll('#examStartScreen .chip-lbl')[3];
                     if (chipScore) chipScore.textContent = 'Target: 100/100 Board Grade';
+                    const chipScoreVal = document.querySelectorAll('#examStartScreen .chip-val')[3];
+                    if (chipScoreVal) chipScoreVal.textContent = 'Board Grade';
+                    const headerTitle = document.getElementById('examProgressIndicator');
+                    if (headerTitle) headerTitle.textContent = examCourse.heading + ' • 40 Questions';
                     const backBtn = document.querySelector('.start-actions-row a');
-                    if (backBtn) backBtn.href = '/icse';
+                    if (backBtn) backBtn.href = examCourse.hub;
                     const returnBtn = document.querySelector('.report-hero a.btn-primary-action');
-                    if (returnBtn) returnBtn.href = '/icse';
+                    if (returnBtn) returnBtn.href = examCourse.hub;
                 }
 
-                const endpoint = isIcseExam ? '/api/exam/icse?questionsPerTopic=5' : '/api/exam/apcs?questionsPerTopic=5';
+                const endpoint = examCourse ? examCourse.endpoint : '/api/exam/apcs?questionsPerTopic=5';
                 const response = await fetch(endpoint);
                 if (!response.ok) throw new Error('HTTP ' + response.status);
                 examQuestions = await response.json();
@@ -1780,13 +1816,13 @@
             const elapsedRemSecs = elapsedSecs % 60;
             timeSpentEl.textContent = `${elapsedMins}m ${elapsedRemSecs}s`;
 
-            if (isIcseExam) {
-                document.getElementById('reportGreeting').textContent = 'ICSE Board Diagnostic Complete! 🎉';
-                document.getElementById('reportSummaryText').textContent = 'You completed the 40-question ICSE Class 10 Java Board Diagnostic Exam. Review your performance breakdown across all 8 syllabus units below to target your practice.';
+            if (examCourse) {
+                document.getElementById('reportGreeting').textContent = examCourse.greeting;
+                document.getElementById('reportSummaryText').textContent = examCourse.summary;
                 const backCurricBtn = document.querySelector('.report-hero a.btn-primary-action');
-                if (backCurricBtn) backCurricBtn.href = '/icse';
+                if (backCurricBtn) backCurricBtn.href = examCourse.hub;
                 const footCurricBtn = document.querySelector('.report-actions-footer a.btn-secondary-action');
-                if (footCurricBtn) footCurricBtn.href = '/icse';
+                if (footCurricBtn) footCurricBtn.href = examCourse.hub;
             }
 
             if (pct >= 70) {
@@ -1805,17 +1841,23 @@
             const unitContainer = document.getElementById('unitBreakdownContainer');
             unitContainer.innerHTML = '';
 
-            Object.keys(unitStats).forEach(topicName => {
+            const examCurriculumCode = examCourse ? examCourse.code : 'APCS';
+            // Weakest units first, so the topics to practise are at the top
+            const unitOrder = Object.keys(unitStats).sort((a, b) =>
+                (unitStats[a].correct / unitStats[a].total) - (unitStats[b].correct / unitStats[b].total));
+            unitOrder.forEach(topicName => {
                 const stat = unitStats[topicName];
                 const unitPct = Math.round((stat.correct / stat.total) * 100);
                 const isUnitPassed = unitPct >= 70;
-                const lessonUrl = topicSlugMap[topicName] || (isIcseExam ? '/icse' : '/apcs');
+                const lessonUrl = topicSlugMap[topicName] || (examCourse ? examCourse.hub : '/apcs');
+                const quizUrl = '/apcs/quiz?topic=' + encodeURIComponent(topicName) +
+                    (examCurriculumCode === 'APCS' ? '' : '&curriculum=' + examCurriculumCode);
 
                 const card = document.createElement('div');
                 card.className = 'unit-card';
                 card.innerHTML = `
                     <div class="unit-card-header">
-                        <span class="unit-name">${topicName}</span>
+                        <span class="unit-name">${escapeHtml(topicName)}</span>
                         <span class="unit-status-pill ${isUnitPassed ? 'pill-mastery' : 'pill-review'}">
                             ${isUnitPassed ? '✓ Proficient' : 'Needs Review'}
                         </span>
@@ -1825,7 +1867,10 @@
                     </div>
                     <div class="unit-card-footer">
                         <span>${stat.correct} of ${stat.total} Correct (${unitPct}%)</span>
-                        <a href="${lessonUrl}" class="unit-study-link">Review Unit →</a>
+                        <span style="display: flex; gap: 14px; flex-wrap: wrap;">
+                            <a href="${lessonUrl}" class="unit-study-link">Review Unit →</a>
+                            <a href="${quizUrl}" class="unit-study-link" style="${isUnitPassed ? '' : 'color: #fcd34d; font-weight: 700;'}">${isUnitPassed ? 'Practise Again →' : 'Practise This Topic →'}</a>
+                        </span>
                     </div>
                 `;
                 unitContainer.appendChild(card);
@@ -1841,11 +1886,11 @@
                     total: totalCount,
                     percentage: pct,
                     projectedScore: projectedScore,
-                    curriculum: isIcseExam ? 'ICSE' : 'APCS',
+                    curriculum: examCurriculumCode,
                     completedAt: new Date().toISOString()
                 };
-                if (isIcseExam) {
-                    localStorage.setItem('codecanvas_icse_mock_exam', JSON.stringify(examResult));
+                if (examCourse) {
+                    localStorage.setItem(examCourse.storageKey, JSON.stringify(examResult));
                 } else {
                     localStorage.setItem('codecanvas_mock_exam', JSON.stringify(examResult));
                 }

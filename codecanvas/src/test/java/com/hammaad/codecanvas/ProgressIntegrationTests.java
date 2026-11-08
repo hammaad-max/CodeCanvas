@@ -219,7 +219,7 @@ class ProgressIntegrationTests {
         List<Question> unit = questionRepository.findByTopicAndCurriculum("Classic Number Programs", "ICSE");
         mockMvc.perform(post("/api/quiz/submit").with(TestStudents.as(student)).with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(submitQuiz("Classic Number Programs", "ICSE", answersJson(unit, 6))))
+                        .content(submitQuiz("Classic Number Programs", "ICSE", answersJson(unit, 7))))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.passed").value(true));
 

@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}" href="/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classic Number Programs | ICSE Java | LoopLab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', Arial, Helvetica, sans-serif;
+            background:
+                    radial-gradient(
+                            circle at 80% 0%,
+                            rgba(99, 102, 241, 0.18),
+                            transparent 30%
+                    ),
+                    radial-gradient(
+                            circle at 0% 50%,
+                            rgba(124, 58, 237, 0.08),
+                            transparent 30%
+                    ),
+                    #080b14;
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            height: 72px;
+            padding: 0 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(8, 11, 20, 0.82);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            color: #ffffff;
+            text-decoration: none;
+            letter-spacing: -0.7px;
+        }
+
+        .logo span {
+            color: #818cf8;
+        }
+
+        .back {
+            color: #a1a1aa;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .back:hover {
+            color: #ffffff;
+        }
+
+        .container {
+            width: min(1000px, 90%);
+            margin: auto;
+            padding: 50px 0 80px;
+        }
+
+        .breadcrumb {
+            color: #71717a;
+            font-size: 13px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumb a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb a:hover {
+            color: #ffffff;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: rgba(129,140,248,0.12);
+            border: 1px solid rgba(129,140,248,0.25);
+            color: #a5b4fc;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 46px;
+            letter-spacing: -1.5px;
+            margin: 0 0 15px;
+            font-weight: 800;
+        }
+
+        .intro {
+            color: #94a3b8;
+            font-size: 17px;
+            line-height: 1.7;
+            max-width: 780px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+
+        .card p {
+            color: #94a3b8;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .concept {
+            padding: 22px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .concept h3 {
+            margin-top: 0;
+            font-size: 16px;
+            color: #e2e8f0;
+        }
+
+        .concept p {
+            margin-bottom: 0;
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        code {
+            color: #c4b5fd;
+            background: rgba(129,140,248,0.1);
+            padding: 3px 7px;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 13px;
+        }
+
+        .code-block {
+            background: #05070d;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 22px;
+            overflow-x: auto;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 14px;
+            line-height: 1.7;
+            margin: 16px 0;
+        }
+
+        .code-block pre {
+            margin: 0;
+        }
+
+        .quiz-button {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 13px 26px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6366f1, #7c3aed);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            box-shadow: 0 10px 25px rgba(99,102,241,0.3);
+            transition: all 0.2s ease;
+        }
+
+        .quiz-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(99,102,241,0.5);
+        }
+
+        @media(max-width: 768px) {
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 34px;
+            }
+            .card {
+                padding: 24px;
+            }
+        }
+
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .lesson-nav a {
+            flex: 1;
+            display: block;
+            padding: 18px 22px;
+            border-radius: 14px;
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #e2e8f0;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .lesson-nav a:hover {
+            border-color: rgba(129,140,248,0.45);
+            transform: translateY(-2px);
+        }
+
+        .lesson-nav .dir {
+            display: block;
+            color: #818cf8;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .lesson-nav .name {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .lesson-nav .next {
+            text-align: right;
+        }
+
+        @media(max-width: 768px) {
+            .lesson-nav {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <a href="/dashboard" class="logo">
+        <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Loop<span>Lab</span>
+    </a>
+    <a href="/icse" class="back">
+        ← Back to ICSE Java
+    </a>
+</nav>
+
+<main class="container">
+
+    <div class="breadcrumb">
+        <a href="/dashboard">Dashboard</a>
+        <span>›</span>
+        <a href="/icse">ICSE Java</a>
+        <span>›</span>
+        <span style="color: #e2e8f0;">Classic Number Programs</span>
+    </div>
+
+    <div class="badge">
+        ICSE COMPUTER APPLICATIONS • UNIT 5
+    </div>
+
+    <h1>Classic Number Programs</h1>
+
+    <p class="intro">
+        Section B almost always includes a "special number" program. They all rely on the same few techniques: extracting digits with <code>% 10</code> and <code>/ 10</code>, counting factors, and comparing a computed value with the original number.
+    </p>
+
+    <!-- KEY CONCEPTS -->
+    <div class="card">
+        <h2>Core Concepts &amp; Rules</h2>
+        <p>The standard techniques and definitions examiners expect you to know:</p>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>Digit Extraction</h3>
+                <p><code>n % 10</code> gives the last digit and <code>n / 10</code> removes it. Repeating both inside <code>while (n &gt; 0)</code> visits every digit from right to left.</p>
+            </div>
+            <div class="concept">
+                <h3>Reverse and Palindrome</h3>
+                <p>Build the reverse with <code>rev = rev * 10 + digit</code>. A <strong>palindrome</strong> number equals its reverse, e.g. 1221 or 545.</p>
+            </div>
+            <div class="concept">
+                <h3>Armstrong Number</h3>
+                <p>The sum of each digit raised to the power of the number of digits equals the number. For 3 digits: 153 = 1³ + 5³ + 3³.</p>
+            </div>
+            <div class="concept">
+                <h3>Prime Number</h3>
+                <p>Has exactly two factors: 1 and itself. Count the factors from 1 to n and check that the count is 2. Note that 1 is not prime.</p>
+            </div>
+            <div class="concept">
+                <h3>Perfect Number</h3>
+                <p>The sum of its proper factors (all factors except itself) equals the number: 28 = 1 + 2 + 4 + 7 + 14.</p>
+            </div>
+            <div class="concept">
+                <h3>Other Board Favourites</h3>
+                <p><strong>Spy</strong>: digit sum = digit product (1124). <strong>Niven</strong>: divisible by its digit sum (126). <strong>Neon</strong>: digit sum of the square equals the number (9). <strong>Automorphic</strong>: the square ends with the number (25 → 625).</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CODE PROGRAM -->
+    <div class="card">
+        <h2>Example Program</h2>
+        <p>This program tests four classic properties: palindrome, Armstrong, prime and perfect. Each one works on a copy of the number so that the original can still be printed.</p>
+        <h3>Complete Java Program</h3>
+        <div class="code-block">
+<pre><code>public class NumberPrograms {
+
+    public static void main(String[] args) {
+
+        // 1. Reverse a number and test for palindrome
+        int num = 1221, copy = num, rev = 0;
+        while (copy &gt; 0) {
+            int digit = copy % 10;
+            rev = rev * 10 + digit;
+            copy = copy / 10;
+        }
+        System.out.println(num + (rev == num ? " is" : " is not") + " a palindrome");
+
+        // 2. Armstrong number: sum of cubes of digits (3-digit number)
+        int n = 153, temp = n, sumCubes = 0;
+        while (temp &gt; 0) {
+            int d = temp % 10;
+            sumCubes += d * d * d;
+            temp /= 10;
+        }
+        System.out.println(n + (sumCubes == n ? " is" : " is not") + " an Armstrong number");
+
+        // 3. Prime number: exactly two factors
+        int p = 29, factors = 0;
+        for (int i = 1; i &lt;= p; i++) {
+            if (p % i == 0) {
+                factors++;
+            }
+        }
+        System.out.println(p + (factors == 2 ? " is" : " is not") + " prime");
+
+        // 4. Perfect number: sum of proper factors equals the number
+        int q = 28, sumFactors = 0;
+        for (int i = 1; i &lt; q; i++) {
+            if (q % i == 0) {
+                sumFactors += i;
+            }
+        }
+        System.out.println(q + (sumFactors == q ? " is" : " is not") + " a perfect number");
+    }
+}</code></pre>
+        </div>
+    </div>
+
+    <!-- STRUCTURE -->
+    <div class="card">
+        <h2>Understanding the Program Structure</h2>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>1. Digit-Based Checks</h3>
+                <p>Palindrome and Armstrong both take digits off one at a time with <code>% 10</code> and <code>/ 10</code> inside a <code>while</code> loop.</p>
+            </div>
+            <div class="concept">
+                <h3>2. Factor-Based Checks</h3>
+                <p>Prime and perfect both loop through possible divisors and test <code>number % i == 0</code>.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- EXECUTION TRACE -->
+    <div class="card">
+        <h2>How Does Java Execute This Program?</h2>
+        <p>Execution trace showing the order in which statements run and how values change:</p>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>Step 1</h3>
+                <p>Palindrome: digits of 1221 come off as 1, 2, 2, 1, building <code>rev</code> = 1, 12, 122, 1221. <code>rev == num</code>, so 1221 is a palindrome.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 2</h3>
+                <p>Armstrong: digits of 153 are 3, 5, 1; their cubes are 27 + 125 + 1 = 153, equal to the number.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 3</h3>
+                <p>Prime: of the numbers 1 to 29, only 1 and 29 divide 29 exactly, so <code>factors</code> is 2.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 4</h3>
+                <p>Perfect: the factors of 28 below 28 are 1, 2, 4, 7 and 14, which add up to 28.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- LINE BY LINE -->
+    <div class="card">
+        <h2>Line-by-Line Explanation</h2>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 6 — Keep a copy</h3>
+            <div class="code-block"><pre><code>int num = 1221, copy = num, rev = 0;</code></pre></div>
+            <p>The loop destroys the number it works on (it ends at 0), so it works on <code>copy</code>. <code>num</code> is kept for the comparison and the output.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 9 — Building the reverse</h3>
+            <div class="code-block"><pre><code>rev = rev * 10 + digit;</code></pre></div>
+            <p>Multiplying by 10 shifts the existing digits left one place, making room for the new digit on the right.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 18 — Cube of a digit</h3>
+            <div class="code-block"><pre><code>sumCubes += d * d * d;</code></pre></div>
+            <p><code>d * d * d</code> is an exact integer, whereas <code>Math.pow(d, 3)</code> returns a double and would need a cast.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 26 — Testing a factor</h3>
+            <div class="code-block"><pre><code>if (p % i == 0) {</code></pre></div>
+            <p>A remainder of 0 means <code>i</code> divides <code>p</code> exactly, so it is a factor.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 34 — Proper factors only</h3>
+            <div class="code-block"><pre><code>for (int i = 1; i &lt; q; i++) {</code></pre></div>
+            <p>The loop stops <em>before</em> <code>q</code>, because a perfect number uses every factor except the number itself.</p>
+        </div>
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="card">
+        <h2>Expected Console Output</h2>
+        <div class="code-block">
+<pre><code>1221 is a palindrome
+153 is an Armstrong number
+29 is prime
+28 is a perfect number</code></pre>
+        </div>
+        <p>The ternary operator inside each <code>println</code> chooses between "is" and "is not", so the same line works whichever way the test turns out.</p>
+    </div>
+
+    <!-- EXAM TIPS -->
+    <div class="card">
+        <h2>ICSE Board Exam Tips &amp; Common Traps</h2>
+        <p>Keep these frequent exam traps in mind:</p>
+        <div class="concept-grid">
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Forgetting the Copy</h3>
+                <p>Printing <code>num</code> after the loop without keeping a copy prints 0. Always copy the number before extracting digits.</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Initial Values</h3>
+                <p>Initialise sums and counters to 0 and products to 1. Starting a product at 0 makes every result 0.</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Armstrong Power</h3>
+                <p>For an n-digit number the power is n, not always 3: 1634 = 1⁴ + 6⁴ + 3⁴ + 4⁴. Count the digits first when the number of digits can vary.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRACTICE CTA -->
+    <div class="card" style="text-align: center; padding: 45px 30px;">
+        <h2>Ready to Test Your Knowledge?</h2>
+        <p style="max-width: 550px; margin: 10px auto 25px;">
+            Test your understanding with instant feedback, randomized questions, and step-by-step explanations.
+        </p>
+        <a href="/apcs/quiz?topic=Classic%20Number%20Programs&amp;curriculum=ICSE" class="quiz-button">
+            Start Practice →
+        </a>
+    </div>
+
+    <!-- PREVIOUS / NEXT LESSON -->
+    <nav class="lesson-nav" aria-label="Lesson navigation">
+        <a href="/icse/loops" class="prev">
+            <span class="dir">← PREVIOUS</span>
+            <span class="name">Iterative Constructs &amp; Loops</span>
+        </a>
+        <a href="/icse/strings" class="next">
+            <span class="dir">NEXT →</span>
+            <span class="name">Character &amp; String Handling</span>
+        </a>
+    </nav>
+
+</main>
+
+</body>
+</html>

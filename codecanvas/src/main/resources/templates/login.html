@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}" href="/favicon.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>CodeCanvas - Login</title>
+    <title>LoopLab - Login</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -178,6 +179,22 @@
             text-decoration: underline;
         }
 
+        .forgot-link {
+            text-align: right;
+            margin: 14px 0 0;
+            font-size: 13px;
+        }
+
+        .forgot-link a {
+            color: #818cf8;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .forgot-link a:hover {
+            text-decoration: underline;
+        }
+
         .field-error {
             color: #fca5a5;
             font-size: 12px;
@@ -191,15 +208,17 @@
 
 <div class="login-container">
 
-    <div class="logo">Code<span>Canvas</span></div>
+    <div class="logo"><img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="56" height="56" style="display:block;width:56px;height:56px;margin:0 auto 14px;filter:drop-shadow(0 8px 24px rgba(99,102,241,0.45));">Loop<span>Lab</span></div>
 
     <div class="subtitle">
         Interactive Java Mastery & Practice Platform
     </div>
 
     <div class="alert alert-error" th:if="${param.error != null}">Invalid username or password.</div>
+    <div class="alert alert-error" th:if="${param.locked != null}">Too many failed sign-in attempts. Please wait 15 minutes and try again.</div>
     <div class="alert alert-ok" th:if="${param.logout != null}">You have been signed out.</div>
     <div class="alert alert-ok" th:if="${param.registered != null}">Account created! Please sign in.</div>
+    <div class="alert alert-ok" th:if="${param.reset != null}">Password changed. Please sign in with your new password.</div>
 
     <form id="loginForm" th:action="@{/login}" method="post">
 
@@ -227,13 +246,15 @@
                 required>
 
         <button type="submit">
-            Login to CodeCanvas
+            Login to LoopLab
         </button>
+
+        <div class="forgot-link"><a href="/forgot-password">Forgot password?</a></div>
 
     </form>
 
     <div class="switch-link">
-        New to CodeCanvas? <a href="/register">Create an account</a>
+        New to LoopLab? <a href="/register">Create an account</a>
     </div>
 
     <div class="footer">
@@ -246,9 +267,10 @@
     // Clear any cached progress from a previous student on this browser
     try {
         ['codecanvas_student_name', 'codecanvas_completed_topics', 'codecanvas_quizzes_completed',
-         'codecanvas_mock_exam', 'codecanvas_icse_mock_exam'].forEach(k => localStorage.removeItem(k));
+         'codecanvas_mock_exam', 'codecanvas_icse_mock_exam', 'codecanvas_isc_mock_exam'].forEach(k => localStorage.removeItem(k));
     } catch (e) {}
 </script>
 
+<script th:src="@{/js/password-toggle.js}" src="/js/password-toggle.js"></script>
 </body>
 </html>

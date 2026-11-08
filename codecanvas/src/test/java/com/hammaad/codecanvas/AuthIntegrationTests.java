@@ -71,6 +71,7 @@ class AuthIntegrationTests {
         mockMvc.perform(post("/register").with(csrf())
                         .param("displayName", "Ada Lovelace")
                         .param("username", username.toUpperCase())
+                        .param("email", "  Ada." + username + "@Example.TEST ")
                         .param("password", "s3cure-passw0rd")
                         .param("confirmPassword", "s3cure-passw0rd"))
                 .andExpect(status().is3xxRedirection())
@@ -78,6 +79,7 @@ class AuthIntegrationTests {
 
         Student saved = studentRepository.findByUsername(username).orElseThrow(); // stored lower-case
         assertEquals("Ada Lovelace", saved.getDisplayName());
+        assertEquals("ada." + username + "@example.test", saved.getEmail()); // trimmed + lower-case
         assertNotEquals("s3cure-passw0rd", saved.getPasswordHash());
         assertTrue(saved.getPasswordHash().startsWith("{bcrypt}$2"), "password must be BCrypt-hashed");
         assertTrue(passwordEncoder.matches("s3cure-passw0rd", saved.getPasswordHash()));
@@ -89,14 +91,16 @@ class AuthIntegrationTests {
         mockMvc.perform(post("/register").with(csrf())
                         .param("displayName", "")
                         .param("username", "a b")
+                        .param("email", "not-an-email")
                         .param("password", "short")
                         .param("confirmPassword", "short"))
                 .andExpect(status().isOk())
-                .andExpect(model().attributeHasFieldErrors("form", "displayName", "username", "password"));
+                .andExpect(model().attributeHasFieldErrors("form", "displayName", "username", "email", "password"));
 
         mockMvc.perform(post("/register").with(csrf())
                         .param("displayName", "Sam")
                         .param("username", TestStudents.uniqueUsername())
+                        .param("email", TestStudents.uniqueUsername() + "@example.test")
                         .param("password", "long-enough-1")
                         .param("confirmPassword", "different-2"))
                 .andExpect(status().isOk())
@@ -107,11 +111,22 @@ class AuthIntegrationTests {
         mockMvc.perform(post("/register").with(csrf())
                         .param("displayName", "Copycat")
                         .param("username", taken.toUpperCase())
+                        .param("email", TestStudents.uniqueUsername() + "@example.test")
                         .param("password", "long-enough-1")
                         .param("confirmPassword", "long-enough-1"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeHasFieldErrors("form", "username"));
         assertEquals(1, studentRepository.findAll().stream().filter(s -> s.getUsername().equals(taken)).count());
+
+        // Same email as an existing account (different case) is rejected
+        mockMvc.perform(post("/register").with(csrf())
+                        .param("displayName", "Copycat")
+                        .param("username", TestStudents.uniqueUsername())
+                        .param("email", (taken + "@example.test").toUpperCase())
+                        .param("password", "long-enough-1")
+                        .param("confirmPassword", "long-enough-1"))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeHasFieldErrors("form", "email"));
     }
 
     @Test
@@ -120,6 +135,7 @@ class AuthIntegrationTests {
         mockMvc.perform(post("/register")
                         .param("displayName", "No Token")
                         .param("username", TestStudents.uniqueUsername())
+                        .param("email", TestStudents.uniqueUsername() + "@example.test")
                         .param("password", "long-enough-1")
                         .param("confirmPassword", "long-enough-1"))
                 .andExpect(status().isForbidden());

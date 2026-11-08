@@ -4,13 +4,14 @@
 <head>
 
     <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}" href="/favicon.svg">
     <meta name="_csrf" th:content="${_csrf.token}">
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <meta name="student-name" th:content="${studentName}">
     <script th:src="@{/js/codecanvas-api.js}"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Quiz | CodeCanvas</title>
+    <title>Quiz | LoopLab</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -556,7 +557,7 @@
 
 <nav class="navbar">
     <a href="/dashboard" class="logo">
-        Code<span>Canvas</span>
+        <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Loop<span>Lab</span>
     </a>
     <a href="/apcs" class="back" id="backLink">
         ← Back to Curriculum
@@ -766,7 +767,7 @@
     //  SET UP UI FROM TOPIC
     // ========================
 
-    document.title = topic + ' Quiz | CodeCanvas';
+    document.title = topic + ' Quiz | LoopLab';
     document.getElementById('quizTitle').textContent = topic;
     document.getElementById('breadcrumbTopic').textContent = topic + ' Quiz';
     document.getElementById('quizSubtitle').textContent =
@@ -782,23 +783,41 @@
         'Methods': '/apcs/methods',
         'Classes & Objects': '/apcs/classes',
         'Arrays': '/apcs/arrays',
-        'OOP & Java Fundamentals': '/icse/learn?unit=1',
-        'Operators & Expressions': '/icse/learn?unit=2',
-        'Conditional Branching & Switch': '/icse/learn?unit=3',
-        'Iterative Constructs & Loops': '/icse/learn?unit=4',
-        'Classic Number Programs': '/icse/learn?unit=5',
-        'Character & String Handling': '/icse/learn?unit=6',
-        'User-Defined Methods & Overloading': '/icse/learn?unit=7',
-        'Arrays, Searching & Sorting': '/icse/learn?unit=8'
+        'OOP & Java Fundamentals': '/icse/oop-fundamentals',
+        'Operators & Expressions': '/icse/operators',
+        'Conditional Branching & Switch': '/icse/conditionals',
+        'Iterative Constructs & Loops': '/icse/loops',
+        'Classic Number Programs': '/icse/number-programs',
+        'Character & String Handling': '/icse/strings',
+        'User-Defined Methods & Overloading': '/icse/methods',
+        'Arrays, Searching & Sorting': '/icse/arrays',
+        'Classes, Objects & Wrapper Classes': '/isc/classes-objects',
+        'Strings & StringBuffer': '/isc/strings',
+        '2D Arrays & Matrices': '/isc/matrices',
+        'Recursion': '/isc/recursion',
+        'Inheritance & Polymorphism': '/isc/inheritance',
+        'Interfaces & Abstract Classes': '/isc/interfaces',
+        'Stacks, Queues & Linked Lists': '/isc/data-structures',
+        'Number & Date Programs': '/isc/number-date'
     };
 
-    const isIcseQuiz = (curriculum && curriculum.toUpperCase() === 'ICSE') ||
-        (topicSlugMap[topic] || '').startsWith('/icse');
-    if (isIcseQuiz) {
+    // Which course this quiz belongs to (from ?curriculum=, or from the topic's lesson page)
+    const quizCourses = {
+        ICSE: { hub: '/icse', name: 'ICSE Java', badge: 'ICSE COMPUTER APPLICATIONS' },
+        ISC: { hub: '/isc', name: 'ISC Java', badge: 'ISC COMPUTER SCIENCE' }
+    };
+    const topicLesson = topicSlugMap[topic] || '';
+    const quizCurriculum = (curriculum || '').toUpperCase() ||
+        (topicLesson.startsWith('/icse') ? 'ICSE' : topicLesson.startsWith('/isc') ? 'ISC' : 'APCS');
+    if (quizCourses[quizCurriculum]) {
+        const course = quizCourses[quizCurriculum];
         const crumb = document.getElementById('breadcrumbCurriculum');
-        crumb.href = '/icse';
-        crumb.textContent = 'ICSE Java';
-        document.getElementById('backLink').href = '/icse';
+        crumb.href = course.hub;
+        crumb.textContent = course.name;
+        document.getElementById('quizBadge').textContent = course.badge;
+        document.getElementById('backLink').href = course.hub;
+        const backBtn = document.getElementById('backToCurriculum');
+        if (backBtn) backBtn.href = course.hub;
     }
 
     const lessonUrl = topicSlugMap[topic];

@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}" href="/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strings &amp; StringBuffer | ISC Java | LoopLab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', Arial, Helvetica, sans-serif;
+            background:
+                    radial-gradient(
+                            circle at 80% 0%,
+                            rgba(99, 102, 241, 0.18),
+                            transparent 30%
+                    ),
+                    radial-gradient(
+                            circle at 0% 50%,
+                            rgba(124, 58, 237, 0.08),
+                            transparent 30%
+                    ),
+                    #080b14;
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            height: 72px;
+            padding: 0 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(8, 11, 20, 0.82);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            color: #ffffff;
+            text-decoration: none;
+            letter-spacing: -0.7px;
+        }
+
+        .logo span {
+            color: #818cf8;
+        }
+
+        .back {
+            color: #a1a1aa;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .back:hover {
+            color: #ffffff;
+        }
+
+        .container {
+            width: min(1000px, 90%);
+            margin: auto;
+            padding: 50px 0 80px;
+        }
+
+        .breadcrumb {
+            color: #71717a;
+            font-size: 13px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumb a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb a:hover {
+            color: #ffffff;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: rgba(129,140,248,0.12);
+            border: 1px solid rgba(129,140,248,0.25);
+            color: #a5b4fc;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 46px;
+            letter-spacing: -1.5px;
+            margin: 0 0 15px;
+            font-weight: 800;
+        }
+
+        .intro {
+            color: #94a3b8;
+            font-size: 17px;
+            line-height: 1.7;
+            max-width: 780px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+
+        .card p {
+            color: #94a3b8;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .concept {
+            padding: 22px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .concept h3 {
+            margin-top: 0;
+            font-size: 16px;
+            color: #e2e8f0;
+        }
+
+        .concept p {
+            margin-bottom: 0;
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        code {
+            color: #c4b5fd;
+            background: rgba(129,140,248,0.1);
+            padding: 3px 7px;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 13px;
+        }
+
+        .code-block {
+            background: #05070d;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 22px;
+            overflow-x: auto;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 14px;
+            line-height: 1.7;
+            margin: 16px 0;
+        }
+
+        .code-block pre {
+            margin: 0;
+        }
+
+        .quiz-button {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 13px 26px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6366f1, #7c3aed);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            box-shadow: 0 10px 25px rgba(99,102,241,0.3);
+            transition: all 0.2s ease;
+        }
+
+        .quiz-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(99,102,241,0.5);
+        }
+
+        @media(max-width: 768px) {
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 34px;
+            }
+            .card {
+                padding: 24px;
+            }
+        }
+
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .lesson-nav a {
+            flex: 1;
+            display: block;
+            padding: 18px 22px;
+            border-radius: 14px;
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #e2e8f0;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .lesson-nav a:hover {
+            border-color: rgba(129,140,248,0.45);
+            transform: translateY(-2px);
+        }
+
+        .lesson-nav .dir {
+            display: block;
+            color: #818cf8;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .lesson-nav .name {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .lesson-nav .next {
+            text-align: right;
+        }
+
+        @media(max-width: 768px) {
+            .lesson-nav {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <a href="/dashboard" class="logo">
+        <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Loop<span>Lab</span>
+    </a>
+    <a href="/isc" class="back">
+        ← Back to ISC Java
+    </a>
+</nav>
+
+<main class="container">
+
+    <div class="breadcrumb">
+        <a href="/dashboard">Dashboard</a>
+        <span>›</span>
+        <a href="/isc">ISC Java</a>
+        <span>›</span>
+        <span style="color: #e2e8f0;">Strings &amp; StringBuffer</span>
+    </div>
+
+    <div class="badge">
+        ISC COMPUTER SCIENCE • UNIT 2
+    </div>
+
+    <h1>Strings &amp; StringBuffer</h1>
+
+    <p class="intro">
+        ISC string programs work on whole sentences: splitting into words, changing case, counting frequencies and rearranging text. You also need to know why <code>String</code> is immutable and when the mutable <code>StringBuffer</code> is the better choice.
+    </p>
+
+    <!-- KEY CONCEPTS -->
+    <div class="card">
+        <h2>Core Concepts &amp; Rules</h2>
+        <p>Essential string-processing tools and rules:</p>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>Immutable String</h3>
+                <p>A <code>String</code> object never changes. <code>concat()</code>, <code>replace()</code> and <code>toUpperCase()</code> return new Strings; you must assign the result to keep it.</p>
+            </div>
+            <div class="concept">
+                <h3>Mutable StringBuffer</h3>
+                <p><code>StringBuffer</code> changes the same object in place with <code>append()</code>, <code>insert()</code>, <code>reverse()</code>, <code>delete()</code> and <code>setCharAt()</code>. It is efficient when text is built up in a loop.</p>
+            </div>
+            <div class="concept">
+                <h3>Splitting into Words</h3>
+                <p><code>sentence.split(" ")</code> returns an array of words. <code>StringTokenizer</code> (from <code>java.util</code>) is an older way to do the same thing.</p>
+            </div>
+            <div class="concept">
+                <h3>Character Frequency</h3>
+                <p>Loop through the text with <code>charAt(i)</code> and count matches, or use an <code>int[26]</code> array indexed by <code>ch - 'A'</code> to count every letter at once.</p>
+            </div>
+            <div class="concept">
+                <h3>Word Manipulation</h3>
+                <p>Typical ISC tasks: capitalise the first letter of each word, reverse each word, sort words alphabetically with <code>compareTo()</code>, or find the longest word.</p>
+            </div>
+            <div class="concept">
+                <h3>Useful Methods</h3>
+                <p><code>trim()</code> removes leading/trailing spaces, <code>indexOf()</code> and <code>lastIndexOf()</code> search, and <code>String.valueOf(x)</code> turns any value into text.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CODE PROGRAM -->
+    <div class="card">
+        <h2>Example Program</h2>
+        <p>This program capitalises every word of a sentence, counts words, edits a <code>StringBuffer</code> in place, demonstrates String immutability and counts the frequency of a letter.</p>
+        <h3>Complete Java Program</h3>
+        <div class="code-block">
+<pre><code>public class StringOps {
+
+    public static void main(String[] args) {
+
+        String sentence = "java is fun to learn";
+
+        // Capitalise the first letter of every word
+        String[] words = sentence.split(" ");
+        String result = "";
+        for (String w : words) {
+            result += Character.toUpperCase(w.charAt(0)) + w.substring(1) + " ";
+        }
+        System.out.println(result.trim());
+        System.out.println("Words: " + words.length);
+
+        // StringBuffer is mutable: the same object is changed
+        StringBuffer sb = new StringBuffer("STACK");
+        sb.reverse();
+        System.out.println("Reversed: " + sb);
+        sb.insert(0, "&gt;&gt; ");
+        sb.append("!");
+        System.out.println("After insert/append: " + sb);
+
+        // String is immutable: concat() returns a NEW string
+        String s = "Hi";
+        s.concat(" there");
+        System.out.println("s is still: " + s);
+
+        // Frequency of a character
+        String text = "MISSISSIPPI";
+        int countS = 0;
+        for (int i = 0; i &lt; text.length(); i++) {
+            if (text.charAt(i) == 'S') {
+                countS++;
+            }
+        }
+        System.out.println("S appears " + countS + " times");
+    }
+}</code></pre>
+        </div>
+    </div>
+
+    <!-- STRUCTURE -->
+    <div class="card">
+        <h2>Understanding the Program Structure</h2>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>1. Word-Level Processing</h3>
+                <p><code>split(" ")</code> breaks the sentence into an array, and a for-each loop rebuilds it word by word.</p>
+            </div>
+            <div class="concept">
+                <h3>2. Character-Level Processing</h3>
+                <p>The frequency count walks through the text one character at a time, the same pattern used for vowel counts and palindromes.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- EXECUTION TRACE -->
+    <div class="card">
+        <h2>How Does Java Execute This Program?</h2>
+        <p>Execution trace showing the order in which statements run and how values change:</p>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>Step 1</h3>
+                <p><code>split(" ")</code> gives 5 words. For each word, the first character is upper-cased and joined to the rest (<code>substring(1)</code>) plus a space.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 2</h3>
+                <p><code>trim()</code> removes the final extra space before printing "Java Is Fun To Learn".</p>
+            </div>
+            <div class="concept">
+                <h3>Step 3</h3>
+                <p><code>sb.reverse()</code> changes the buffer itself to "KCATS"; <code>insert</code> and <code>append</code> then extend the same object.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 4</h3>
+                <p><code>s.concat(" there")</code> builds a new String that is thrown away, so <code>s</code> is still "Hi". The loop then counts 4 S characters in "MISSISSIPPI".</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- LINE BY LINE -->
+    <div class="card">
+        <h2>Line-by-Line Explanation</h2>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 8 — Splitting a sentence</h3>
+            <div class="code-block"><pre><code>String[] words = sentence.split(" ");</code></pre></div>
+            <p>Each space marks a boundary, so the result is <code>{"java", "is", "fun", "to", "learn"}</code>.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 11 — Capitalising a word</h3>
+            <div class="code-block"><pre><code>result += Character.toUpperCase(w.charAt(0)) + w.substring(1) + " ";</code></pre></div>
+            <p>A <code>char</code> followed by <code>+</code> and a String gives a String, so the pieces join correctly.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 18 — Reversing in place</h3>
+            <div class="code-block"><pre><code>sb.reverse();</code></pre></div>
+            <p>Unlike String methods, <code>reverse()</code> modifies the <code>StringBuffer</code> itself; no assignment is needed.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 26 — Immutability trap</h3>
+            <div class="code-block"><pre><code>s.concat(" there");</code></pre></div>
+            <p>The new String "Hi there" is created but never stored, so it is lost. Writing <code>s = s.concat(" there");</code> would keep it.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 33 — Counting a character</h3>
+            <div class="code-block"><pre><code>if (text.charAt(i) == 'S') {</code></pre></div>
+            <p>Characters are compared with <code>==</code> because <code>char</code> is a primitive type (unlike Strings, which need <code>equals()</code>).</p>
+        </div>
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="card">
+        <h2>Expected Console Output</h2>
+        <div class="code-block">
+<pre><code>Java Is Fun To Learn
+Words: 5
+Reversed: KCATS
+After insert/append: &gt;&gt; KCATS!
+s is still: Hi
+S appears 4 times</code></pre>
+        </div>
+        <p>The <code>StringBuffer</code> lines show one object changing step by step, while the String <code>s</code> stays exactly as it was created.</p>
+    </div>
+
+    <!-- EXAM TIPS -->
+    <div class="card">
+        <h2>ISC Board Exam Tips &amp; Common Traps</h2>
+        <p>Keep these frequent exam traps in mind:</p>
+        <div class="concept-grid">
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Assign String Results</h3>
+                <p>A very common output question: <code>s.toUpperCase();</code> on its own changes nothing. Only <code>s = s.toUpperCase();</code> updates <code>s</code>.</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Extra Spaces</h3>
+                <p>If the sentence has two spaces in a row, <code>split(" ")</code> produces an empty word, and <code>charAt(0)</code> on it throws an exception. Trim input or check the length first.</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 StringBuffer equals()</h3>
+                <p><code>StringBuffer</code> does not compare contents with <code>equals()</code>. Convert with <code>toString()</code> first.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRACTICE CTA -->
+    <div class="card" style="text-align: center; padding: 45px 30px;">
+        <h2>Ready to Test Your Knowledge?</h2>
+        <p style="max-width: 550px; margin: 10px auto 25px;">
+            Test your understanding with instant feedback, randomized questions, and step-by-step explanations.
+        </p>
+        <a href="/apcs/quiz?topic=Strings%20%26%20StringBuffer&amp;curriculum=ISC" class="quiz-button">
+            Start Practice →
+        </a>
+    </div>
+
+    <!-- PREVIOUS / NEXT LESSON -->
+    <nav class="lesson-nav" aria-label="Lesson navigation">
+        <a href="/isc/classes-objects" class="prev">
+            <span class="dir">← PREVIOUS</span>
+            <span class="name">Classes, Objects &amp; Wrapper Classes</span>
+        </a>
+        <a href="/isc/matrices" class="next">
+            <span class="dir">NEXT →</span>
+            <span class="name">2D Arrays &amp; Matrices</span>
+        </a>
+    </nav>
+
+</main>
+
+</body>
+</html>

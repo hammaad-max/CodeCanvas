@@ -41,13 +41,18 @@ public class ProgressService {
         this.questionService = questionService;
     }
 
-    /** "ICSE" (any case) → ICSE; anything else → APCS. */
+    /** "ICSE" / "ISC" (any case) → that curriculum; anything else → APCS. */
     public static String normalizeCurriculum(String curriculum) {
-        return curriculum != null && curriculum.trim().equalsIgnoreCase("ICSE") ? "ICSE" : "APCS";
+        String c = curriculum == null ? "" : curriculum.trim().toUpperCase(java.util.Locale.ROOT);
+        return switch (c) {
+            case "ICSE", "ISC" -> c;
+            default -> "APCS";
+        };
     }
 
+    /** Curriculum name used in the question bank. */
     private static String bankCurriculum(String curriculum) {
-        return "ICSE".equals(curriculum) ? "ICSE" : "AP CS";
+        return "APCS".equals(curriculum) ? "AP CS" : curriculum;
     }
 
     // ------------------------------------------------------------------ quiz
@@ -139,17 +144,22 @@ public class ProgressService {
         Map<String, Map<String, Object>> completedTopics = new LinkedHashMap<>();
         Attempt latestApcsExam = null;
         Attempt latestIcseExam = null;
+        Attempt latestIscExam = null;
 
         for (Attempt a : attempts) {
             if (Attempt.EXAM.equals(a.getKind())) {
-                if ("ICSE".equals(a.getCurriculum())) latestIcseExam = a;
-                else latestApcsExam = a;
+                switch (a.getCurriculum()) {
+                    case "ICSE" -> latestIcseExam = a;
+                    case "ISC" -> latestIscExam = a;
+                    default -> latestApcsExam = a;
+                }
                 continue;
             }
             Map<String, Object> prev = completedTopics.get(a.getTopic());
             int prevBest = prev == null ? 0 : (int) prev.get("bestScore");
             boolean prevPassed = prev != null && (boolean) prev.get("passed");
             Map<String, Object> entry = new LinkedHashMap<>();
+            entry.put("curriculum", a.getCurriculum());
             entry.put("lastScore", a.getScore());
             entry.put("bestScore", Math.max(prevBest, a.getScore()));
             entry.put("total", a.getTotal());
@@ -167,6 +177,7 @@ public class ProgressService {
         progress.put("quizzesCompleted", passedTopics);
         progress.put("mockExam", examSummary(latestApcsExam));
         progress.put("icseMockExam", examSummary(latestIcseExam));
+        progress.put("iscMockExam", examSummary(latestIscExam));
         return progress;
     }
 
@@ -179,7 +190,8 @@ public class ProgressService {
         summary.put("score", exam.getScore());
         summary.put("total", exam.getTotal());
         summary.put("percentage", pct);
-        summary.put("projectedScore", "ICSE".equals(exam.getCurriculum()) ? icseGrade(pct) : apScore(pct));
+        // ICSE and ISC use board-style grade bands; AP CS uses the 1-5 AP score
+        summary.put("projectedScore", "APCS".equals(exam.getCurriculum()) ? apScore(pct) : icseGrade(pct));
         summary.put("curriculum", exam.getCurriculum());
         summary.put("completedAt", exam.getCreatedAt().toString());
         return summary;

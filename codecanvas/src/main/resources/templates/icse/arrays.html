@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}" href="/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arrays, Searching &amp; Sorting | ICSE Java | LoopLab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', Arial, Helvetica, sans-serif;
+            background:
+                    radial-gradient(
+                            circle at 80% 0%,
+                            rgba(99, 102, 241, 0.18),
+                            transparent 30%
+                    ),
+                    radial-gradient(
+                            circle at 0% 50%,
+                            rgba(124, 58, 237, 0.08),
+                            transparent 30%
+                    ),
+                    #080b14;
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            height: 72px;
+            padding: 0 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(8, 11, 20, 0.82);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            color: #ffffff;
+            text-decoration: none;
+            letter-spacing: -0.7px;
+        }
+
+        .logo span {
+            color: #818cf8;
+        }
+
+        .back {
+            color: #a1a1aa;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .back:hover {
+            color: #ffffff;
+        }
+
+        .container {
+            width: min(1000px, 90%);
+            margin: auto;
+            padding: 50px 0 80px;
+        }
+
+        .breadcrumb {
+            color: #71717a;
+            font-size: 13px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumb a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb a:hover {
+            color: #ffffff;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: rgba(129,140,248,0.12);
+            border: 1px solid rgba(129,140,248,0.25);
+            color: #a5b4fc;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 46px;
+            letter-spacing: -1.5px;
+            margin: 0 0 15px;
+            font-weight: 800;
+        }
+
+        .intro {
+            color: #94a3b8;
+            font-size: 17px;
+            line-height: 1.7;
+            max-width: 780px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+
+        .card p {
+            color: #94a3b8;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .concept {
+            padding: 22px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .concept h3 {
+            margin-top: 0;
+            font-size: 16px;
+            color: #e2e8f0;
+        }
+
+        .concept p {
+            margin-bottom: 0;
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        code {
+            color: #c4b5fd;
+            background: rgba(129,140,248,0.1);
+            padding: 3px 7px;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 13px;
+        }
+
+        .code-block {
+            background: #05070d;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 22px;
+            overflow-x: auto;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-size: 14px;
+            line-height: 1.7;
+            margin: 16px 0;
+        }
+
+        .code-block pre {
+            margin: 0;
+        }
+
+        .quiz-button {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 13px 26px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6366f1, #7c3aed);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            box-shadow: 0 10px 25px rgba(99,102,241,0.3);
+            transition: all 0.2s ease;
+        }
+
+        .quiz-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(99,102,241,0.5);
+        }
+
+        @media(max-width: 768px) {
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 34px;
+            }
+            .card {
+                padding: 24px;
+            }
+        }
+
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .lesson-nav a {
+            flex: 1;
+            display: block;
+            padding: 18px 22px;
+            border-radius: 14px;
+            background: rgba(15,23,42,0.72);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #e2e8f0;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .lesson-nav a:hover {
+            border-color: rgba(129,140,248,0.45);
+            transform: translateY(-2px);
+        }
+
+        .lesson-nav .dir {
+            display: block;
+            color: #818cf8;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .lesson-nav .name {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .lesson-nav .next {
+            text-align: right;
+        }
+
+        @media(max-width: 768px) {
+            .lesson-nav {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <a href="/dashboard" class="logo">
+        <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Loop<span>Lab</span>
+    </a>
+    <a href="/icse" class="back">
+        ← Back to ICSE Java
+    </a>
+</nav>
+
+<main class="container">
+
+    <div class="breadcrumb">
+        <a href="/dashboard">Dashboard</a>
+        <span>›</span>
+        <a href="/icse">ICSE Java</a>
+        <span>›</span>
+        <span style="color: #e2e8f0;">Arrays, Searching &amp; Sorting</span>
+    </div>
+
+    <div class="badge">
+        ICSE COMPUTER APPLICATIONS • UNIT 8
+    </div>
+
+    <h1>Arrays, Searching &amp; Sorting</h1>
+
+    <p class="intro">
+        An array stores many values of the same type under one name. ICSE Section B frequently asks for linear search, binary search, bubble sort and selection sort, so knowing each algorithm step by step is essential.
+    </p>
+
+    <!-- KEY CONCEPTS -->
+    <div class="card">
+        <h2>Core Concepts &amp; Rules</h2>
+        <p>Essential array facts and the four standard algorithms:</p>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>Declaring and Indexing</h3>
+                <p><code>int[] a = new int[5];</code> creates 5 elements, numbered 0 to 4, initialised to 0. <code>a.length</code> (no brackets) gives the size.</p>
+            </div>
+            <div class="concept">
+                <h3>Linear Search</h3>
+                <p>Check every element from the start until the target is found. Works on unsorted arrays; in the worst case it checks all n elements.</p>
+            </div>
+            <div class="concept">
+                <h3>Binary Search</h3>
+                <p>Works only on a <strong>sorted</strong> array. Compare with the middle element and discard half the array each time, so it is much faster on large arrays.</p>
+            </div>
+            <div class="concept">
+                <h3>Bubble Sort</h3>
+                <p>Repeatedly compare <em>adjacent</em> elements and swap them if they are in the wrong order. After each pass, the largest remaining element "bubbles" to the end.</p>
+            </div>
+            <div class="concept">
+                <h3>Selection Sort</h3>
+                <p>On each pass, find the smallest element in the unsorted part and swap it into the next position at the front. It does at most one swap per pass.</p>
+            </div>
+            <div class="concept">
+                <h3>Double-Dimensional Arrays</h3>
+                <p><code>int[][] m = new int[3][3];</code> stores a grid. <code>m.length</code> is the number of rows and <code>m[0].length</code> the number of columns. The left diagonal has <code>row == col</code>; the right diagonal has <code>row + col == n - 1</code>.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CODE PROGRAM -->
+    <div class="card">
+        <h2>Example Program</h2>
+        <p>This program searches an unsorted array with linear search, sorts it with bubble sort, and then finds a value with binary search.</p>
+        <h3>Complete Java Program</h3>
+        <div class="code-block">
+<pre><code>public class ArrayDemo {
+
+    public static void main(String[] args) {
+
+        int[] arr = {42, 17, 8, 93, 25};
+
+        // Linear search for 93
+        int key = 93, pos = -1;
+        for (int i = 0; i &lt; arr.length; i++) {
+            if (arr[i] == key) {
+                pos = i;
+                break;
+            }
+        }
+        System.out.println("Linear search: " + key + " found at index " + pos);
+
+        // Bubble sort (ascending)
+        for (int i = 0; i &lt; arr.length - 1; i++) {
+            for (int j = 0; j &lt; arr.length - 1 - i; j++) {
+                if (arr[j] &gt; arr[j + 1]) {
+                    int t = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = t;
+                }
+            }
+        }
+        System.out.print("Sorted: ");
+        for (int x : arr) {
+            System.out.print(x + " ");
+        }
+        System.out.println();
+
+        // Binary search for 25 (array must be sorted)
+        int low = 0, high = arr.length - 1, found = -1, target = 25;
+        while (low &lt;= high) {
+            int mid = (low + high) / 2;
+            if (arr[mid] == target) {
+                found = mid;
+                break;
+            } else if (arr[mid] &lt; target) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        System.out.println("Binary search: " + target + " found at index " + found);
+    }
+}</code></pre>
+        </div>
+    </div>
+
+    <!-- STRUCTURE -->
+    <div class="card">
+        <h2>Understanding the Program Structure</h2>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>1. Array Initialiser</h3>
+                <p><code>{42, 17, 8, 93, 25}</code> creates and fills a 5-element array in one statement; the size comes from the number of values.</p>
+            </div>
+            <div class="concept">
+                <h3>2. Three Algorithms in Sequence</h3>
+                <p>Linear search runs on the original order, bubble sort rearranges the same array, and binary search then relies on that sorted order.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- EXECUTION TRACE -->
+    <div class="card">
+        <h2>How Does Java Execute This Program?</h2>
+        <p>Execution trace showing the order in which statements run and how values change:</p>
+        <div class="concept-grid">
+            <div class="concept">
+                <h3>Step 1</h3>
+                <p>Linear search compares 93 with 42, 17, 8 and then 93 at index 3; <code>break</code> stops the loop there.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 2</h3>
+                <p>Bubble sort pass 1 moves 93 to the end, pass 2 moves 42 into place, and so on until the array is 8, 17, 25, 42, 93.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 3</h3>
+                <p>Binary search: <code>low = 0</code>, <code>high = 4</code>, so <code>mid = 2</code>, and <code>arr[2]</code> is 25.</p>
+            </div>
+            <div class="concept">
+                <h3>Step 4</h3>
+                <p>The target is found on the very first comparison, so <code>found</code> is 2 and the loop ends.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- LINE BY LINE -->
+    <div class="card">
+        <h2>Line-by-Line Explanation</h2>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 10 — Search with early exit</h3>
+            <div class="code-block"><pre><code>if (arr[i] == key) {</code></pre></div>
+            <p>When the element matches, its index is saved and <code>break</code> leaves the loop. If nothing matches, <code>pos</code> stays -1, meaning "not found".</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 19 — Shrinking inner loop</h3>
+            <div class="code-block"><pre><code>for (int j = 0; j &lt; arr.length - 1 - i; j++) {</code></pre></div>
+            <p>After <code>i</code> passes, the last <code>i</code> elements are already in place, so the inner loop can stop earlier. <code>j + 1</code> must stay inside the array.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 21 — Swapping adjacent elements</h3>
+            <div class="code-block"><pre><code>int t = arr[j];</code></pre></div>
+            <p>The temporary variable keeps <code>arr[j]</code> safe while it is overwritten, so no value is lost during the swap.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 36 — Middle index</h3>
+            <div class="code-block"><pre><code>int mid = (low + high) / 2;</code></pre></div>
+            <p>Integer division finds the middle position of the part still being searched.</p>
+        </div>
+        <div class="concept" style="margin-bottom: 16px;">
+            <h3>Line 41 — Discarding half</h3>
+            <div class="code-block"><pre><code>low = mid + 1;</code></pre></div>
+            <p>If the middle element is smaller than the target, the target can only be to the right, so the left half is ignored.</p>
+        </div>
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="card">
+        <h2>Expected Console Output</h2>
+        <div class="code-block">
+<pre><code>Linear search: 93 found at index 3
+Sorted: 8 17 25 42 93
+Binary search: 25 found at index 2</code></pre>
+        </div>
+        <p>The index found by linear search refers to the original order, while the binary search index refers to the sorted array. Sorting changes where each value is stored.</p>
+    </div>
+
+    <!-- EXAM TIPS -->
+    <div class="card">
+        <h2>ICSE Board Exam Tips &amp; Common Traps</h2>
+        <p>Keep these frequent exam traps in mind:</p>
+        <div class="concept-grid">
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Binary Search Precondition</h3>
+                <p>Binary search gives wrong answers on an unsorted array. If the question gives unsorted data, sort it first or use linear search.</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 Off-by-One Errors</h3>
+                <p>Valid indexes are 0 to <code>length - 1</code>. Accessing <code>arr[arr.length]</code> throws <code>ArrayIndexOutOfBoundsException</code>.</p>
+            </div>
+            <div class="concept" style="border-left: 3px solid #818cf8;">
+                <h3>💡 length vs length()</h3>
+                <p>Arrays use the property <code>arr.length</code>; Strings use the method <code>s.length()</code>. Mixing them up is a compile error.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRACTICE CTA -->
+    <div class="card" style="text-align: center; padding: 45px 30px;">
+        <h2>Ready to Test Your Knowledge?</h2>
+        <p style="max-width: 550px; margin: 10px auto 25px;">
+            Test your understanding with instant feedback, randomized questions, and step-by-step explanations.
+        </p>
+        <a href="/apcs/quiz?topic=Arrays%2C%20Searching%20%26%20Sorting&amp;curriculum=ICSE" class="quiz-button">
+            Start Practice →
+        </a>
+    </div>
+
+    <!-- PREVIOUS / NEXT LESSON -->
+    <nav class="lesson-nav" aria-label="Lesson navigation">
+        <a href="/icse/methods" class="prev">
+            <span class="dir">← PREVIOUS</span>
+            <span class="name">User-Defined Methods &amp; Overloading</span>
+        </a>
+        <a href="/icse/exam" class="next">
+            <span class="dir">NEXT →</span>
+            <span class="name">ICSE Java Mock Exam</span>
+        </a>
+    </nav>
+
+</main>
+
+</body>
+</html>
