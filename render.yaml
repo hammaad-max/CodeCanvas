@@ -1,0 +1,46 @@
+# Render Blueprint for the CodeCanvas STAGING environment.
+# Creates a Docker web service and a managed PostgreSQL database, and wires the
+# database credentials into the app as environment variables (no secrets in git).
+# Plans are "free" for staging: the web service sleeps when idle and the free
+# database expires after 30 days. Switch both to paid plans before real students use it.
+services:
+  - type: web
+    name: codecanvas-staging
+    runtime: docker
+    dockerfilePath: ./codecanvas/Dockerfile
+    dockerContext: ./codecanvas
+    plan: free
+    region: oregon
+    healthCheckPath: /actuator/health/readiness
+    autoDeploy: false
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: DB_HOST
+        fromDatabase:
+          name: codecanvas-staging-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: codecanvas-staging-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: codecanvas-staging-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: codecanvas-staging-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: codecanvas-staging-db
+          property: password
+
+databases:
+  - name: codecanvas-staging-db
+    databaseName: codecanvas
+    user: codecanvas
+    plan: free
+    region: oregon
+    postgresMajorVersion: "17"

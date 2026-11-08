@@ -16,7 +16,8 @@ The app is a single self-contained jar: `target/CodeCanvas-0.0.1-SNAPSHOT.jar`.
 | Variable | Required | Example | Purpose |
 |---|---|---|---|
 | `SPRING_PROFILES_ACTIVE` | **yes** | `prod` | Production settings (secure cookies, caching, JSON logs) |
-| `DB_URL` | **yes** | `jdbc:postgresql://db-host:5432/codecanvas?sslmode=require` | JDBC URL |
+| `DB_URL` | yes, or the three below | `jdbc:postgresql://db-host:5432/codecanvas?sslmode=require` | Full JDBC URL |
+| `DB_HOST` / `DB_PORT` / `DB_NAME` | instead of `DB_URL` | `db-host` / `5432` / `codecanvas` | Used when the platform provides separate values (Render) |
 | `DB_USERNAME` | **yes** | `codecanvas` | Database user |
 | `DB_PASSWORD` | **yes** | _(from your secret store)_ | The app refuses to start without it |
 | `PORT` | no | `8080` | HTTP port (default 8080) |
@@ -88,6 +89,25 @@ The prod profile trusts `X-Forwarded-Proto`/`X-Forwarded-Host` from the proxy, s
 session cookies are `Secure`, and HSTS is sent. **Do not expose port 8080 directly to the internet**; only the
 proxy should reach it.
 
+## 5a. Staging on Render (managed platform)
+The repository contains everything Render needs: `codecanvas/Dockerfile` (builds the jar, runs all tests,
+then runs it on a Java 25 JRE as a non-root user with the `prod` profile) and `render.yaml` at the repo root
+(a Blueprint that creates the web service **and** a managed PostgreSQL 17 database and injects the database
+credentials as environment variables — no secrets in git).
+
+1. Push the commit containing `render.yaml` to GitHub.
+2. In Render: **New → Blueprint**, connect the `CodeCanvas` GitHub repository, review, **Apply**.
+3. Wait for the first deploy; Render waits for `/actuator/health/readiness` to return 200 before routing traffic.
+4. Open the `https://codecanvas-staging.onrender.com` URL (shown in the dashboard) and smoke test (section 8).
+
+Notes:
+- `autoDeploy` is off: deploy each release with **Manual Deploy → Deploy latest commit**.
+  Rollback: **Events → Rollback** to the previous deploy (same migration rules as section 8).
+- The Blueprint uses **free** plans for staging: the service sleeps after ~15 minutes idle (first request
+  then takes about a minute) and the free database expires after 30 days with **no backups**.
+  Use paid plans for anything real students depend on.
+- HTTPS certificates are provided by Render automatically.
+
 ## 6. Health checks and monitoring
 | Endpoint | Use | Response |
 |---|---|---|
@@ -136,4 +156,8 @@ backup, then start the previous jar. For that reason, write migrations so they o
 - Browser: register → wrong password rejected → sign in → quiz → ICSE mock exam → scores stored → branded 404 page.
 - JSON logs contained the audit events above, with no passwords and no errors.
 
-**Not yet verified:** a real staging host, HTTPS certificates, managed database backups and restore.
+- Same jar started with `PORT=10000` and `DB_HOST`/`DB_PORT`/`DB_NAME` instead of `DB_URL` (as Render supplies them):
+  connected, Flyway validated, readiness `UP`, login page 200.
+
+**Not yet verified:** the Docker image build (Docker is not installed locally; Render builds it on first deploy),
+a real staging host, HTTPS certificates, managed database backups and restore.

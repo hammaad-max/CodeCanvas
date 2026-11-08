@@ -1,6 +1,6 @@
 # CodeCanvas — Project Status
 
-_Last verified: 2026-11-08 · Phase 3 committed in `4412666`; Phase 4 (uncommitted)_
+_Last verified: 2026-11-08 · Phase 4 committed in `6b46fe6`; Render staging config (uncommitted)_
 
 ## Stack
 Java 25 · Spring Boot 4.1.0 (Spring MVC, Thymeleaf, Spring Security, Spring Data JPA, Validation) · Flyway · PostgreSQL 17 · Maven · HTML/CSS/JS inline in templates (+ `static/js/codecanvas-api.js`).
@@ -11,7 +11,7 @@ Java 25 · Spring Boot 4.1.0 (Spring MVC, Thymeleaf, Spring Security, Spring Dat
 | 1 — Baseline audit | Done |
 | 2 — Core functionality | Done (verified; no new fixes needed) |
 | 3 — Production foundations | Done and verified locally (see below) |
-| 4 — Staging deployment | Prepared and verified locally (prod jar + prod profile + PostgreSQL); **not deployed** — needs a host and approval. See `DEPLOYMENT.md` |
+| 4 — Staging deployment | Prepared and verified locally; Render chosen (`Dockerfile` + `render.yaml`). **Not deployed** — needs push + Render account. See `DEPLOYMENT.md` §5a |
 | 5 — Release checklist | Not started |
 
 ## Verified working (tested, not assumed)
