@@ -36,6 +36,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/login", "/register", "/error", "/favicon.ico", "/js/**", "/css/**")
                         .permitAll()
+                        // Health check for load balancers / uptime monitors (status only, no details)
+                        .requestMatchers("/actuator/health", "/actuator/health/liveness", "/actuator/health/readiness")
+                        .permitAll()
+                        .requestMatchers("/actuator/**").denyAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/")

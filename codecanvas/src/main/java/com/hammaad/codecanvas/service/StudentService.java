@@ -3,6 +3,8 @@ package com.hammaad.codecanvas.service;
 import com.hammaad.codecanvas.model.RegistrationForm;
 import com.hammaad.codecanvas.model.Student;
 import com.hammaad.codecanvas.repository.StudentRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,8 @@ public class StudentService {
             super("Username already taken");
         }
     }
+
+    private static final Logger log = LoggerFactory.getLogger(StudentService.class);
 
     private final StudentRepository studentRepository;
     private final PasswordEncoder passwordEncoder;
@@ -41,7 +45,9 @@ public class StudentService {
         Student student = new Student(username, form.getDisplayName().trim(),
                 passwordEncoder.encode(form.getPassword()));
         try {
-            return studentRepository.saveAndFlush(student);
+            Student saved = studentRepository.saveAndFlush(student);
+            log.info("student.registered id={} username={}", saved.getId(), username);
+            return saved;
         } catch (DataIntegrityViolationException e) {
             // Two registrations for the same username at the same time: the unique constraint wins.
             throw new UsernameTakenException();

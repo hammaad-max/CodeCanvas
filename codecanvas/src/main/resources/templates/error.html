@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title th:text="${status} + ' | CodeCanvas'">Error | CodeCanvas</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', Arial, Helvetica, sans-serif;
+            background:
+                    radial-gradient(circle at 80% 0%, rgba(99, 102, 241, 0.20), transparent 35%),
+                    radial-gradient(circle at 0% 30%, rgba(59, 130, 246, 0.12), transparent 30%),
+                    #080b14;
+            color: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+            background: rgba(13, 17, 30, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 44px 36px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(99, 102, 241, 0.1);
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.7px;
+            margin-bottom: 8px;
+            color: #ffffff;
+        }
+
+        .logo span {
+            color: #818cf8;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #94a3b8;
+            margin-bottom: 32px;
+            font-size: 14px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #cbd5e1;
+            letter-spacing: 0.2px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px 16px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            background: rgba(255, 255, 255, 0.04);
+            color: #ffffff;
+            transition: all 0.2s ease;
+        }
+
+        input::placeholder {
+            color: #64748b;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #818cf8;
+            background: rgba(255, 255, 255, 0.07);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.35);
+            transition: all 0.2s ease;
+            margin-top: 6px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 26px rgba(99, 102, 241, 0.5);
+            filter: brightness(1.08);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 26px;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .alert {
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border: 1px solid;
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.12);
+            border-color: rgba(239, 68, 68, 0.35);
+            color: #fca5a5;
+        }
+
+        .alert-ok {
+            background: rgba(34, 197, 94, 0.12);
+            border-color: rgba(34, 197, 94, 0.35);
+            color: #86efac;
+        }
+
+        .switch-link {
+            text-align: center;
+            margin-top: 22px;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .switch-link a {
+            color: #818cf8;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .switch-link a:hover {
+            text-decoration: underline;
+        }
+
+        .field-error {
+            color: #fca5a5;
+            font-size: 12px;
+            font-weight: 600;
+            margin: -12px 0 16px;
+        }
+        .code {
+            text-align: center;
+            font-size: 64px;
+            font-weight: 800;
+            letter-spacing: -2px;
+            background: linear-gradient(135deg, #818cf8, #a78bfa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 8px 0 4px;
+        }
+
+        .message {
+            text-align: center;
+            color: #cbd5e1;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 28px;
+        }
+
+        a.button {
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            padding: 13px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.35);
+            transition: all 0.2s ease;
+        }
+
+        a.button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 26px rgba(99, 102, 241, 0.5);
+            filter: brightness(1.08);
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-container">
+
+    <div class="logo">Code<span>Canvas</span></div>
+
+    <div class="code" th:text="${status}">Error</div>
+
+    <div class="subtitle" th:switch="${status}">
+        <span th:case="404">Page not found</span>
+        <span th:case="403">Access denied</span>
+        <span th:case="400">Bad request</span>
+        <span th:case="*">Something went wrong</span>
+    </div>
+
+    <div class="message" th:switch="${status}">
+        <span th:case="404">We couldn't find that page. It may have moved, or the link may be mistyped.</span>
+        <span th:case="403">You don't have permission to do that. If your session expired, please sign in again.</span>
+        <span th:case="400">That request couldn't be understood. Please go back and try again.</span>
+        <span th:case="*">An unexpected error happened on our side. Please try again in a moment.</span>
+    </div>
+
+    <a class="button" href="/dashboard">Back to Dashboard</a>
+
+    <div class="footer">
+        Learn Java. Practice deeply. Master with confidence.
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -6,6 +6,8 @@ import com.hammaad.codecanvas.model.Attempt;
 import com.hammaad.codecanvas.model.Question;
 import com.hammaad.codecanvas.repository.AttemptRepository;
 import com.hammaad.codecanvas.repository.QuestionRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +27,8 @@ import java.util.stream.Collectors;
 public class ProgressService {
 
     public static final int PASS_PERCENT = 70;
+
+    private static final Logger log = LoggerFactory.getLogger(ProgressService.class);
 
     private final QuestionRepository questionRepository;
     private final AttemptRepository attemptRepository;
@@ -70,6 +74,7 @@ public class ProgressService {
         // Store the canonical topic name from the question bank, not the client's spelling
         String canonicalTopic = topicQuestions.getFirst().getTopic();
         attemptRepository.save(new Attempt(studentId, Attempt.QUIZ, curriculum, canonicalTopic, score, total));
+        log.info("attempt.quiz studentId={} curriculum={} topic=\"{}\" score={}/{}", studentId, curriculum, canonicalTopic, score, total);
 
         int pct = (int) Math.round(score * 100.0 / total);
         return new QuizResult(score, total, pct, pct >= PASS_PERCENT);
@@ -92,6 +97,7 @@ public class ProgressService {
         List<AnswerResult> results = questionService.gradeAnswers(checked);
         int score = (int) results.stream().filter(AnswerResult::correct).count();
         attemptRepository.save(new Attempt(studentId, Attempt.EXAM, curriculum, null, score, results.size()));
+        log.info("attempt.exam studentId={} curriculum={} score={}/{}", studentId, curriculum, score, results.size());
         return results;
     }
 
@@ -197,6 +203,7 @@ public class ProgressService {
 
     @Transactional
     public void reset(Long studentId) {
-        attemptRepository.deleteByStudentId(studentId);
+        long deleted = attemptRepository.deleteByStudentId(studentId);
+        log.info("progress.reset studentId={} attemptsDeleted={}", studentId, deleted);
     }
 }

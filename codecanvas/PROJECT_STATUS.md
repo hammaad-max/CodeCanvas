@@ -1,6 +1,6 @@
 # CodeCanvas — Project Status
 
-_Last verified: 2026-11-08 · base checkpoint `24c05ab` + Phase 3 (uncommitted)_
+_Last verified: 2026-11-08 · Phase 3 committed in `4412666`; Phase 4 (uncommitted)_
 
 ## Stack
 Java 25 · Spring Boot 4.1.0 (Spring MVC, Thymeleaf, Spring Security, Spring Data JPA, Validation) · Flyway · PostgreSQL 17 · Maven · HTML/CSS/JS inline in templates (+ `static/js/codecanvas-api.js`).
@@ -11,13 +11,18 @@ Java 25 · Spring Boot 4.1.0 (Spring MVC, Thymeleaf, Spring Security, Spring Dat
 | 1 — Baseline audit | Done |
 | 2 — Core functionality | Done (verified; no new fixes needed) |
 | 3 — Production foundations | Done and verified locally (see below) |
-| 4 — Staging deployment | Not started — needs approval before any deploy |
+| 4 — Staging deployment | Prepared and verified locally (prod jar + prod profile + PostgreSQL); **not deployed** — needs a host and approval. See `DEPLOYMENT.md` |
 | 5 — Release checklist | Not started |
 
 ## Verified working (tested, not assumed)
 | Area | How verified | Result |
 |---|---|---|
-| Build + tests | `mvnw test` (H2 in PostgreSQL mode, same Flyway migration) | **26/26 pass** |
+| Build + tests | `mvnw clean verify` (H2 in PostgreSQL mode, same Flyway migration) | **31/31 pass** |
+| Production mode | Packaged jar, `prod` profile, DB config from env vars only | Starts in ~6 s; JSON logs; health/liveness/readiness `UP` |
+| Health check | Real HTTP tests + curl | Public status only; all other actuator endpoints blocked |
+| Error handling | Real HTTP tests + browser | Branded 404/403/500 page; API errors are short JSON, unexpected ones get a reference id |
+| HTTPS readiness | curl with `X-Forwarded-Proto: https` | `Secure` cookies, HSTS, `https://` redirects |
+| Audit logging | Prod log inspected | Registration, login success/failure, attempts, resets logged; no passwords |
 | PostgreSQL | App started against local PostgreSQL 17 | Flyway V1 applied; Hibernate `validate` passed |
 | Registration | Browser + tests | Account created; duplicate username (any case) rejected; field validation; CSRF required |
 | Passwords | `students` table inspected | `{bcrypt}$2a$10…` hashes only, never plain text |
@@ -44,7 +49,7 @@ Java 25 · Spring Boot 4.1.0 (Spring MVC, Thymeleaf, Spring Security, Spring Dat
 2. **No password reset or email verification**; no admin/teacher role.
 3. **Old browser-only progress is not imported** — data saved only in `localStorage` before Phase 3 is not migrated (it was client-reported and cannot be trusted).
 4. Question bank is still hard-coded in `QuestionRepository` (fine for now; move to DB if content editing is needed).
-5. **Dev settings are the defaults** (Thymeleaf cache off, DevTools) — Phase 4 adds a `prod` profile, health check, logging and error pages.
+5. **Production requires `SPRING_PROFILES_ACTIVE=prod`** — without it the app runs with development defaults (template cache off, non-Secure cookies).
 6. CSP still allows `'unsafe-inline'` because all pages use inline scripts/styles.
 
 ## Local environment
