@@ -1,6 +1,6 @@
 # LoopLab — Project Status
 
-_Last verified: 2026-11-08 · Render staging config pushed in `07b87b2`; LoopLab content and account update (uncommitted)_
+_Last verified: 2026-11-09 · LoopLab update in `195fcd0`; Render set to paid plans in Singapore (`looplab` + `looplab-db`)_
 
 The site is now called **LoopLab** (repository and Java package names are unchanged).
 
@@ -13,9 +13,9 @@ Java 25 · Spring Boot 4.1.0 (Spring MVC, Thymeleaf, Spring Security, Spring Dat
 | 1 — Baseline audit | Done |
 | 2 — Core functionality | Done (verified; no new fixes needed) |
 | 3 — Production foundations | Done and verified locally (see below) |
-| 4 — Staging deployment | Prepared and verified locally; Render chosen (`Dockerfile` + `render.yaml`). **Not deployed** — needs push + Render account. See `DEPLOYMENT.md` §5a |
+| 4 — Deployment | Render, paid plans, Singapore (`render.yaml`). **Not deployed yet**: needs the Render account and Blueprint apply. See `DEPLOYMENT.md` §5a |
 | 5 — Release checklist | Not started |
-| Content and account update | ICSE rebuilt (8 lessons), ISC added (8 lessons, 80 questions, mock exam), LoopLab branding, show-password, forgot password, login lockout. Verified locally (tests + browser); **not committed** |
+| Content and account update | ICSE rebuilt (8 lessons), ISC added (8 lessons, 80 questions, mock exam), LoopLab branding, show-password, forgot password, login lockout. Verified locally (tests + browser); committed in `195fcd0` |
 
 ## Verified working (tested, not assumed)
 | Area | How verified | Result |

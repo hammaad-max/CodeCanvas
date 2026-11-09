@@ -1,16 +1,17 @@
-# Render Blueprint for the LoopLab STAGING environment.
+# Render Blueprint for LoopLab (the site students use).
 # Creates a Docker web service and a managed PostgreSQL database, and wires the
 # database credentials into the app as environment variables (no secrets in git).
-# Plans are "free" for staging: the web service sleeps when idle and the free
-# database expires after 30 days. Switch both to paid plans before real students use it.
+# Paid plans: the service never sleeps, and the database has daily backups and does not expire.
+# Region is Singapore (closest to students in India). The service and database must share a
+# region, and Render cannot move them later.
 services:
   - type: web
-    name: looplab-staging
+    name: looplab
     runtime: docker
     dockerfilePath: ./codecanvas/Dockerfile
     dockerContext: ./codecanvas
-    plan: free
-    region: oregon
+    plan: starter
+    region: singapore
     healthCheckPath: /actuator/health/readiness
     autoDeploy: false
     envVars:
@@ -18,25 +19,25 @@ services:
         value: prod
       - key: DB_HOST
         fromDatabase:
-          name: looplab-staging-db
+          name: looplab-db
           property: host
       - key: DB_PORT
         fromDatabase:
-          name: looplab-staging-db
+          name: looplab-db
           property: port
       - key: DB_NAME
         fromDatabase:
-          name: looplab-staging-db
+          name: looplab-db
           property: database
       - key: DB_USERNAME
         fromDatabase:
-          name: looplab-staging-db
+          name: looplab-db
           property: user
       - key: DB_PASSWORD
         fromDatabase:
-          name: looplab-staging-db
+          name: looplab-db
           property: password
-      # Public address used in password reset emails, e.g. https://looplab-staging.onrender.com
+      # Public address used in password reset emails, e.g. https://looplab.onrender.com
       - key: APP_BASE_URL
         sync: false
       # Email (SMTP) for password reset links. Render asks for these values when the Blueprint is applied.
@@ -52,9 +53,9 @@ services:
         sync: false
 
 databases:
-  - name: looplab-staging-db
+  - name: looplab-db
     databaseName: codecanvas
     user: codecanvas
-    plan: free
-    region: oregon
+    plan: basic-256mb
+    region: singapore
     postgresMajorVersion: "17"
