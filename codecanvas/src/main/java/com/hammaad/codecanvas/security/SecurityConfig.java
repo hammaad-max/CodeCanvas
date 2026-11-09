@@ -32,7 +32,8 @@ public class SecurityConfig {
             "frame-ancestors 'none'");
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, LoginAttemptService loginAttempts) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, LoginAttemptService loginAttempts,
+                                                   LoginSuccessHandler loginSuccessHandler) throws Exception {
         http
                 // Locked usernames are turned away before their password is checked (brute-force protection)
                 .addFilterBefore(new LoginThrottleFilter(loginAttempts), UsernamePasswordAuthenticationFilter.class)
@@ -47,7 +48,7 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/")
                         .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/dashboard", true)
+                        .successHandler(loginSuccessHandler)   // records the sign-in, then goes to /dashboard
                         .failureUrl("/?error")
                         .permitAll())
                 .logout(logout -> logout

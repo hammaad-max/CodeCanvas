@@ -81,6 +81,18 @@ public class StudentService {
         return studentRepository.findById(studentId).orElseThrow();
     }
 
+    /**
+     * Records a successful sign-in. Returns true if this was the student's first sign-in ever,
+     * so the dashboard can say "Welcome" instead of "Welcome back".
+     */
+    @Transactional
+    public boolean recordLogin(Long studentId) {
+        Student student = studentRepository.findById(studentId).orElseThrow();
+        boolean firstLogin = student.getLastLoginAt() == null;
+        student.setLastLoginAt(java.time.Instant.now());
+        return firstLogin;
+    }
+
     @Transactional
     public void updateEmail(Long studentId, String newEmail) {
         String email = EmailRules.normalize(newEmail);

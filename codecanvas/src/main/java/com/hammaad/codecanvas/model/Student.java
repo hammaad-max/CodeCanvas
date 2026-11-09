@@ -39,6 +39,10 @@ public class Student {
     @Column(name = "created_at", nullable = false)
     private Instant createdAt = Instant.now();
 
+    /** Last successful sign-in; null until the student signs in for the first time. */
+    @Column(name = "last_login_at")
+    private Instant lastLoginAt;
+
     protected Student() {
     }
 
@@ -63,4 +67,6 @@ public class Student {
     public String getRole() { return role; }
     public boolean isEnabled() { return enabled; }
     public Instant getCreatedAt() { return createdAt; }
+    public Instant getLastLoginAt() { return lastLoginAt; }
+    public void setLastLoginAt(Instant lastLoginAt) { this.lastLoginAt = lastLoginAt; }
 }

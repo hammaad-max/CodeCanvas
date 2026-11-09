@@ -593,7 +593,7 @@
         <div class="welcome-badge">
             ⚡ Advanced Java Learning Engine
         </div>
-        <h1 id="welcomeTitle">Welcome to TraceTables 👋</h1>
+        <h1 id="welcomeTitle" th:data-first-login="${firstLogin}">Welcome to TraceTables 👋</h1>
         <p>
             Master Java through structured concept guides, interactive line-by-line code breakdowns, and targeted AP/exam-level quizzes.
         </p>
@@ -774,7 +774,11 @@
             const cleanName = rawUsername.trim();
             document.getElementById('studentDisplayName').textContent = cleanName;
             document.getElementById('studentAvatar').textContent = cleanName.charAt(0).toUpperCase();
-            document.getElementById('welcomeTitle').textContent = `Welcome back, ${cleanName} 👋`;
+            const titleEl = document.getElementById('welcomeTitle');
+            // First-ever sign-in gets a first-time greeting; later sign-ins say "Welcome back"
+            titleEl.textContent = titleEl.dataset.firstLogin === 'true'
+                ? `Welcome to TraceTables, ${cleanName} 👋`
+                : `Welcome back, ${cleanName} 👋`;
         }
     }
     const metaName = document.querySelector('meta[name="student-name"]');

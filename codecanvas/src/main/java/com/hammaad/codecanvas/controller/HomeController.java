@@ -23,7 +23,11 @@ public class HomeController {
     }
 
     @GetMapping("/dashboard")
-    public String dashboard(@AuthenticationPrincipal StudentPrincipal principal, Model model) {
+    public String dashboard(@AuthenticationPrincipal StudentPrincipal principal, Model model,
+                            jakarta.servlet.http.HttpSession session) {
+        // "Welcome to TraceTables" on a student's very first sign-in, "Welcome back" afterwards
+        model.addAttribute("firstLogin",
+                Boolean.TRUE.equals(session.getAttribute(com.hammaad.codecanvas.security.LoginSuccessHandler.FIRST_LOGIN)));
         // Accounts created before email was required are asked to add one (needed for password reset)
         model.addAttribute("needsEmail", principal != null
                 && studentService.get(principal.getStudentId()).getEmail() == null);
