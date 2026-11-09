@@ -57,7 +57,7 @@ public class PasswordResetService {
      * Emails a reset link if the username or email matches an account that has an email address.
      * The caller always shows the same message, so this never reveals whether an account exists.
      *
-     * @param resetPageUrl absolute URL of the reset page, e.g. https://looplab.example/reset-password
+     * @param resetPageUrl absolute URL of the reset page, e.g. https://tracetables.example/reset-password
      */
     @Transactional
     public void requestReset(String identifier, String resetPageUrl) {

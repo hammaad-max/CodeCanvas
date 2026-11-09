@@ -1,5 +1,5 @@
 /*
- * LoopLab: adds a "show / hide password" eye button to every password field on the page.
+ * TraceTables: adds a "show / hide password" eye button to every password field on the page.
  */
 (function () {
     'use strict';

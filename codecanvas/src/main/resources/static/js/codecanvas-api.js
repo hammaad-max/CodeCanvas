@@ -1,5 +1,5 @@
 /*
- * LoopLab client helpers.
+ * TraceTables client helpers.
  *  - CodeCanvasApi.send(): fetch() with the Spring Security CSRF token (from <meta name="_csrf">).
  *  - CodeCanvasApi.syncProgress(): loads the signed-in student's progress from the server and writes it
  *    into the localStorage keys the existing pages already read, then fires "codecanvas:progress".

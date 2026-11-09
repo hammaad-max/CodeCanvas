@@ -9,7 +9,7 @@
     <script th:src="@{/js/codecanvas-api.js}"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Dashboard | LoopLab</title>
+    <title>Dashboard | TraceTables</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -542,6 +542,18 @@
             .nav-actions .profile-name {
                 display: none;
             }
+            /* Icon-only logo so the menu stays on one line */
+            .navbar .logo {
+                font-size: 0;
+            }
+            .navbar .logo img {
+                width: 34px !important;
+                height: 34px !important;
+                margin-right: 0 !important;
+            }
+            .nav-actions .nav-link {
+                white-space: nowrap;
+            }
         }
     </style>
 </head>
@@ -551,7 +563,7 @@
 <!-- NAVIGATION -->
 <nav class="navbar">
     <a href="/dashboard" class="logo">
-        <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Loop<span>Lab</span>
+        <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Trace<span>Tables</span>
     </a>
 
     <div class="nav-actions" style="display: flex; align-items: center; gap: 20px;">
@@ -581,7 +593,7 @@
         <div class="welcome-badge">
             ⚡ Advanced Java Learning Engine
         </div>
-        <h1 id="welcomeTitle">Welcome to LoopLab 👋</h1>
+        <h1 id="welcomeTitle">Welcome to TraceTables 👋</h1>
         <p>
             Master Java through structured concept guides, interactive line-by-line code breakdowns, and targeted AP/exam-level quizzes.
         </p>

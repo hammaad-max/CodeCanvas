@@ -107,7 +107,7 @@ class OperationsIntegrationTests {
         HttpResponse<String> res = get(client, "/this-page-does-not-exist", "text/html");
         assertEquals(404, res.statusCode());
         assertTrue(res.body().contains("Page not found"), res.body());
-        assertTrue(res.body().contains("Loop<span>Lab</span>"), "error page must use the LoopLab design");
+        assertTrue(res.body().contains("Trace<span>Tables</span>"), "error page must use the TraceTables design");
         assertFalse(res.body().contains("Whitelabel"), "no default Spring error page");
         assertFalse(res.body().toLowerCase().contains("exception"), "no internals in error page");
     }

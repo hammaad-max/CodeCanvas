@@ -21,7 +21,7 @@ public class PasswordResetController {
     private final String baseUrl;
 
     public PasswordResetController(PasswordResetService passwordResetService,
-                                   @Value("${looplab.base-url:}") String baseUrl) {
+                                   @Value("${tracetables.base-url:}") String baseUrl) {
         this.passwordResetService = passwordResetService;
         this.baseUrl = baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length() - 1) : baseUrl;
     }
@@ -67,7 +67,7 @@ public class PasswordResetController {
         return "redirect:/?reset";
     }
 
-    /** Uses LOOPLAB_BASE_URL when set (recommended in production) instead of trusting the request's Host header. */
+    /** Uses APP_BASE_URL when set (recommended in production) instead of trusting the request's Host header. */
     private String resetPageUrl() {
         String base = baseUrl.isBlank()
                 ? ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString()

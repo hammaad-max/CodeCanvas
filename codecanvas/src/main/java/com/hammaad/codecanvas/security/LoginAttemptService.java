@@ -36,9 +36,9 @@ public class LoginAttemptService {
     private final Map<String, Entry> entries = new ConcurrentHashMap<>();
 
     @Autowired
-    public LoginAttemptService(@Value("${looplab.login.max-failures:5}") int maxFailures,
-                               @Value("${looplab.login.window:15m}") Duration window,
-                               @Value("${looplab.login.lock-duration:15m}") Duration lockDuration) {
+    public LoginAttemptService(@Value("${tracetables.login.max-failures:5}") int maxFailures,
+                               @Value("${tracetables.login.window:15m}") Duration window,
+                               @Value("${tracetables.login.lock-duration:15m}") Duration lockDuration) {
         this(maxFailures, window, lockDuration, Clock.systemUTC());
     }
 

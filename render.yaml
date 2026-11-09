@@ -1,4 +1,4 @@
-# Render Blueprint for LoopLab (the site students use).
+# Render Blueprint for TraceTables (the site students use).
 # Creates a Docker web service and a managed PostgreSQL database, and wires the
 # database credentials into the app as environment variables (no secrets in git).
 # Paid plans: the service never sleeps, and the database has daily backups and does not expire.
@@ -6,7 +6,7 @@
 # region, and Render cannot move them later.
 services:
   - type: web
-    name: looplab
+    name: tracetables
     runtime: docker
     dockerfilePath: ./codecanvas/Dockerfile
     dockerContext: ./codecanvas
@@ -19,25 +19,25 @@ services:
         value: prod
       - key: DB_HOST
         fromDatabase:
-          name: looplab-db
+          name: tracetables-db
           property: host
       - key: DB_PORT
         fromDatabase:
-          name: looplab-db
+          name: tracetables-db
           property: port
       - key: DB_NAME
         fromDatabase:
-          name: looplab-db
+          name: tracetables-db
           property: database
       - key: DB_USERNAME
         fromDatabase:
-          name: looplab-db
+          name: tracetables-db
           property: user
       - key: DB_PASSWORD
         fromDatabase:
-          name: looplab-db
+          name: tracetables-db
           property: password
-      # Public address used in password reset emails, e.g. https://looplab.onrender.com
+      # Public address used in password reset emails, e.g. https://tracetables.onrender.com
       - key: APP_BASE_URL
         sync: false
       # Email (SMTP) for password reset links. Render asks for these values when the Blueprint is applied.
@@ -53,7 +53,7 @@ services:
         sync: false
 
 databases:
-  - name: looplab-db
+  - name: tracetables-db
     databaseName: codecanvas
     user: codecanvas
     plan: basic-256mb

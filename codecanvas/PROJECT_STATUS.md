@@ -1,8 +1,8 @@
-# LoopLab — Project Status
+# TraceTables — Project Status
 
-_Last verified: 2026-11-09 · LoopLab update in `195fcd0`; Render set to paid plans in Singapore (`looplab` + `looplab-db`)_
+_Last verified: 2026-11-09 · TraceTables update in `195fcd0`; Render set to paid plans in Singapore (`tracetables` + `tracetables-db`)_
 
-The site is now called **LoopLab** (repository and Java package names are unchanged).
+The site is now called **TraceTables** (repository and Java package names are unchanged).
 
 ## Stack
 Java 25 · Spring Boot 4.1.0 (Spring MVC, Thymeleaf, Spring Security, Spring Data JPA, Validation) · Flyway · PostgreSQL 17 · Maven · HTML/CSS/JS inline in templates (+ `static/js/codecanvas-api.js`).
@@ -15,7 +15,7 @@ Java 25 · Spring Boot 4.1.0 (Spring MVC, Thymeleaf, Spring Security, Spring Dat
 | 3 — Production foundations | Done and verified locally (see below) |
 | 4 — Deployment | Render, paid plans, Singapore (`render.yaml`). **Not deployed yet**: needs the Render account and Blueprint apply. See `DEPLOYMENT.md` §5a |
 | 5 — Release checklist | Not started |
-| Content and account update | ICSE rebuilt (8 lessons), ISC added (8 lessons, 80 questions, mock exam), LoopLab branding, show-password, forgot password, login lockout. Verified locally (tests + browser); committed in `195fcd0` |
+| Content and account update | ICSE rebuilt (8 lessons), ISC added (8 lessons, 80 questions, mock exam), TraceTables branding, show-password, forgot password, login lockout. Verified locally (tests + browser); committed in `195fcd0` |
 
 ## Verified working (tested, not assumed)
 | Area | How verified | Result |

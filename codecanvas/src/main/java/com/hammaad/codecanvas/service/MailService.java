@@ -27,7 +27,7 @@ public class MailService {
     private final boolean prod;
 
     public MailService(ObjectProvider<JavaMailSender> mailSender,
-                       @Value("${looplab.mail.from:}") String from,
+                       @Value("${tracetables.mail.from:}") String from,
                        Environment environment) {
         this.mailSender = mailSender;
         this.from = from;
@@ -48,18 +48,18 @@ public class MailService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(from);
         message.setTo(to);
-        message.setSubject("Reset your LoopLab password");
+        message.setSubject("Reset your TraceTables password");
         message.setText("""
                 Hi %s,
 
-                Someone (hopefully you) asked to reset the password for your LoopLab account.
+                Someone (hopefully you) asked to reset the password for your TraceTables account.
                 Open this link to choose a new password. It works once and expires in %d minutes:
 
                 %s
 
                 If you did not ask for this, you can ignore this email; your password will not change.
 
-                - LoopLab
+                - TraceTables
                 """.formatted(displayName, validMinutes, link));
         try {
             sender.send(message);

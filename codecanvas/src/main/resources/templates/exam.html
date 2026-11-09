@@ -8,7 +8,7 @@
     <meta name="student-name" th:content="${studentName}">
     <script th:src="@{/js/codecanvas-api.js}"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AP CS A Mock Exam | LoopLab</title>
+    <title>AP CS A Mock Exam | TraceTables</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -1074,7 +1074,7 @@
     <header class="exam-navbar">
         <div class="exam-brand">
             <a href="/dashboard" class="logo">
-                <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Loop<span>Lab</span>
+                <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Trace<span>Tables</span>
             </a>
             <span class="exam-badge">Diagnostic Mock Exam</span>
         </div>
@@ -1332,7 +1332,7 @@
         const EXAM_COURSES = {
             ICSE: {
                 code: 'ICSE', hub: '/icse', endpoint: '/api/exam/icse?questionsPerTopic=5', storageKey: 'codecanvas_icse_mock_exam',
-                title: 'ICSE Class 10 Java Board Mock Exam | LoopLab', badge: 'ICSE BOARD SIMULATION', heading: 'ICSE Class 10 Java',
+                title: 'ICSE Class 10 Java Board Mock Exam | TraceTables', badge: 'ICSE BOARD SIMULATION', heading: 'ICSE Class 10 Java',
                 desc: 'This exam contains 40 multiple-choice questions representative of the official ICSE Computer Applications examination format, balanced across all 8 syllabus units.',
                 units: 'All 8 ICSE Units',
                 greeting: 'ICSE Board Diagnostic Complete! 🎉',
@@ -1340,7 +1340,7 @@
             },
             ISC: {
                 code: 'ISC', hub: '/isc', endpoint: '/api/exam/isc?questionsPerTopic=5', storageKey: 'codecanvas_isc_mock_exam',
-                title: 'ISC Class 12 Java Board Mock Exam | LoopLab', badge: 'ISC BOARD SIMULATION', heading: 'ISC Class 11 & 12 Java',
+                title: 'ISC Class 12 Java Board Mock Exam | TraceTables', badge: 'ISC BOARD SIMULATION', heading: 'ISC Class 11 & 12 Java',
                 desc: 'This exam contains 40 multiple-choice questions on the ISC Computer Science Java syllabus, balanced across all 8 units: from classes and recursion to data structures.',
                 units: 'All 8 ISC Units',
                 greeting: 'ISC Board Diagnostic Complete! 🎉',

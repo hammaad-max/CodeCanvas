@@ -1,6 +1,6 @@
-# LoopLab — Deployment Guide
+# TraceTables — Deployment Guide
 
-How to run LoopLab (repository: CodeCanvas) in production. Most people only need section 5a (Render). Verified locally on 2026-11-08 by running the
+How to run TraceTables (repository: CodeCanvas) in production. Most people only need section 5a (Render). Verified locally on 2026-11-08 by running the
 packaged jar with `SPRING_PROFILES_ACTIVE=prod` against PostgreSQL 17 (see "Verified" at the end).
 
 ## 1. What you need
@@ -20,8 +20,8 @@ The app is a single self-contained jar: `target/CodeCanvas-0.0.1-SNAPSHOT.jar`.
 | `DB_HOST` / `DB_PORT` / `DB_NAME` | instead of `DB_URL` | `db-host` / `5432` / `codecanvas` | Used when the platform provides separate values (Render) |
 | `DB_USERNAME` | **yes** | `codecanvas` | Database user |
 | `DB_PASSWORD` | **yes** | _(from your secret store)_ | The app refuses to start without it |
-| `APP_BASE_URL` | recommended | `https://looplab.onrender.com` | Public address used in password reset emails |
-| `MAIL_FROM` | for password reset | `LoopLab <no-reply@yourdomain>` | Sender address (must be verified with your email provider) |
+| `APP_BASE_URL` | recommended | `https://tracetables.onrender.com` | Public address used in password reset emails |
+| `MAIL_FROM` | for password reset | `TraceTables <no-reply@yourdomain>` | Sender address (must be verified with your email provider) |
 | `SPRING_MAIL_HOST` / `SPRING_MAIL_PORT` | for password reset | `smtp-relay.brevo.com` / `587` | SMTP server |
 | `SPRING_MAIL_USERNAME` / `SPRING_MAIL_PASSWORD` | for password reset | _(from your email provider)_ | SMTP login (store the password as a secret) |
 | `PORT` | no | `8080` | HTTP port (default 8080) |
@@ -69,7 +69,7 @@ DB_PASSWORD=<secret>
 `/etc/systemd/system/codecanvas.service`:
 ```ini
 [Unit]
-Description=LoopLab
+Description=TraceTables
 After=network-online.target
 
 [Service]
@@ -85,7 +85,7 @@ WantedBy=multi-user.target
 
 ### HTTPS reverse proxy (Caddy example — automatic Let's Encrypt certificates)
 ```
-looplab.example.com {
+tracetables.example.com {
     reverse_proxy localhost:8080
 }
 ```
@@ -93,7 +93,7 @@ The prod profile trusts `X-Forwarded-Proto`/`X-Forwarded-Host` from the proxy, s
 session cookies are `Secure`, and HSTS is sent. **Do not expose port 8080 directly to the internet**; only the
 proxy should reach it.
 
-## 5a. Deploying on Render (recommended; this is how LoopLab is hosted)
+## 5a. Deploying on Render (recommended; this is how TraceTables is hosted)
 You do **not** install PostgreSQL or Java yourself. Render builds the app from GitHub and runs both the website and
 the PostgreSQL database for you. Everything Render needs is already in the repository:
 `render.yaml` (repo root) describes the website and database, and `codecanvas/Dockerfile` builds and tests the app.
@@ -102,30 +102,30 @@ What `render.yaml` creates (check current prices at render.com/pricing):
 
 | Name | What it is | Plan | Region |
 |---|---|---|---|
-| `looplab` | The website | Starter (paid, never sleeps) | Singapore |
-| `looplab-db` | PostgreSQL 17 database | Basic-256MB (paid, daily backups) | Singapore |
+| `tracetables` | The website | Starter (paid, never sleeps) | Singapore |
+| `tracetables-db` | PostgreSQL 17 database | Basic-256MB (paid, daily backups) | Singapore |
 
 **First deployment**
 1. Sign up at render.com with **Sign in with GitHub**.
 2. Add a payment card: **Account → Billing**.
-3. **New → Blueprint** → choose the `CodeCanvas` repository → Render shows `looplab` and `looplab-db`.
+3. **New → Blueprint** → choose the `CodeCanvas` repository → Render shows `tracetables` and `tracetables-db`.
 4. Render asks for `APP_BASE_URL` and the email settings. Leave them empty for now if you like (only
    "Forgot password?" emails need them; see 5b).
 5. Click **Apply**. The first build takes about 5-10 minutes (it runs all tests). The site is then live at
-   `https://looplab.onrender.com` (the exact address is shown on the `looplab` service page).
+   `https://tracetables.onrender.com` (the exact address is shown on the `tracetables` service page).
 6. Open the site, register, take a quiz, and check My Progress.
 
 **Releasing an update later**
-- Push to GitHub, then on the `looplab` service click **Manual Deploy → Deploy latest commit**
+- Push to GitHub, then on the `tracetables` service click **Manual Deploy → Deploy latest commit**
   (`autoDeploy` is off so nothing goes live by accident).
 - If something breaks: **Events → Rollback** to the previous deploy (see section 8 for database migrations).
 
 **Good to know**
-- HTTPS is automatic. A custom domain (e.g. `looplab.in`) is added under **Settings → Custom Domains**; then set
+- HTTPS is automatic. A custom domain (e.g. `tracetables.in`) is added under **Settings → Custom Domains**; then set
   `APP_BASE_URL` to that address.
-- If the site feels slow with many students online at once, change the `looplab` plan to a larger one in
+- If the site feels slow with many students online at once, change the `tracetables` plan to a larger one in
   **Settings → Instance Type**. No code change is needed.
-- Database backups: **looplab-db → Recovery** (restore to an earlier point in time).
+- Database backups: **tracetables-db → Recovery** (restore to an earlier point in time).
 
 ## 5b. Email for password reset
 "Forgot password?" emails a one-time link (valid 30 minutes, max 3 per account per hour). Any SMTP provider works;
@@ -138,7 +138,7 @@ SMTP key under *SMTP & API*. Set:
 | `SPRING_MAIL_PORT` | `587` |
 | `SPRING_MAIL_USERNAME` | your Brevo SMTP login |
 | `SPRING_MAIL_PASSWORD` | your Brevo SMTP key (secret) |
-| `MAIL_FROM` | the verified sender, e.g. `LoopLab <you@example.com>` |
+| `MAIL_FROM` | the verified sender, e.g. `TraceTables <you@example.com>` |
 | `APP_BASE_URL` | the site's public `https://` address |
 
 Without `SPRING_MAIL_HOST`, no email is sent: in development the link is printed in the log instead, and in
