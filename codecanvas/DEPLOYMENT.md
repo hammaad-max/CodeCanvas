@@ -93,39 +93,61 @@ The prod profile trusts `X-Forwarded-Proto`/`X-Forwarded-Host` from the proxy, s
 session cookies are `Secure`, and HSTS is sent. **Do not expose port 8080 directly to the internet**; only the
 proxy should reach it.
 
-## 5a. Deploying on Render (recommended; this is how TraceTables is hosted)
-You do **not** install PostgreSQL or Java yourself. Render builds the app from GitHub and runs both the website and
-the PostgreSQL database for you. Everything Render needs is already in the repository:
-`render.yaml` (repo root) describes the website and database, and `codecanvas/Dockerfile` builds and tests the app.
+## 5a. Free deployment: Render (website) + Neon (database)
+You do **not** install Java or PostgreSQL. Both services are free and need no card:
 
-What `render.yaml` creates (check current prices at render.com/pricing):
+| Service | Used for | Free plan limits |
+|---|---|---|
+| **Neon** (neon.tech) | The PostgreSQL database (accounts, scores) | 0.5 GB storage, does **not** expire |
+| **Render** (render.com) | The website `tracetables` | Sleeps after ~15 min with no visitors; the next visit takes about a minute |
 
-| Name | What it is | Plan | Region |
-|---|---|---|---|
-| `tracetables` | The website | Starter (paid, never sleeps) | Singapore |
-| `tracetables-db` | PostgreSQL 17 database | Basic-256MB (paid, daily backups) | Singapore |
+Render's own free database is deleted after 30 days, so it is not used.
 
-**First deployment**
-1. Sign up at render.com with **Sign in with GitHub**.
-2. Add a payment card: **Account → Billing**.
-3. **New → Blueprint** → choose the `CodeCanvas` repository → Render shows `tracetables` and `tracetables-db`.
-4. Render asks for `APP_BASE_URL` and the email settings. Leave them empty for now if you like (only
-   "Forgot password?" emails need them; see 5b).
-5. Click **Apply**. The first build takes about 5-10 minutes (it runs all tests). The site is then live at
-   `https://tracetables.onrender.com` (the exact address is shown on the `tracetables` service page).
-6. Open the site, register, take a quiz, and check My Progress.
+**Step 1: create the database on Neon (about 3 minutes)**
+1. Go to neon.tech, click **Sign up**, and sign in with GitHub.
+2. Create a project: name `tracetables`, PostgreSQL version 17, region **AWS Asia Pacific (Singapore)**.
+3. On the project dashboard click **Connect**. Turn **Connection pooling off** (Flyway needs a direct connection).
+4. Note three things from the connection details (the screen may look slightly different):
+   - **Host**, e.g. `ep-cool-name-123456.ap-southeast-1.aws.neon.tech`
+   - **Role** (user), e.g. `neondb_owner`
+   - **Password** (click the eye icon to show it)
+   The database name is `neondb` unless you changed it.
+
+**Step 2: create the website on Render (about 10 minutes)**
+1. Go to render.com and sign in with GitHub.
+2. Click **New → Blueprint** and choose the `CodeCanvas` repository. Render reads `render.yaml` and shows one
+   service, `tracetables` (Free).
+3. Render asks for the values below. Type them exactly:
+
+| Key | What to enter |
+|---|---|
+| `DB_URL` | `jdbc:postgresql://YOUR-NEON-HOST/neondb?sslmode=require` (replace YOUR-NEON-HOST with the host from Neon) |
+| `DB_USERNAME` | the Neon role, e.g. `neondb_owner` |
+| `DB_PASSWORD` | the Neon password |
+| `APP_BASE_URL` | leave empty for now |
+| `MAIL_FROM`, `SPRING_MAIL_HOST`, `SPRING_MAIL_USERNAME`, `SPRING_MAIL_PASSWORD` | leave empty for now (only "Forgot password?" emails need them, see 5b) |
+
+4. Click **Apply**. The first build takes about 5-10 minutes (it runs all the tests). When the service shows
+   **Live**, open the address at the top of the page, e.g. `https://tracetables.onrender.com`.
+5. Register, take a quiz, and check My Progress. The tables are created in Neon automatically on first start.
+
+**If the build or start fails:** open the `tracetables` service → **Logs**, copy the last lines, and look for
+`password authentication failed` (wrong `DB_USERNAME`/`DB_PASSWORD`) or `UnknownHost` (wrong host in `DB_URL`).
+Fix the value under **Environment**, then **Manual Deploy → Deploy latest commit**.
 
 **Releasing an update later**
-- Push to GitHub, then on the `tracetables` service click **Manual Deploy → Deploy latest commit**
-  (`autoDeploy` is off so nothing goes live by accident).
+- Push to GitHub, then on `tracetables` click **Manual Deploy → Deploy latest commit**
+  (`autoDeploy` is off, so nothing goes live by accident).
 - If something breaks: **Events → Rollback** to the previous deploy (see section 8 for database migrations).
 
 **Good to know**
 - HTTPS is automatic. A custom domain (e.g. `tracetables.in`) is added under **Settings → Custom Domains**; then set
   `APP_BASE_URL` to that address.
-- If the site feels slow with many students online at once, change the `tracetables` plan to a larger one in
-  **Settings → Instance Type**. No code change is needed.
-- Database backups: **tracetables-db → Recovery** (restore to an earlier point in time).
+- The free website sleeps when nobody uses it. To stop that later, change it to the Starter plan in
+  **Settings → Instance Type** (paid). No code change is needed.
+- Neon's free plan keeps a short restore history; for real backups take a weekly copy with `pg_dump` (section 9).
+- Tested locally with the same settings: the app starts and uses about 290 MB of memory with a 384 MB limit,
+  within the free plan's 512 MB.
 
 ## 5b. Email for password reset
 "Forgot password?" emails a one-time link (valid 30 minutes, max 3 per account per hour). Any SMTP provider works;

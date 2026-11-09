@@ -1,6 +1,6 @@
 # TraceTables — Project Status
 
-_Last verified: 2026-11-09 · TraceTables update in `195fcd0`; Render set to paid plans in Singapore (`tracetables` + `tracetables-db`)_
+_Last verified: 2026-11-09 · Renamed to TraceTables in `c99d86f`; free deployment setup (Render + Neon)_
 
 The site is now called **TraceTables** (repository and Java package names are unchanged).
 
@@ -13,7 +13,7 @@ Java 25 · Spring Boot 4.1.0 (Spring MVC, Thymeleaf, Spring Security, Spring Dat
 | 1 — Baseline audit | Done |
 | 2 — Core functionality | Done (verified; no new fixes needed) |
 | 3 — Production foundations | Done and verified locally (see below) |
-| 4 — Deployment | Render, paid plans, Singapore (`render.yaml`). **Not deployed yet**: needs the Render account and Blueprint apply. See `DEPLOYMENT.md` §5a |
+| 4 — Deployment | Free setup: Render free web service (Singapore) + Neon free PostgreSQL (`render.yaml`). **Not deployed yet**: needs Neon and Render sign-ups. See `DEPLOYMENT.md` §5a |
 | 5 — Release checklist | Not started |
 | Content and account update | ICSE rebuilt (8 lessons), ISC added (8 lessons, 80 questions, mock exam), TraceTables branding, show-password, forgot password, login lockout. Verified locally (tests + browser); committed in `195fcd0` |
 

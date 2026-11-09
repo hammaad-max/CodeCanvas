@@ -1,46 +1,39 @@
-# Render Blueprint for TraceTables (the site students use).
-# Creates a Docker web service and a managed PostgreSQL database, and wires the
-# database credentials into the app as environment variables (no secrets in git).
-# Paid plans: the service never sleeps, and the database has daily backups and does not expire.
-# Region is Singapore (closest to students in India). The service and database must share a
-# region, and Render cannot move them later.
+# Render Blueprint for TraceTables (free setup).
+# - Website: Render's FREE plan (it sleeps after ~15 minutes without visitors; the next visit takes
+#   about a minute to wake it up).
+# - Database: a FREE PostgreSQL database on Neon (neon.tech), which does not expire. Render's own
+#   free database is deleted after 30 days, so it is not used here.
+# When you apply this Blueprint, Render asks for the values marked "sync: false" (see DEPLOYMENT.md).
 services:
   - type: web
     name: tracetables
     runtime: docker
     dockerfilePath: ./codecanvas/Dockerfile
     dockerContext: ./codecanvas
-    plan: starter
+    plan: free
     region: singapore
     healthCheckPath: /actuator/health/readiness
     autoDeploy: false
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
-      - key: DB_HOST
-        fromDatabase:
-          name: tracetables-db
-          property: host
-      - key: DB_PORT
-        fromDatabase:
-          name: tracetables-db
-          property: port
-      - key: DB_NAME
-        fromDatabase:
-          name: tracetables-db
-          property: database
+      # Small, fast-starting JVM settings for the free plan's 512 MB / shared CPU
+      - key: JAVA_TOOL_OPTIONS
+        value: "-XX:MaxRAMPercentage=75 -XX:+UseSerialGC -XX:TieredStopAtLevel=1"
+      # Neon database connection (from the Neon dashboard), e.g.
+      #   DB_URL      = jdbc:postgresql://ep-xxxx.ap-southeast-1.aws.neon.tech/neondb?sslmode=require
+      #   DB_USERNAME = neondb_owner
+      #   DB_PASSWORD = (the password Neon shows)
+      - key: DB_URL
+        sync: false
       - key: DB_USERNAME
-        fromDatabase:
-          name: tracetables-db
-          property: user
+        sync: false
       - key: DB_PASSWORD
-        fromDatabase:
-          name: tracetables-db
-          property: password
-      # Public address used in password reset emails, e.g. https://tracetables.onrender.com
+        sync: false
+      # Optional: public address used in password reset emails, e.g. https://tracetables.onrender.com
       - key: APP_BASE_URL
         sync: false
-      # Email (SMTP) for password reset links. Render asks for these values when the Blueprint is applied.
+      # Optional: email (SMTP) for "Forgot password?" links. Leave empty to skip for now.
       - key: MAIL_FROM
         sync: false
       - key: SPRING_MAIL_HOST
@@ -51,11 +44,3 @@ services:
         sync: false
       - key: SPRING_MAIL_PASSWORD
         sync: false
-
-databases:
-  - name: tracetables-db
-    databaseName: codecanvas
-    user: codecanvas
-    plan: basic-256mb
-    region: singapore
-    postgresMajorVersion: "17"
