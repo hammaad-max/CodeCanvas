@@ -11,7 +11,7 @@
     <title>My Progress &amp; Analytics | TraceTables</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
         * {
@@ -21,7 +21,7 @@
         }
 
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Lexend', sans-serif;
             background: #090d16;
             color: #ffffff;
             min-height: 100vh;
@@ -363,7 +363,7 @@
         .btn-quiz {
             background: linear-gradient(135deg, #6366f1, #8b5cf6);
             color: #ffffff;
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
         }
 
         .btn-quiz:hover {
@@ -557,7 +557,7 @@
         .curriculum-tab.active {
             background: linear-gradient(135deg, #6366f1, #7c3aed);
             color: #ffffff;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.35);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.17);
         }
 
         .curriculum-tab.active.icse {
@@ -590,16 +590,7 @@
 <body>
 
     <!-- NAVBAR -->
-    <nav class="navbar">
-        <a href="/dashboard" class="logo">
-            <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Trace<span>Tables</span>
-        </a>
-
-        <div class="profile-container">
-            <a href="/dashboard" class="nav-link" style="color: #94a3b8; text-decoration: none; font-size: 14px; font-weight: 500; margin-right: 12px; transition: color 0.2s;">Dashboard</a>
-            <div class="avatar" id="studentAvatar">S</div>
-        </div>
-    </nav>
+    <div th:replace="~{fragments/nav :: nav('progress')}"></div>
 
     <!-- MAIN CONTENT -->
     <main class="container">
@@ -613,7 +604,7 @@
 
             <div class="header-actions">
                 <button class="action-btn btn-outline" onclick="window.print();">
-                    🖨 Export / Print Summary
+                    <svg class="ico" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Export / Print Summary
                 </button>
                 <button class="action-btn btn-danger" id="resetProgressBtn">
                     ↺ Reset Progress
@@ -683,7 +674,7 @@
 
         <!-- PRIORITY ACTION PLAN -->
         <div class="section-header">
-            <h2>🎯 Recommended Study Priorities</h2>
+            <h2>Recommended Study Priorities</h2>
             <span style="font-size: 13px; color: #94a3b8;">Automated action plan based on your quiz scores</span>
         </div>
 
@@ -835,7 +826,7 @@
                     if (passedCount === 8 && avgAccuracy >= 90) {
                         scoreEl.textContent = '100';
                         scoreEl.style.color = '#34d399';
-                        scoreTitleEl.textContent = 'Distinction ★ (Board Exam Ready)';
+                        scoreTitleEl.textContent = 'Distinction (Board Exam Ready)';
                     } else if (passedCount >= 6) {
                         scoreEl.textContent = '90+';
                         scoreEl.style.color = '#6ee7b7';
@@ -865,7 +856,7 @@
 
                     if (passedCount >= 7 && avgAccuracy >= 85) {
                         projectedScore = 5;
-                        scoreTitle = 'Score 5 ★ (Extremely Well Qualified)';
+                        scoreTitle = 'Score 5 (Extremely Well Qualified)';
                         scoreColor = '#fde047';
                     } else if (passedCount >= 5) {
                         projectedScore = 4;
@@ -1003,7 +994,7 @@
                     </div>
                     <div class="unit-actions-row">
                         <a href="${unit.slug}" class="unit-action-btn btn-learn">Study Unit →</a>
-                        <a href="/apcs/quiz?topic=${encodeURIComponent(unit.title)}${quizParam()}" class="unit-action-btn btn-quiz">Take Quiz ⚡</a>
+                        <a href="/apcs/quiz?topic=${encodeURIComponent(unit.title)}${quizParam()}" class="unit-action-btn btn-quiz">Take Quiz</a>
                     </div>
                 `;
 
@@ -1038,7 +1029,7 @@
                         priority: 'med',
                         text: `<strong>${unit.title}:</strong> Not attempted yet. Complete this unit to advance your syllabus mastery toward 100%.`,
                         link: `/apcs/quiz?topic=${encodeURIComponent(unit.title)}${quizParam()}`,
-                        actionText: 'Practice Quiz ⚡'
+                        actionText: 'Practice Quiz'
                     });
                 }
             });
@@ -1055,7 +1046,7 @@
                 } else if (passedCount === 8) {
                     recommendations.push({
                         priority: 'good',
-                        text: '🎉 Outstanding work! You have passed all 8 AP CS syllabus units. Maintain your high accuracy by taking full mock exams.',
+                        text: 'Outstanding work! You have passed all 8 AP CS syllabus units. Maintain your high accuracy by taking full mock exams.',
                         link: '/apcs/exam',
                         actionText: 'Retake Mock Exam →'
                     });
@@ -1072,7 +1063,7 @@
                 } else if (passedCount === 8) {
                     recommendations.push({
                         priority: 'good',
-                        text: `🎉 Outstanding! All 8 ${course.name} units mastered with passing scores! You are ready for 100/100 on your board exams.`,
+                        text: `Outstanding! All 8 ${course.name} units mastered with passing scores! You are ready for 100/100 on your board exams.`,
                         link: course.hub,
                         actionText: `Review ${course.name} Syllabus →`
                     });

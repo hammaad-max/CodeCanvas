@@ -8,6 +8,9 @@
     <meta name="student-name" th:content="${studentName}">
     <script th:src="@{/js/codecanvas-api.js}"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
     <title>AP CS Java | TraceTables</title>
 
@@ -21,7 +24,7 @@
 
         body {
             margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: 'Lexend', Arial, Helvetica, sans-serif;
             background:
                     radial-gradient(circle at 80% 0%, rgba(99, 102, 241, 0.18), transparent 30%),
                     radial-gradient(circle at 0% 30%, rgba(59, 130, 246, 0.10), transparent 25%),
@@ -89,7 +92,7 @@
             color: white;
             font-weight: 700;
 
-            box-shadow: 0 0 20px rgba(99, 102, 241, 0.35);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.17);
         }
 
         /* MAIN */
@@ -157,9 +160,7 @@
         }
 
         .hero h1 span {
-            background: linear-gradient(90deg, #818cf8, #c084fc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #a5b4fc;
         }
 
         .hero p {
@@ -192,14 +193,14 @@
             font-weight: 700;
             font-size: 14px;
 
-            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.25);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.12);
 
             transition: 0.2s;
         }
 
         .primary-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.35);
+            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.17);
         }
 
         /* STATS CARD */
@@ -289,7 +290,7 @@
         .search:focus {
             border-color: rgba(129, 140, 248, 0.6);
 
-            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.08);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.04);
         }
 
         .search-icon {
@@ -372,13 +373,13 @@
             font-weight: 700;
             cursor: pointer;
             transition: all 0.2s ease;
-            box-shadow: 0 6px 18px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 6px 18px rgba(99, 102, 241, 0.15);
             font-family: inherit;
         }
 
         .reset-search-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.5);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.25);
         }
 
         /* SECTION */
@@ -544,6 +545,15 @@
                 font-size: 40px;
             }
         }
+            /* Calmer styling: badges as plain labels, no glow-heavy chrome */
+        .badge, .card-pill {
+            background: none !important;
+            border: none !important;
+            padding: 0 !important;
+            box-shadow: none !important;
+            color: #a5b4fc !important;
+            letter-spacing: 1px;
+        }
     </style>
 </head>
 
@@ -551,29 +561,7 @@
 
 <!-- NAVBAR -->
 
-<nav class="navbar">
-
-    <div class="logo">
-        <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Trace<span>Tables</span>
-    </div>
-
-    <div class="nav-right">
-
-        <a href="/dashboard" class="nav-link">
-            Dashboard
-        </a>
-
-        <a href="/progress" class="nav-link">
-            My Progress
-        </a>
-
-        <div class="profile" th:text="${studentName != null and studentName.length() > 0} ? ${#strings.toUpperCase(#strings.substring(studentName, 0, 1))} : 'S'">
-            S
-        </div>
-
-    </div>
-
-</nav>
+<div th:replace="~{fragments/nav :: nav('course')}"></div>
 
 
 <main class="container">
@@ -606,7 +594,7 @@
                 </a>
 
                 <a href="/apcs/exam" class="primary-button" style="background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.4); color: #c7d2fe; box-shadow: none;">
-                    ⏱ 40-Question Mock Exam →
+                    <svg class="ico" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg> 40-Question Mock Exam →
                 </a>
 
             </div>
@@ -640,7 +628,7 @@
             </div>
 
             <div class="stats-description" id="apcsScoreTargetNotice" style="margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.08); font-size: 12px; color: #94a3b8; display: flex; justify-content: space-between; align-items: center;">
-                <span>🎯 Goal: Score 5 Mastery</span>
+                <span>Goal: Score 5 Mastery</span>
                 <span id="apcsTargetHint" style="color: #818cf8;">0/8 Units</span>
             </div>
 
@@ -654,7 +642,7 @@
     <div class="search-wrapper">
 
         <span class="search-icon">
-            🔍
+            <svg class="ico" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
         </span>
 
         <input
@@ -930,7 +918,7 @@
 
     <!-- NO RESULTS MESSAGE -->
     <div id="noResultsMessage" class="no-results" style="display: none;">
-        <div class="no-results-icon">🔎</div>
+        <div class="no-results-icon"><svg class="ico" viewBox="0 0 24 24" width="40px" height="40px" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></div>
         <h3>No matching topics found</h3>
         <p>No AP CS Java topics matched "<span id="searchTermText" style="color:#ffffff; font-weight:600;"></span>". Try searching for <em>loops</em>, <em>arrays</em>, <em>methods</em>, or <em>classes</em>.</p>
         <button id="resetSearchBtn" class="reset-search-btn">Show All Topics</button>
@@ -1040,7 +1028,7 @@
 
             if (passedCount >= 7 && avgAccuracy >= 85) {
                 projectedScore = 5;
-                scoreTitle = 'PROJECTED: SCORE 5 ★';
+                scoreTitle = 'PROJECTED: SCORE 5';
                 scoreColor = '#fde047';
                 targetHint = `${passedCount}/8 Units (Max Tier Reached!)`;
             } else if (passedCount >= 5) {
@@ -1085,7 +1073,7 @@
                 } else if (passedCount < totalModules) {
                     descEl.textContent = `${passedCount} of ${totalModules} topics mastered (${avgAccuracy}% avg accuracy). Keep going!`;
                 } else {
-                    descEl.textContent = '🎉 All 8 topics mastered with passing scores! Excellent work!';
+                    descEl.textContent = 'All 8 topics mastered with passing scores! Excellent work!';
                 }
             }
 

@@ -11,7 +11,7 @@
     <title>AP CS A Mock Exam | TraceTables</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
         * {
@@ -21,7 +21,7 @@
         }
 
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Lexend', sans-serif;
             background: #090d16;
             color: #ffffff;
             min-height: 100vh;
@@ -155,13 +155,13 @@
             font-weight: 700;
             font-size: 13px;
             cursor: pointer;
-            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.35);
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.17);
             transition: all 0.2s ease;
         }
 
         .submit-exam-btn:hover {
             transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.25);
             filter: brightness(1.1);
         }
 
@@ -297,7 +297,7 @@
         .option-item.selected {
             background: rgba(99, 102, 241, 0.15);
             border-color: #818cf8;
-            box-shadow: 0 0 16px rgba(99, 102, 241, 0.25);
+            box-shadow: 0 0 16px rgba(99, 102, 241, 0.12);
         }
 
         .option-letter {
@@ -612,7 +612,7 @@
             color: #ffffff;
             font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.2);
             transition: all 0.2s;
         }
 
@@ -1008,13 +1008,13 @@
         .btn-primary-action {
             background: linear-gradient(135deg, #6366f1, #8b5cf6);
             color: #ffffff;
-            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.35);
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.17);
             border: none;
         }
 
         .btn-primary-action:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.5);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.25);
         }
 
         .btn-secondary-action {
@@ -1085,7 +1085,7 @@
 
         <div class="exam-nav-right">
             <div class="timer-container" id="timerWidget" style="display: none;">
-                <span class="timer-icon">⏱</span>
+                <span class="timer-icon"><svg class="ico" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg></span>
                 <span class="timer-display" id="timeRemaining">90:00</span>
                 <button class="pause-btn" id="pauseTimerBtn" title="Pause / Resume Timer">⏸</button>
             </div>
@@ -1111,28 +1111,28 @@
 
             <div class="start-chips-grid">
                 <div class="start-chip">
-                    <span class="chip-icon">⏱</span>
+                    <span class="chip-icon"><svg class="ico" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg></span>
                     <div>
                         <div class="chip-val">90 Minutes</div>
                         <div class="chip-lbl">Timed Section</div>
                     </div>
                 </div>
                 <div class="start-chip">
-                    <span class="chip-icon">📝</span>
+                    <span class="chip-icon"><svg class="ico" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em"><path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"/></svg></span>
                     <div>
                         <div class="chip-val">40 Questions</div>
                         <div class="chip-lbl">All 8 AP Units</div>
                     </div>
                 </div>
                 <div class="start-chip">
-                    <span class="chip-icon">🎯</span>
+                    <span class="chip-icon"><svg class="ico" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></span>
                     <div>
                         <div class="chip-val">70% Pass Mark</div>
                         <div class="chip-lbl">28 / 40 Standard</div>
                     </div>
                 </div>
                 <div class="start-chip">
-                    <span class="chip-icon">📊</span>
+                    <span class="chip-icon"><svg class="ico" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em"><path d="M3 20h18M7 16v-5M12 16V6M17 16v-3"/></svg></span>
                     <div>
                         <div class="chip-val">AP Score (1 to 5)</div>
                         <div class="chip-lbl">Instant Diagnostic</div>
@@ -1153,7 +1153,7 @@
             <div class="start-actions-row">
                 <a href="/apcs" class="nav-btn" style="text-decoration: none;">← Back to Curriculum</a>
                 <button class="submit-exam-btn" id="startExamBtn" style="padding: 13px 32px; font-size: 15px;">
-                    Start Exam Now ⏱
+                    Start Exam Now <svg class="ico" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg>
                 </button>
             </div>
         </div>
@@ -1220,7 +1220,7 @@
     <!-- CONFIRMATION MODAL -->
     <div class="modal-overlay" id="confirmModal">
         <div class="modal-card">
-            <div class="modal-icon">📋</div>
+            <div class="modal-icon"><svg class="ico" viewBox="0 0 24 24" width="40px" height="40px" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg></div>
             <h3>Submit Diagnostic Exam?</h3>
             <p id="modalConfirmText">
                 Are you ready to submit your exam for grading? Once submitted, your diagnostic breakdown and projected AP score will be generated.
@@ -1257,7 +1257,7 @@
         <div class="report-hero">
             <div class="hero-left">
                 <span class="exam-badge" style="margin-bottom: 12px; display: inline-block;">OFFICIAL DIAGNOSTIC REPORT</span>
-                <h1 id="reportGreeting">Exam Complete! 🎉</h1>
+                <h1 id="reportGreeting">Exam Complete!</h1>
                 <p id="reportSummaryText">
                     You completed the 40-question AP Computer Science A Diagnostic Exam. Review your performance breakdown across all 8 syllabus units below to target your practice.
                 </p>
@@ -1269,7 +1269,7 @@
 
             <div class="score-display-card">
                 <div class="ap-score-large" id="reportApScore">5</div>
-                <div class="ap-score-title" id="reportApScoreTitle">Extremely Well Qualified ★</div>
+                <div class="ap-score-title" id="reportApScoreTitle">Extremely Well Qualified</div>
                 <div class="exam-badge" id="reportPassBadge" style="background: rgba(34, 197, 94, 0.15); color: #86efac; border-color: rgba(34, 197, 94, 0.3);">
                     ✓ PASSED (70%+ MET)
                 </div>
@@ -1335,7 +1335,7 @@
                 title: 'ICSE Class 10 Java Board Mock Exam | TraceTables', badge: 'ICSE BOARD SIMULATION', heading: 'ICSE Class 10 Java',
                 desc: 'This exam contains 40 multiple-choice questions representative of the official ICSE Computer Applications examination format, balanced across all 8 syllabus units.',
                 units: 'All 8 ICSE Units',
-                greeting: 'ICSE Board Diagnostic Complete! 🎉',
+                greeting: 'ICSE Board Diagnostic Complete!',
                 summary: 'You completed the 40-question ICSE Class 10 Java Board Diagnostic Exam. Review your performance breakdown across all 8 syllabus units below to target your practice.'
             },
             ISC: {
@@ -1343,7 +1343,7 @@
                 title: 'ISC Class 12 Java Board Mock Exam | TraceTables', badge: 'ISC BOARD SIMULATION', heading: 'ISC Class 11 & 12 Java',
                 desc: 'This exam contains 40 multiple-choice questions on the ISC Computer Science Java syllabus, balanced across all 8 units: from classes and recursion to data structures.',
                 units: 'All 8 ISC Units',
-                greeting: 'ISC Board Diagnostic Complete! 🎉',
+                greeting: 'ISC Board Diagnostic Complete!',
                 summary: 'You completed the 40-question ISC Computer Science Java Diagnostic Exam. Review your performance breakdown across all 8 syllabus units below to target your practice.'
             }
         };
@@ -1762,7 +1762,7 @@
             if (isIcseExam) {
                 if (pct >= 90) {
                     projectedScore = '100/100';
-                    scoreTitle = 'Grade 1 (A*) • Board Distinction ★';
+                    scoreTitle = 'Grade 1 (A*) • Board Distinction';
                     scoreColor = '#fde047';
                 } else if (pct >= 80) {
                     projectedScore = '90%+';
@@ -1780,7 +1780,7 @@
             } else {
                 if (pct >= 85) {
                     projectedScore = 5;
-                    scoreTitle = 'Score 5 — Extremely Well Qualified ★';
+                    scoreTitle = 'Score 5 — Extremely Well Qualified';
                     scoreColor = '#fde047';
                 } else if (pct >= 70) {
                     projectedScore = 4;

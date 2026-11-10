@@ -6,6 +6,9 @@
     <meta charset="UTF-8">
     <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}" href="/favicon.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
     <title>Variables & Data Types | TraceTables</title>
 
@@ -17,7 +20,7 @@
 
         body {
             margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: 'Lexend', Arial, Helvetica, sans-serif;
 
             background:
                     radial-gradient(
@@ -219,7 +222,7 @@
 
             font-weight: 700;
 
-            box-shadow: 0 10px 25px rgba(99,102,241,0.25);
+            box-shadow: 0 10px 25px rgba(99,102,241, 0.12);
         }
 
         @media(max-width:700px) {
@@ -282,6 +285,15 @@
                 flex-direction: column;
             }
         }
+            /* Calmer styling: badges as plain labels, no glow-heavy chrome */
+        .badge, .card-pill {
+            background: none !important;
+            border: none !important;
+            padding: 0 !important;
+            box-shadow: none !important;
+            color: #a5b4fc !important;
+            letter-spacing: 1px;
+        }
     </style>
 
 </head>
@@ -290,17 +302,7 @@
 <body>
 
 
-<nav class="navbar">
-
-    <div class="logo">
-        <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Trace<span>Tables</span>
-    </div>
-
-    <a href="/apcs" class="back">
-        ← AP CS Java
-    </a>
-
-</nav>
+<div th:replace="~{fragments/nav :: nav('course')}"></div>
 
 
 <main class="container">

@@ -13,7 +13,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
         * {
@@ -22,7 +22,7 @@
 
         body {
             margin: 0;
-            font-family: 'Plus Jakarta Sans', Arial, Helvetica, sans-serif;
+            font-family: 'Lexend', Arial, Helvetica, sans-serif;
             background:
                     radial-gradient(circle at 80% 0%, rgba(99, 102, 241, 0.18), transparent 30%),
                     radial-gradient(circle at 0% 30%, rgba(59, 130, 246, 0.10), transparent 25%),
@@ -82,7 +82,7 @@
             color: white;
             font-weight: 700;
             font-size: 14px;
-            box-shadow: 0 0 20px rgba(99, 102, 241, 0.35);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.17);
         }
 
         /* MAIN CONTAINER */
@@ -169,7 +169,7 @@
         .curriculum-search-box:focus-within {
             border-color: #818cf8;
             background: rgba(255, 255, 255, 0.07);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25), 0 4px 20px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12), 0 4px 20px rgba(0, 0, 0, 0.35);
         }
 
         .glass-search-icon {
@@ -184,7 +184,7 @@
             justify-content: center;
             color: #a5b4fc;
             flex-shrink: 0;
-            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.1);
         }
 
         .curriculum-search-input {
@@ -274,6 +274,27 @@
             flex-grow: 1;
         }
 
+        .card-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .card-actions .card-button {
+            flex: 1 1 auto;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .card-meta span + span::before {
+            content: "·";
+            margin-right: 10px;
+            color: #475569;
+        }
+
         .card-meta {
             display: flex;
             align-items: center;
@@ -298,12 +319,12 @@
             text-decoration: none;
             background: linear-gradient(135deg, #6366f1, #8b5cf6);
             color: white;
-            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.35);
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.17);
             transition: all 0.2s ease;
         }
 
         .card-button:hover {
-            box-shadow: 0 6px 24px rgba(99, 102, 241, 0.5);
+            box-shadow: 0 6px 24px rgba(99, 102, 241, 0.25);
             filter: brightness(1.1);
             transform: translateY(-2px);
         }
@@ -352,7 +373,7 @@
             height: 100%;
             background: linear-gradient(90deg, #6366f1, #8b5cf6);
             border-radius: 8px;
-            box-shadow: 0 0 12px rgba(99, 102, 241, 0.5);
+            box-shadow: 0 0 12px rgba(99, 102, 241, 0.25);
         }
 
         .progress-labels {
@@ -491,7 +512,7 @@
         .score-pip.score-3.current-target {
             background: rgba(99, 102, 241, 0.22);
             border-color: rgba(99, 102, 241, 0.5);
-            box-shadow: 0 0 14px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 0 14px rgba(99, 102, 241, 0.15);
         }
         .score-pip.score-3.current-target .pip-num { color: #a5b4fc; }
 
@@ -555,45 +576,35 @@
                 white-space: nowrap;
             }
         }
+            /* Calmer styling: badges as plain labels, no glow-heavy chrome */
+        .badge, .card-pill {
+            background: none !important;
+            border: none !important;
+            padding: 0 !important;
+            box-shadow: none !important;
+            color: #a5b4fc !important;
+            letter-spacing: 1px;
+        }
     </style>
 </head>
 
 <body>
 
 <!-- NAVIGATION -->
-<nav class="navbar">
-    <a href="/dashboard" class="logo">
-        <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Trace<span>Tables</span>
-    </a>
-
-    <div class="nav-actions" style="display: flex; align-items: center; gap: 20px;">
-        <a href="/progress" class="nav-link" style="color: #94a3b8; text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s;">My Progress</a>
-        <a href="/account" class="nav-link" style="color: #94a3b8; text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s;">Account</a>
-        <div class="profile-container">
-            <span class="profile-name" id="studentDisplayName">Student</span>
-            <div class="avatar" id="studentAvatar">S</div>
-        </div>
-        <form th:action="@{/logout}" method="post" style="margin: 0;">
-            <button type="submit" class="nav-link" style="background: none; border: none; padding: 0; cursor: pointer; font-family: inherit; color: #94a3b8; font-size: 14px; font-weight: 500; transition: color 0.2s;">Log out</button>
-        </form>
-    </div>
-</nav>
+<div th:replace="~{fragments/nav :: nav('dashboard')}"></div>
 
 <!-- MAIN CONTENT -->
 <main class="container">
 
     <!-- ADD-EMAIL REMINDER (older accounts) -->
     <div th:if="${needsEmail}" style="margin-bottom: 24px; padding: 14px 18px; border-radius: 14px; border: 1px solid rgba(250, 204, 21, 0.35); background: rgba(250, 204, 21, 0.08); color: #fde68a; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
-        <span>📧 Add your email address so you can reset your password if you ever forget it.</span>
+        <span>Add your email address so you can reset your password if you ever forget it.</span>
         <a href="/account" style="color: #0b1020; background: #fde68a; padding: 8px 14px; border-radius: 10px; text-decoration: none; font-weight: 700;">Add email</a>
     </div>
 
     <!-- HERO HEADER -->
     <div class="welcome-header">
-        <div class="welcome-badge">
-            ⚡ Advanced Java Learning Engine
-        </div>
-        <h1 id="welcomeTitle" th:data-first-login="${firstLogin}">Welcome to TraceTables 👋</h1>
+        <h1 id="welcomeTitle" th:data-first-login="${firstLogin}">Welcome to TraceTables</h1>
         <p>
             Master Java through structured concept guides, interactive line-by-line code breakdowns, and targeted AP/exam-level quizzes.
         </p>
@@ -621,16 +632,15 @@
             </div>
             <div>
                 <div class="card-meta">
-                    <span>📚 8 Modules</span>
-                    <span>⚡ Interactive Quizzes</span>
-                    <span id="courseProgressAPCS">✅ 0/8 mastered</span>
+                    <span>8 units</span>
+                    <span id="courseProgressAPCS">0 of 8 mastered</span>
                 </div>
-                <div style="display: flex; gap: 8px;">
-                    <a href="/apcs" class="card-button" style="flex: 1.2;">
+                <div class="card-actions">
+                    <a href="/apcs" class="card-button">
                         Explore AP CS
                     </a>
-                    <a href="/apcs/exam" class="card-button" style="flex: 0.9; background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.4); color: #c7d2fe; box-shadow: none;">
-                        ⏱ Mock Exam
+                    <a href="/apcs/exam" class="card-button" style="background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.4); color: #c7d2fe; box-shadow: none;">
+                        <svg class="ico" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg> Mock Exam
                     </a>
                 </div>
             </div>
@@ -647,16 +657,15 @@
             </div>
             <div>
                 <div class="card-meta">
-                    <span>📚 Class 9 & 10</span>
-                    <span>⚡ Practice Drills</span>
-                    <span id="courseProgressICSE">✅ 0/8 mastered</span>
+                    <span>Class 9 &amp; 10</span>
+                    <span id="courseProgressICSE">0 of 8 mastered</span>
                 </div>
-                <div style="display: flex; gap: 8px;">
-                    <a href="/icse" class="card-button" style="flex: 1.2;">
+                <div class="card-actions">
+                    <a href="/icse" class="card-button">
                         Explore ICSE
                     </a>
-                    <a href="/icse/exam" class="card-button" style="flex: 0.9; background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.4); color: #c7d2fe; box-shadow: none;">
-                        ⏱ Mock Exam
+                    <a href="/icse/exam" class="card-button" style="background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.4); color: #c7d2fe; box-shadow: none;">
+                        <svg class="ico" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg> Mock Exam
                     </a>
                 </div>
             </div>
@@ -673,16 +682,15 @@
             </div>
             <div>
                 <div class="card-meta">
-                    <span>📚 Class 11 & 12</span>
-                    <span>⚡ Exam Prep</span>
-                    <span id="courseProgressISC">✅ 0/8 mastered</span>
+                    <span>Class 11 &amp; 12</span>
+                    <span id="courseProgressISC">0 of 8 mastered</span>
                 </div>
-                <div style="display: flex; gap: 8px;">
-                    <a href="/isc" class="card-button" style="flex: 1.2;">
+                <div class="card-actions">
+                    <a href="/isc" class="card-button">
                         Explore ISC
                     </a>
-                    <a href="/isc/exam" class="card-button" style="flex: 0.9; background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.4); color: #c7d2fe; box-shadow: none;">
-                        ⏱ Mock Exam
+                    <a href="/isc/exam" class="card-button" style="background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.4); color: #c7d2fe; box-shadow: none;">
+                        <svg class="ico" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg> Mock Exam
                     </a>
                 </div>
             </div>
@@ -708,7 +716,7 @@
             <!-- AP SCORE PREDICTOR -->
             <div class="ap-score-predictor">
                 <div class="predictor-header">
-                    <span class="predictor-label">🎯 PROJECTED AP EXAM SCORE</span>
+                    <span class="predictor-label">PROJECTED AP EXAM SCORE</span>
                     <span class="predictor-value" id="projectedScoreDisplay">Score 1 (Starting)</span>
                 </div>
                 <div class="score-pips" id="scorePips">
@@ -777,8 +785,8 @@
             const titleEl = document.getElementById('welcomeTitle');
             // First-ever sign-in gets a first-time greeting; later sign-ins say "Welcome back"
             titleEl.textContent = titleEl.dataset.firstLogin === 'true'
-                ? `Welcome to TraceTables, ${cleanName} 👋`
-                : `Welcome back, ${cleanName} 👋`;
+                ? `Welcome to TraceTables, ${cleanName}`
+                : `Welcome back, ${cleanName}`;
         }
     }
     const metaName = document.querySelector('meta[name="student-name"]');
@@ -800,7 +808,7 @@
                 const el = document.getElementById('courseProgress' + code);
                 if (!el) return;
                 const mastered = Object.values(completedTopics).filter(t => t && t.passed === true && isCourse(t, code)).length;
-                el.textContent = `✅ ${mastered}/8 mastered`;
+                el.textContent = `${mastered} of 8 mastered`;
             });
             const passedCount = passedTopics.length;
             const pct = Math.round((passedCount / totalModules) * 100);
@@ -820,8 +828,8 @@
 
             if (passedCount >= 7 && avgAccuracy >= 85) {
                 projectedScore = 5;
-                scoreTitle = 'Score 5 (Extremely Well Qualified ★)';
-                scoreHint = '🎉 Outstanding! You have mastered 7+ units with 85%+ accuracy. You are primed for a 5 on the AP Exam!';
+                scoreTitle = 'Score 5 (Extremely Well Qualified)';
+                scoreHint = 'Outstanding! You have mastered 7+ units with 85%+ accuracy. You are primed for a 5 on the AP Exam!';
                 scoreColor = '#fde047';
             } else if (passedCount >= 5) {
                 projectedScore = 4;
@@ -890,7 +898,7 @@
                 } else if (passedCount < totalModules) {
                     journeyDescEl.textContent = `Great progress! You have mastered ${passedCount} of ${totalModules} topics with an average accuracy of ${avgAccuracy}%. Keep going to reach 100% course mastery.`;
                 } else {
-                    journeyDescEl.textContent = '🎉 Outstanding achievement! You have mastered all 8 AP Computer Science A topics!';
+                    journeyDescEl.textContent = 'Outstanding achievement! You have mastered all 8 AP Computer Science A topics!';
                 }
             }
 

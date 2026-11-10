@@ -8,7 +8,7 @@
     <title>Strings | TraceTables</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
         * {
@@ -17,7 +17,7 @@
 
         body {
             margin: 0;
-            font-family: 'Plus Jakarta Sans', Arial, Helvetica, sans-serif;
+            font-family: 'Lexend', Arial, Helvetica, sans-serif;
             background:
                     radial-gradient(
                             circle at 80% 0%,
@@ -217,13 +217,13 @@
             text-decoration: none;
             font-weight: 700;
             font-size: 15px;
-            box-shadow: 0 10px 25px rgba(99,102,241,0.3);
+            box-shadow: 0 10px 25px rgba(99,102,241, 0.15);
             transition: all 0.2s ease;
         }
 
         .quiz-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 14px 30px rgba(99,102,241,0.5);
+            box-shadow: 0 14px 30px rgba(99,102,241, 0.25);
         }
 
         @media(max-width: 768px) {
@@ -285,19 +285,21 @@
                 flex-direction: column;
             }
         }
+            /* Calmer styling: badges as plain labels, no glow-heavy chrome */
+        .badge, .card-pill {
+            background: none !important;
+            border: none !important;
+            padding: 0 !important;
+            box-shadow: none !important;
+            color: #a5b4fc !important;
+            letter-spacing: 1px;
+        }
     </style>
 </head>
 
 <body>
 
-<nav class="navbar">
-    <a href="/dashboard" class="logo">
-        <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Trace<span>Tables</span>
-    </a>
-    <a href="/apcs" class="back">
-        ← Back to AP CS Java
-    </a>
-</nav>
+<div th:replace="~{fragments/nav :: nav('course')}"></div>
 
 <main class="container">
 
@@ -478,15 +480,15 @@ Content matches: true</code></pre>
         <div class="concept-grid">
             
             <div class="concept" style="border-left: 3px solid #818cf8;">
-                <h3>💡 IndexOutOfBoundsException</h3>
+                <h3>IndexOutOfBoundsException</h3>
                 <p>Calling <code>str.substring(0, str.length() + 1)</code> or accessing index <code>str.length()</code> will crash with <code>StringIndexOutOfBoundsException</code>.</p>
             </div>
             <div class="concept" style="border-left: 3px solid #818cf8;">
-                <h3>💡 indexOf Return on Failure</h3>
+                <h3>indexOf Return on Failure</h3>
                 <p>If the substring is not found, <code>indexOf()</code> returns <code>-1</code>, not <code>0</code> or <code>null</code>.</p>
             </div>
             <div class="concept" style="border-left: 3px solid #818cf8;">
-                <h3>💡 compareTo() Method</h3>
+                <h3>compareTo() Method</h3>
                 <p><code>a.compareTo(b)</code> returns negative if <code>a</code> comes before <code>b</code> alphabetically, 0 if equal, and positive if <code>a</code> comes after <code>b</code>.</p>
             </div>
         </div>

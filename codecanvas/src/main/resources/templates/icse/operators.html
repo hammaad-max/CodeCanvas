@@ -8,7 +8,7 @@
     <title>Operators &amp; Expressions | ICSE Java | TraceTables</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
         * {
@@ -17,7 +17,7 @@
 
         body {
             margin: 0;
-            font-family: 'Plus Jakarta Sans', Arial, Helvetica, sans-serif;
+            font-family: 'Lexend', Arial, Helvetica, sans-serif;
             background:
                     radial-gradient(
                             circle at 80% 0%,
@@ -217,13 +217,13 @@
             text-decoration: none;
             font-weight: 700;
             font-size: 15px;
-            box-shadow: 0 10px 25px rgba(99,102,241,0.3);
+            box-shadow: 0 10px 25px rgba(99,102,241, 0.15);
             transition: all 0.2s ease;
         }
 
         .quiz-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 14px 30px rgba(99,102,241,0.5);
+            box-shadow: 0 14px 30px rgba(99,102,241, 0.25);
         }
 
         @media(max-width: 768px) {
@@ -285,19 +285,21 @@
                 flex-direction: column;
             }
         }
+            /* Calmer styling: badges as plain labels, no glow-heavy chrome */
+        .badge, .card-pill {
+            background: none !important;
+            border: none !important;
+            padding: 0 !important;
+            box-shadow: none !important;
+            color: #a5b4fc !important;
+            letter-spacing: 1px;
+        }
     </style>
 </head>
 
 <body>
 
-<nav class="navbar">
-    <a href="/dashboard" class="logo">
-        <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Trace<span>Tables</span>
-    </a>
-    <a href="/icse" class="back">
-        ← Back to ICSE Java
-    </a>
-</nav>
+<div th:replace="~{fragments/nav :: nav('course')}"></div>
 
 <main class="container">
 
@@ -476,15 +478,15 @@ ceil = 5.0, floor = 4.0</code></pre>
         <p>Keep these frequent exam traps in mind:</p>
         <div class="concept-grid">
             <div class="concept" style="border-left: 3px solid #818cf8;">
-                <h3>💡 Cast Position Trap</h3>
+                <h3>Cast Position Trap</h3>
                 <p><code>(double)(17 / 5)</code> is <code>3.0</code>, because the integer division happens first. Cast an operand, not the result, to keep the fraction.</p>
             </div>
             <div class="concept" style="border-left: 3px solid #818cf8;">
-                <h3>💡 Math Return Types</h3>
+                <h3>Math Return Types</h3>
                 <p>Writing <code>int p = Math.pow(2, 3);</code> is a compile error. You need <code>int p = (int) Math.pow(2, 3);</code>.</p>
             </div>
             <div class="concept" style="border-left: 3px solid #818cf8;">
-                <h3>💡 Shorthand Assignment</h3>
+                <h3>Shorthand Assignment</h3>
                 <p><code>a += 2.5</code> compiles even when <code>a</code> is an int (it includes an automatic cast), but <code>a = a + 2.5</code> does not.</p>
             </div>
         </div>

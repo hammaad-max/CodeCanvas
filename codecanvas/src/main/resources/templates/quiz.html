@@ -15,7 +15,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
 
@@ -25,7 +25,7 @@
 
         body {
             margin: 0;
-            font-family: 'Plus Jakarta Sans', Arial, Helvetica, sans-serif;
+            font-family: 'Lexend', Arial, Helvetica, sans-serif;
             background:
                     radial-gradient(
                             circle at 80% 0%,
@@ -185,7 +185,7 @@
             background: linear-gradient(135deg, #6366f1, #8b5cf6);
             color: white;
             border-color: transparent;
-            box-shadow: 0 4px 14px rgba(99,102,241,0.35);
+            box-shadow: 0 4px 14px rgba(99,102,241, 0.17);
         }
 
 
@@ -362,13 +362,13 @@
             font-weight: 700;
             font-family: inherit;
             cursor: pointer;
-            box-shadow: 0 10px 25px rgba(99,102,241,0.25);
+            box-shadow: 0 10px 25px rgba(99,102,241, 0.12);
             transition: all 0.2s ease;
         }
 
         .next-button:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 12px 30px rgba(99,102,241,0.4);
+            box-shadow: 0 12px 30px rgba(99,102,241, 0.2);
         }
 
         .next-button:disabled {
@@ -389,14 +389,8 @@
         .result-number {
             font-size: 64px;
             font-weight: 800;
-            background: linear-gradient(
-                    90deg,
-                    #818cf8,
-                    #c084fc
-            );
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
             margin: 10px 0;
+            color: #a5b4fc;
         }
 
         .result p {
@@ -425,13 +419,13 @@
             font-weight: 700;
             font-family: inherit;
             cursor: pointer;
-            box-shadow: 0 8px 20px rgba(99,102,241,0.3);
+            box-shadow: 0 8px 20px rgba(99,102,241, 0.15);
             transition: all 0.2s ease;
         }
 
         .restart-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 26px rgba(99,102,241,0.5);
+            box-shadow: 0 10px 26px rgba(99,102,241, 0.25);
         }
 
         .retry-missed-button {
@@ -547,6 +541,15 @@
             }
         }
 
+            /* Calmer styling: badges as plain labels, no glow-heavy chrome */
+        .badge, .card-pill {
+            background: none !important;
+            border: none !important;
+            padding: 0 !important;
+            box-shadow: none !important;
+            color: #a5b4fc !important;
+            letter-spacing: 1px;
+        }
     </style>
 
 </head>
@@ -555,14 +558,7 @@
 <body>
 
 
-<nav class="navbar">
-    <a href="/dashboard" class="logo">
-        <img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="28" height="28" style="width:1.15em;height:1.15em;vertical-align:-0.2em;margin-right:8px;">Trace<span>Tables</span>
-    </a>
-    <a href="/apcs" class="back" id="backLink">
-        ← Back to Curriculum
-    </a>
-</nav>
+<div th:replace="~{fragments/nav :: nav('course')}"></div>
 
 
 <main class="container">
@@ -572,6 +568,7 @@
 
     <section class="quiz-header">
 
+        <a href="/apcs" id="backLink" style="display:inline-block;margin-bottom:14px;color:#94a3b8;font-size:14px;font-weight:500;text-decoration:none;">← Back to Curriculum</a>
         <div class="breadcrumb">
             <a href="/dashboard">Dashboard</a>
             <span class="separator">›</span>
@@ -702,7 +699,7 @@
     <!-- EMPTY STATE -->
 
     <div class="quiz-card empty-state" id="emptyState">
-        <div class="empty-state-icon">📭</div>
+        <div class="empty-state-icon"><svg class="ico" viewBox="0 0 24 24" width="40px" height="40px" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></div>
         <h2>No Questions Available</h2>
         <p id="emptyMessage">
             There are no questions for this topic yet. Check back later or try a different topic.
@@ -1181,10 +1178,10 @@
         let message;
 
         if (percentage === 100) {
-            title = 'Perfect score! 🏆';
+            title = 'Perfect score!';
             message = 'Outstanding! You achieved 100% mastery on ' + topic + '. Topic successfully completed and credited to your course progress!';
         } else if (percentage >= 80) {
-            title = 'Excellent work! 🎉';
+            title = 'Excellent work!';
             message = 'You scored ' + score + '/' + totalSessionQuestions + ' (' + Math.round(percentage) + '%). Passing mark achieved! Topic successfully added to your completed modules.';
         } else if (percentage >= 70) {
             title = 'Topic Passed! ✓';
