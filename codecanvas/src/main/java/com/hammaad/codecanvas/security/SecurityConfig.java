@@ -38,7 +38,8 @@ public class SecurityConfig {
                 // Locked usernames are turned away before their password is checked (brute-force protection)
                 .addFilterBefore(new LoginThrottleFilter(loginAttempts), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/register", "/forgot-password", "/reset-password", "/error", "/favicon.ico", "/favicon.svg", "/js/**", "/css/**", "/images/**")
+                        .requestMatchers("/", "/login", "/register", "/forgot-password", "/reset-password", "/error", "/favicon.ico", "/favicon.svg", "/privacy", "/terms",
+                                "/robots.txt", "/site.webmanifest", "/js/**", "/css/**", "/images/**")
                         .permitAll()
                         // Health check for load balancers / uptime monitors (status only, no details)
                         .requestMatchers("/actuator/health", "/actuator/health/liveness", "/actuator/health/readiness")

@@ -125,7 +125,7 @@ Render's own free database is deleted after 30 days, so it is not used.
 | `DB_USERNAME` | the Neon role, e.g. `neondb_owner` |
 | `DB_PASSWORD` | the Neon password |
 | `APP_BASE_URL` | leave empty for now |
-| `MAIL_FROM`, `SPRING_MAIL_HOST`, `SPRING_MAIL_USERNAME`, `SPRING_MAIL_PASSWORD` | leave empty for now (only "Forgot password?" emails need them, see 5b) |
+| `MAIL_FROM`, `SPRING_MAIL_HOST`, `SPRING_MAIL_USERNAME`, `SPRING_MAIL_PASSWORD` | leave empty for now (only "Forgot password?" emails need them, see 5c) |
 
 4. Click **Apply**. The first build takes about 5-10 minutes (it runs all the tests). When the service shows
    **Live**, open the address at the top of the page, e.g. `https://tracetables.onrender.com`.
@@ -149,19 +149,56 @@ Fix the value under **Environment**, then **Manual Deploy → Deploy latest comm
 - Tested locally with the same settings: the app starts and uses about 290 MB of memory with a 384 MB limit,
   within the free plan's 512 MB.
 
-## 5b. Email for password reset
-"Forgot password?" emails a one-time link (valid 30 minutes, max 3 per account per hour). Any SMTP provider works;
-a free option that needs no domain is **Brevo**: create an account, verify your sender email address, then create an
-SMTP key under *SMTP & API*. Set:
+## 5b. Your own domain name
+`tracetables.onrender.com` works, but your own address (for example `tracetables.in`) looks far more professional
+and lets you send email from it. About 20 minutes, plus waiting for DNS (usually minutes, sometimes a few hours).
+
+1. **Buy the domain** at a registrar such as Cloudflare, Namecheap, GoDaddy or Hostinger. Check it is free first.
+   `.in` is cheapest for India; `.com` is the most recognised. Turn on **auto-renew**.
+2. **Add it in Render:** open the `tracetables` service, then **Settings, Custom Domains, Add Custom Domain**, and type
+   your domain (for example `tracetables.in`). Add `www.tracetables.in` too if you like.
+3. **Add the DNS records Render shows you.** Render lists exactly what to create: usually an **A record** for the plain
+   domain and a **CNAME record** for `www`. In your registrar open **DNS settings**, add them exactly as shown, and
+   delete any parking-page records the registrar added for the same names. Copy the values from Render's screen, not
+   from this guide, because they can change.
+4. **Wait, then press Verify** in Render. When it says verified, Render issues the HTTPS certificate itself.
+5. **Tell the app its address:** in Render open **Environment** and set `APP_BASE_URL` to `https://tracetables.in`
+   (your real domain). Save and deploy. Password reset emails and link previews then use your domain.
+6. **Redirect the old address (optional):** leave `tracetables.onrender.com` working; it simply shows the same site.
+
+**A contact address without publishing your personal email:** the footer's "Report a problem" link and the Privacy and
+Terms pages show an address only when `CONTACT_EMAIL` is set in Render. Use an address on your domain such as
+`help@tracetables.in`. If you use Cloudflare for DNS, its free **Email Routing** forwards `help@yourdomain` to your
+own inbox, so students never see your personal address. Until `CONTACT_EMAIL` is set, no address is shown at all.
+
+## 5c. Email for password reset
+"Forgot password?" emails a one-time link (valid 30 minutes, max 3 per account per hour). The free **Brevo** plan
+(about 300 emails a day) is plenty. Setting it up properly takes about 20 minutes and needs your own domain (5b), because
+email sent "from" a Gmail or Yahoo address through another service is often put in spam.
+
+1. **Create a Brevo account** at brevo.com and finish their sign-up questions.
+2. **Add your domain:** in Brevo open **Senders, Domains and Dedicated IPs, Domains, Add a domain**, enter your domain.
+3. **Add the DNS records Brevo shows** (a verification TXT record plus DKIM and DMARC records) in your registrar's DNS
+   settings, then press **Authenticate** in Brevo. This proves the email really comes from you.
+4. **Create the sender:** under **Senders** add `no-reply@yourdomain` (any address on your domain).
+5. **Get SMTP details:** open **SMTP and API, SMTP**. Note the **login** and click **Generate a new SMTP key**; copy the
+   key straight away because it is shown once.
+6. **Enter these in Render, on the `tracetables` service under Environment:**
 
 | Variable | Value |
 |---|---|
 | `SPRING_MAIL_HOST` | `smtp-relay.brevo.com` |
 | `SPRING_MAIL_PORT` | `587` |
-| `SPRING_MAIL_USERNAME` | your Brevo SMTP login |
-| `SPRING_MAIL_PASSWORD` | your Brevo SMTP key (secret) |
-| `MAIL_FROM` | the verified sender, e.g. `TraceTables <you@example.com>` |
-| `APP_BASE_URL` | the site's public `https://` address |
+| `SPRING_MAIL_USERNAME` | the SMTP login Brevo shows |
+| `SPRING_MAIL_PASSWORD` | the SMTP key you generated (secret) |
+| `MAIL_FROM` | `TraceTables <no-reply@yourdomain>` |
+| `APP_BASE_URL` | `https://yourdomain` |
+| `CONTACT_EMAIL` | `help@yourdomain` (shown in the footer and legal pages) |
+
+7. **Save, deploy, and test:** on the live site open **Forgot password?**, enter your own username, and check that the
+   email arrives (look in spam the first time). In Render's **Logs** you should see `mail.sent type=password_reset`.
+   If you see `mail.failed`, the SMTP key or login is wrong; if you see `mail.not_configured`, `SPRING_MAIL_HOST` or
+   `MAIL_FROM` is empty.
 
 Without `SPRING_MAIL_HOST`, no email is sent: in development the link is printed in the log instead, and in
 production a `mail.not_configured` warning is logged (the link is never logged in production).

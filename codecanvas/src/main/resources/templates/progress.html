@@ -8,10 +8,14 @@
     <meta name="student-name" th:content="${studentName}">
     <script th:src="@{/js/codecanvas-api.js}"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Practice AP CS, ICSE and ISC Java with lessons, quizzes and mock exams.">
+    <meta name="theme-color" content="#0e1311">
+    <link rel="manifest" th:href="@{/site.webmanifest}" href="/site.webmanifest">
+    <link rel="apple-touch-icon" th:href="@{/images/apple-touch-icon.png}" href="/images/apple-touch-icon.png">
     <title>My Progress &amp; Analytics | TraceTables</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
         * {
@@ -21,7 +25,7 @@
         }
 
         body {
-            font-family: 'Lexend', sans-serif;
+            font-family: 'IBM Plex Sans', sans-serif;
             background: #090d16;
             color: #ffffff;
             min-height: 100vh;
@@ -44,14 +48,14 @@
 
         .logo {
             font-size: 20px;
-            font-weight: 800;
+            font-weight: 600;
             text-decoration: none;
             color: #ffffff;
-            letter-spacing: -0.5px;
+            letter-spacing: -0.01em;
         }
 
         .logo span {
-            color: #818cf8;
+            color: #5fd38d;
         }
 
         .nav-links {
@@ -61,7 +65,7 @@
         }
 
         .nav-link {
-            color: #94a3b8;
+            color: #8a968f;
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
@@ -73,8 +77,8 @@
         }
 
         .nav-link.active {
-            color: #818cf8;
-            font-weight: 700;
+            color: #5fd38d;
+            font-weight: 600;
         }
 
         .profile-container {
@@ -87,13 +91,13 @@
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #6366f1, #a855f7);
+            background: #5fd38d;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 14px;
-            font-weight: 700;
-            color: #ffffff;
+            font-weight: 600;
+            color: #06200f;
         }
 
         /* CONTAINER */
@@ -115,13 +119,13 @@
 
         .header-title-group h1 {
             font-size: 32px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
             margin-bottom: 8px;
         }
 
         .header-title-group p {
-            color: #94a3b8;
+            color: #8a968f;
             font-size: 15px;
         }
 
@@ -132,7 +136,7 @@
 
         .action-btn {
             padding: 10px 18px;
-            border-radius: 10px;
+            border-radius: 4px;
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
@@ -146,7 +150,7 @@
         .btn-outline {
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #e2e8f0;
+            color: #d8dfda;
         }
 
         .btn-outline:hover {
@@ -174,27 +178,25 @@
         }
 
         .kpi-card {
-            background: rgba(15, 23, 42, 0.65);
+            background: rgba(16, 22, 20, 0.65);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 18px;
+            border-radius: 6px;
             padding: 24px;
-            backdrop-filter: blur(12px);
             position: relative;
             overflow: hidden;
             transition: all 0.2s ease;
         }
 
         .kpi-card:hover {
-            border-color: rgba(99, 102, 241, 0.35);
-            transform: translateY(-2px);
+            border-color: rgba(95, 211, 141, 0.35);
         }
 
         .kpi-label {
             font-size: 11px;
-            font-weight: 700;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.8px;
-            color: #94a3b8;
+            color: #8a968f;
             margin-bottom: 8px;
             display: flex;
             align-items: center;
@@ -203,7 +205,7 @@
 
         .kpi-value {
             font-size: 32px;
-            font-weight: 800;
+            font-weight: 600;
             color: #ffffff;
             line-height: 1.1;
             margin-bottom: 6px;
@@ -211,14 +213,14 @@
 
         .kpi-subtext {
             font-size: 12px;
-            color: #64748b;
+            color: #6f7b75;
         }
 
         .kpi-pill {
             font-size: 11px;
-            font-weight: 700;
+            font-weight: 600;
             padding: 2px 8px;
-            border-radius: 999px;
+            border-radius: 6px;
         }
 
         /* SECTION HEADERS */
@@ -231,8 +233,8 @@
 
         .section-header h2 {
             font-size: 20px;
-            font-weight: 700;
-            color: #f8fafc;
+            font-weight: 600;
+            color: #e9efeb;
         }
 
         /* UNITS MATRIX */
@@ -244,21 +246,19 @@
         }
 
         .unit-card {
-            background: rgba(15, 23, 42, 0.65);
+            background: rgba(16, 22, 20, 0.65);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 18px;
+            border-radius: 6px;
             padding: 24px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            backdrop-filter: blur(12px);
             transition: all 0.25s ease;
         }
 
         .unit-card:hover {
-            border-color: rgba(99, 102, 241, 0.35);
-            transform: translateY(-2px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+            border-color: rgba(95, 211, 141, 0.35);
+            box-shadow: none;
         }
 
         .unit-card-top {
@@ -270,8 +270,8 @@
 
         .unit-number {
             font-size: 11px;
-            font-weight: 700;
-            color: #818cf8;
+            font-weight: 600;
+            color: #5fd38d;
             text-transform: uppercase;
             letter-spacing: 0.6px;
             margin-bottom: 4px;
@@ -279,15 +279,15 @@
 
         .unit-title {
             font-size: 17px;
-            font-weight: 700;
+            font-weight: 600;
             color: #ffffff;
         }
 
         .unit-badge {
             font-size: 11px;
-            font-weight: 700;
+            font-weight: 600;
             padding: 4px 10px;
-            border-radius: 999px;
+            border-radius: 6px;
             white-space: nowrap;
         }
 
@@ -305,14 +305,14 @@
 
         .badge-unattempted {
             background: rgba(255, 255, 255, 0.05);
-            color: #94a3b8;
+            color: #8a968f;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .unit-progress-bar {
             height: 8px;
             background: rgba(255, 255, 255, 0.06);
-            border-radius: 999px;
+            border-radius: 6px;
             overflow: hidden;
             margin: 14px 0 10px;
         }
@@ -327,7 +327,7 @@
             display: flex;
             justify-content: space-between;
             font-size: 12px;
-            color: #64748b;
+            color: #6f7b75;
             margin-bottom: 18px;
         }
 
@@ -341,7 +341,7 @@
         .unit-action-btn {
             flex: 1;
             padding: 9px;
-            border-radius: 8px;
+            border-radius: 4px;
             font-size: 13px;
             font-weight: 600;
             text-align: center;
@@ -352,32 +352,30 @@
         .btn-learn {
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.09);
-            color: #c7d2fe;
+            color: #b5ecc9;
         }
 
         .btn-learn:hover {
-            background: rgba(99, 102, 241, 0.15);
-            border-color: rgba(99, 102, 241, 0.35);
+            background: rgba(95, 211, 141, 0.15);
+            border-color: rgba(95, 211, 141, 0.35);
         }
 
         .btn-quiz {
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
-            color: #ffffff;
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+            background: #5fd38d;
+            color: #06200f;
+            box-shadow: none;
         }
 
         .btn-quiz:hover {
             filter: brightness(1.1);
-            transform: translateY(-1px);
         }
 
         /* RECOMMENDATION ACTION PLAN */
         .plan-card {
-            background: rgba(15, 23, 42, 0.65);
+            background: rgba(16, 22, 20, 0.65);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 18px;
+            border-radius: 6px;
             padding: 28px;
-            backdrop-filter: blur(12px);
             margin-bottom: 44px;
         }
 
@@ -386,7 +384,7 @@
             align-items: center;
             gap: 16px;
             padding: 14px 16px;
-            border-radius: 12px;
+            border-radius: 6px;
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.05);
             margin-bottom: 10px;
@@ -394,13 +392,13 @@
         }
 
         .plan-item:hover {
-            background: rgba(99, 102, 241, 0.05);
-            border-color: rgba(99, 102, 241, 0.25);
+            background: rgba(95, 211, 141, 0.05);
+            border-color: rgba(95, 211, 141, 0.25);
         }
 
         .priority-badge {
             font-size: 11px;
-            font-weight: 700;
+            font-weight: 600;
             padding: 4px 10px;
             border-radius: 6px;
             text-transform: uppercase;
@@ -428,14 +426,14 @@
         .plan-text {
             flex-grow: 1;
             font-size: 14px;
-            color: #e2e8f0;
+            color: #d8dfda;
             line-height: 1.4;
         }
 
         .plan-action {
-            color: #818cf8;
+            color: #5fd38d;
             font-size: 13px;
-            font-weight: 700;
+            font-weight: 600;
             text-decoration: none;
             white-space: nowrap;
         }
@@ -461,24 +459,24 @@
         }
 
         .modal-card {
-            background: #0f172a;
+            background: #101614;
             border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 20px;
+            border-radius: 6px;
             max-width: 440px;
             width: 100%;
             padding: 28px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+            box-shadow: none;
             text-align: center;
         }
 
         .modal-card h3 {
             font-size: 20px;
-            font-weight: 700;
+            font-weight: 600;
             margin-bottom: 10px;
         }
 
         .modal-card p {
-            color: #94a3b8;
+            color: #8a968f;
             font-size: 14px;
             line-height: 1.5;
             margin-bottom: 24px;
@@ -492,7 +490,7 @@
         .modal-btn {
             flex: 1;
             padding: 10px;
-            border-radius: 10px;
+            border-radius: 4px;
             font-weight: 600;
             font-size: 13px;
             cursor: pointer;
@@ -531,18 +529,18 @@
             display: inline-flex;
             gap: 8px;
             padding: 6px;
-            background: rgba(15, 23, 42, 0.7);
+            background: rgba(16, 22, 20, 0.7);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
+            border-radius: 6px;
             margin-bottom: 24px;
         }
 
         .curriculum-tab {
             padding: 9px 18px;
-            border-radius: 8px;
+            border-radius: 4px;
             border: none;
             background: transparent;
-            color: #94a3b8;
+            color: #8a968f;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
@@ -555,19 +553,19 @@
         }
 
         .curriculum-tab.active {
-            background: linear-gradient(135deg, #6366f1, #7c3aed);
-            color: #ffffff;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.17);
+            background: #5fd38d;
+            color: #06200f;
+            box-shadow: none;
         }
 
         .curriculum-tab.active.icse {
-            background: linear-gradient(135deg, #10b981, #059669);
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35);
+            background: #10b981;
+            box-shadow: none;
         }
 
         .curriculum-tab.active.isc {
-            background: linear-gradient(135deg, #0ea5e9, #2563eb);
-            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.35);
+            background: #0ea5e9;
+            box-shadow: none;
         }
 
         @media (max-width: 600px) {
@@ -586,6 +584,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" th:href="@{/css/theme.css}" href="/css/theme.css">
 </head>
 <body>
 
@@ -593,7 +592,7 @@
     <div th:replace="~{fragments/nav :: nav('progress')}"></div>
 
     <!-- MAIN CONTENT -->
-    <main class="container">
+    <main id="main" class="container">
 
         <!-- PAGE HEADER -->
         <div class="page-header">
@@ -632,9 +631,9 @@
             <div class="kpi-card">
                 <div class="kpi-label">
                     <span id="kpiScoreTitleLabel">Projected AP Score</span>
-                    <span class="kpi-pill" id="kpiScorePill" style="background: rgba(99,102,241,0.2); color:#a5b4fc;">Scale 1-5</span>
+                    <span class="kpi-pill" id="kpiScorePill" style="background: rgba(95, 211, 141, 0.2); color:#5fd38d;">Scale 1-5</span>
                 </div>
-                <div class="kpi-value" id="kpiProjectedScore" style="color: #cbd5e1;">1</div>
+                <div class="kpi-value" id="kpiProjectedScore" style="color: #b9c3bd;">1</div>
                 <div class="kpi-subtext" id="kpiProjectedScoreTitle">Starter (Pass 1 unit for Score 2)</div>
             </div>
 
@@ -642,7 +641,7 @@
             <div class="kpi-card">
                 <div class="kpi-label">
                     <span>Syllabus Mastery</span>
-                    <span class="kpi-pill" id="kpiMasteryPill" style="background: rgba(99,102,241,0.2); color:#a5b4fc;">0/8</span>
+                    <span class="kpi-pill" id="kpiMasteryPill" style="background: rgba(95, 211, 141, 0.2); color:#5fd38d;">0/8</span>
                 </div>
                 <div class="kpi-value" id="kpiMasteryPct">0%</div>
                 <div class="kpi-subtext" id="kpiMasterySubtext">0 of 8 Units Passed (70%+ Mark)</div>
@@ -666,7 +665,7 @@
                 </div>
                 <div class="kpi-value" id="kpiMockScore" style="font-size: 24px; padding-top: 4px;">Not Taken</div>
                 <div class="kpi-subtext" id="kpiMockSubtext">
-                    <a href="/apcs/exam" style="color: #818cf8; text-decoration: none; font-weight: 600;">Take 90m Mock Exam →</a>
+                    <a href="/apcs/exam" style="color: #5fd38d; text-decoration: none; font-weight: 600;">Take 90m Mock Exam →</a>
                 </div>
             </div>
 
@@ -675,7 +674,7 @@
         <!-- PRIORITY ACTION PLAN -->
         <div class="section-header">
             <h2>Recommended Study Priorities</h2>
-            <span style="font-size: 13px; color: #94a3b8;">Automated action plan based on your quiz scores</span>
+            <span style="font-size: 13px; color: #8a968f;">Automated action plan based on your quiz scores</span>
         </div>
 
         <div class="plan-card" id="studyPlanCard">
@@ -689,7 +688,7 @@
         <!-- UNIT MASTERY MATRIX -->
         <div class="section-header">
             <h2>Unit-by-Unit Mastery Matrix</h2>
-            <span style="font-size: 13px; color: #94a3b8;" id="matrixSubtitle">8 Official AP Computer Science A Units</span>
+            <span style="font-size: 13px; color: #8a968f;" id="matrixSubtitle">8 Official AP Computer Science A Units</span>
         </div>
 
         <div class="units-grid" id="unitsGrid"></div>
@@ -833,7 +832,7 @@
                         scoreTitleEl.textContent = 'First Class Distinction';
                     } else if (passedCount >= 4) {
                         scoreEl.textContent = '80+';
-                        scoreEl.style.color = '#818cf8';
+                        scoreEl.style.color = '#5fd38d';
                         scoreTitleEl.textContent = 'Strong First Class';
                     } else if (passedCount >= 1) {
                         scoreEl.textContent = '70+';
@@ -841,18 +840,18 @@
                         scoreTitleEl.textContent = 'Developing Foundation';
                     } else {
                         scoreEl.textContent = '—';
-                        scoreEl.style.color = '#cbd5e1';
+                        scoreEl.style.color = '#b9c3bd';
                         scoreTitleEl.textContent = `Pass 1 ${course.name} unit for projected grade`;
                     }
                 } else {
                     scoreTitleLabelEl.textContent = 'Projected AP Score';
                     scorePillEl.textContent = 'Scale 1-5';
-                    scorePillEl.style.background = 'rgba(99,102,241,0.2)';
-                    scorePillEl.style.color = '#a5b4fc';
+                    scorePillEl.style.background = 'rgba(95, 211, 141, 0.2)';
+                    scorePillEl.style.color = '#5fd38d';
 
                     let projectedScore = 1;
                     let scoreTitle = 'Score 1 (Starter)';
-                    let scoreColor = '#cbd5e1';
+                    let scoreColor = '#b9c3bd';
 
                     if (passedCount >= 7 && avgAccuracy >= 85) {
                         projectedScore = 5;
@@ -865,7 +864,7 @@
                     } else if (passedCount >= 3) {
                         projectedScore = 3;
                         scoreTitle = 'Score 3 (Qualified / College Pass)';
-                        scoreColor = '#a5b4fc';
+                        scoreColor = '#5fd38d';
                     } else if (passedCount >= 1) {
                         projectedScore = 2;
                         scoreTitle = 'Score 2 (Developing Foundation)';
@@ -909,7 +908,7 @@
                         mockSubtextEl.innerHTML = `Board Mock Exam • <a href="${course.hub}/exam" style="color: #34d399; text-decoration: none;">Retake Exam →</a>`;
                     } else {
                         mockScoreEl.textContent = `${passedCount}/8 Units`;
-                        mockScoreEl.style.color = passedCount === 8 ? '#86efac' : '#cbd5e1';
+                        mockScoreEl.style.color = passedCount === 8 ? '#86efac' : '#b9c3bd';
                         mockSubtextEl.innerHTML = `<a href="${course.hub}/exam" style="color: #34d399; text-decoration: none; font-weight: 600;">Take ${course.name} Mock Exam →</a>`;
                     }
                 } else {
@@ -921,11 +920,11 @@
                     if (mockExam) {
                         mockScoreEl.textContent = `${mockExam.score}/${mockExam.total} (${mockExam.percentage}%)`;
                         mockScoreEl.style.color = mockExam.percentage >= 70 ? '#86efac' : '#fcd34d';
-                        mockSubtextEl.innerHTML = `Projected: <strong>AP Score ${mockExam.projectedScore}</strong> • <a href="/apcs/exam" style="color: #818cf8; text-decoration: none;">Retake Exam →</a>`;
+                        mockSubtextEl.innerHTML = `Projected: <strong>AP Score ${mockExam.projectedScore}</strong> • <a href="/apcs/exam" style="color: #5fd38d; text-decoration: none;">Retake Exam →</a>`;
                     } else {
                         mockScoreEl.textContent = 'Not Taken';
-                        mockScoreEl.style.color = '#cbd5e1';
-                        mockSubtextEl.innerHTML = `<a href="/apcs/exam" style="color: #818cf8; text-decoration: none; font-weight: 600;">Take 90m Mock Exam →</a>`;
+                        mockScoreEl.style.color = '#b9c3bd';
+                        mockSubtextEl.innerHTML = `<a href="/apcs/exam" style="color: #5fd38d; text-decoration: none; font-weight: 600;">Take 90m Mock Exam →</a>`;
                     }
                 }
 
@@ -963,12 +962,12 @@
 
                     if (item.passed) {
                         badgeHtml = `<span class="unit-badge badge-passed">✓ Mastered (${best}/${total})</span>`;
-                        progressColor = 'linear-gradient(90deg, #10b981, #34d399)';
+                        progressColor = '#10b981';
                         scoreText = `Best Score: ${best} / ${total} (${pct}%)`;
                         statusText = '✓ Syllabus Credit Earned';
                     } else {
                         badgeHtml = `<span class="unit-badge badge-review">Review (${best}/${total})</span>`;
-                        progressColor = 'linear-gradient(90deg, #f59e0b, #fbbf24)';
+                        progressColor = '#f59e0b';
                         scoreText = `Best Score: ${best} / ${total} (${pct}%)`;
                         statusText = 'Pass mark is 7/10 — Retake to pass';
                     }
@@ -983,7 +982,7 @@
                             </div>
                             ${badgeHtml}
                         </div>
-                        <p style="color: #94a3b8; font-size: 13px; line-height: 1.4; margin-bottom: 8px;">${unit.desc}</p>
+                        <p style="color: #8a968f; font-size: 13px; line-height: 1.4; margin-bottom: 8px;">${unit.desc}</p>
                         <div class="unit-progress-bar">
                             <div class="unit-progress-fill" style="width: ${progressWidth}%; background: ${progressColor};"></div>
                         </div>
@@ -1128,5 +1127,6 @@
         // Initialize active tab state
         switchCurriculum(currentCurriculum);
     </script>
+    <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

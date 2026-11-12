@@ -8,10 +8,14 @@
     <meta name="student-name" th:content="${studentName}">
     <script th:src="@{/js/codecanvas-api.js}"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Practice AP CS, ICSE and ISC Java with lessons, quizzes and mock exams.">
+    <meta name="theme-color" content="#0e1311">
+    <link rel="manifest" th:href="@{/site.webmanifest}" href="/site.webmanifest">
+    <link rel="apple-touch-icon" th:href="@{/images/apple-touch-icon.png}" href="/images/apple-touch-icon.png">
     <title>AP CS A Mock Exam | TraceTables</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
         * {
@@ -21,7 +25,7 @@
         }
 
         body {
-            font-family: 'Lexend', sans-serif;
+            font-family: 'IBM Plex Sans', sans-serif;
             background: #090d16;
             color: #ffffff;
             min-height: 100vh;
@@ -52,32 +56,32 @@
 
         .logo {
             font-size: 20px;
-            font-weight: 800;
+            font-weight: 600;
             text-decoration: none;
             color: #ffffff;
-            letter-spacing: -0.5px;
+            letter-spacing: -0.01em;
         }
 
         .logo span {
-            color: #818cf8;
+            color: #5fd38d;
         }
 
         .exam-badge {
             font-size: 11px;
-            font-weight: 700;
+            font-weight: 600;
             letter-spacing: 0.6px;
             text-transform: uppercase;
             padding: 4px 10px;
-            border-radius: 999px;
-            background: rgba(99, 102, 241, 0.15);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            color: #a5b4fc;
+            border-radius: 6px;
+            background: rgba(95, 211, 141, 0.15);
+            border: 1px solid rgba(95, 211, 141, 0.3);
+            color: #5fd38d;
         }
 
         .exam-center-title {
             font-size: 14px;
             font-weight: 600;
-            color: #94a3b8;
+            color: #8a968f;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -97,18 +101,18 @@
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 6px 14px;
-            border-radius: 12px;
+            border-radius: 6px;
         }
 
         .timer-icon {
             font-size: 16px;
-            color: #818cf8;
+            color: #5fd38d;
         }
 
         .timer-display {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'IBM Plex Mono', monospace;
             font-size: 16px;
-            font-weight: 700;
+            font-weight: 600;
             color: #ffffff;
             min-width: 68px;
         }
@@ -132,7 +136,7 @@
         .pause-btn {
             background: transparent;
             border: none;
-            color: #94a3b8;
+            color: #8a968f;
             cursor: pointer;
             font-size: 13px;
             padding: 2px 6px;
@@ -147,21 +151,20 @@
 
         /* SUBMIT BUTTON */
         .submit-exam-btn {
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
-            color: #ffffff;
+            background: #5fd38d;
+            color: #06200f;
             border: none;
             padding: 9px 20px;
-            border-radius: 10px;
-            font-weight: 700;
+            border-radius: 4px;
+            font-weight: 600;
             font-size: 13px;
             cursor: pointer;
-            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.17);
+            box-shadow: none;
             transition: all 0.2s ease;
         }
 
         .submit-exam-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.25);
+            box-shadow: none;
             filter: brightness(1.1);
         }
 
@@ -179,15 +182,14 @@
 
         /* QUESTION CARD */
         .question-card {
-            background: rgba(15, 23, 42, 0.65);
+            background: rgba(16, 22, 20, 0.65);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
+            border-radius: 6px;
             padding: 34px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             position: relative;
-            backdrop-filter: blur(12px);
         }
 
         .question-meta-row {
@@ -201,8 +203,8 @@
 
         .question-unit-tag {
             font-size: 12px;
-            font-weight: 700;
-            color: #818cf8;
+            font-weight: 600;
+            color: #5fd38d;
             letter-spacing: 0.5px;
             text-transform: uppercase;
         }
@@ -219,9 +221,9 @@
             gap: 6px;
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #94a3b8;
+            color: #8a968f;
             padding: 6px 14px;
-            border-radius: 8px;
+            border-radius: 4px;
             font-size: 12px;
             font-weight: 600;
             cursor: pointer;
@@ -241,8 +243,8 @@
 
         .question-heading {
             font-size: 13px;
-            font-weight: 700;
-            color: #64748b;
+            font-weight: 600;
+            color: #6f7b75;
             text-transform: uppercase;
             letter-spacing: 0.8px;
             margin-bottom: 10px;
@@ -253,18 +255,18 @@
             font-weight: 600;
             line-height: 1.6;
             white-space: pre-wrap;
-            color: #f8fafc;
+            color: #e9efeb;
             margin-bottom: 28px;
         }
 
         .question-text code, pre {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'IBM Plex Mono', monospace;
             background: rgba(0, 0, 0, 0.35);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 6px;
             padding: 2px 6px;
             font-size: 16px;
-            color: #c7d2fe;
+            color: #b5ecc9;
         }
 
         /* OPTIONS LIST */
@@ -282,22 +284,22 @@
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.08);
             padding: 16px 20px;
-            border-radius: 12px;
+            border-radius: 6px;
             cursor: pointer;
             transition: all 0.2s ease;
             user-select: none;
         }
 
         .option-item:hover {
-            background: rgba(99, 102, 241, 0.06);
-            border-color: rgba(99, 102, 241, 0.35);
+            background: rgba(95, 211, 141, 0.06);
+            border-color: rgba(95, 211, 141, 0.35);
             transform: translateX(3px);
         }
 
         .option-item.selected {
-            background: rgba(99, 102, 241, 0.15);
-            border-color: #818cf8;
-            box-shadow: 0 0 16px rgba(99, 102, 241, 0.12);
+            background: rgba(95, 211, 141, 0.15);
+            border-color: #5fd38d;
+            box-shadow: none;
         }
 
         .option-letter {
@@ -310,21 +312,21 @@
             align-items: center;
             justify-content: center;
             font-size: 13px;
-            font-weight: 700;
-            color: #94a3b8;
+            font-weight: 600;
+            color: #8a968f;
             flex-shrink: 0;
             transition: all 0.2s ease;
         }
 
         .option-item.selected .option-letter {
-            background: #6366f1;
-            border-color: #818cf8;
-            color: #ffffff;
+            background: #5fd38d;
+            border-color: #5fd38d;
+            color: #06200f;
         }
 
         .option-content {
             font-size: 15px;
-            color: #e2e8f0;
+            color: #d8dfda;
             line-height: 1.5;
             padding-top: 3px;
         }
@@ -343,7 +345,7 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: #ffffff;
             padding: 10px 22px;
-            border-radius: 10px;
+            border-radius: 4px;
             font-weight: 600;
             font-size: 14px;
             cursor: pointer;
@@ -354,8 +356,8 @@
         }
 
         .nav-btn:hover:not(:disabled) {
-            background: rgba(99, 102, 241, 0.15);
-            border-color: rgba(99, 102, 241, 0.35);
+            background: rgba(95, 211, 141, 0.15);
+            border-color: rgba(95, 211, 141, 0.35);
         }
 
         .nav-btn:disabled {
@@ -366,27 +368,26 @@
         .clear-answer-btn {
             background: transparent;
             border: none;
-            color: #64748b;
+            color: #6f7b75;
             font-size: 13px;
             cursor: pointer;
             transition: all 0.2s;
         }
 
         .clear-answer-btn:hover {
-            color: #cbd5e1;
+            color: #b9c3bd;
             text-decoration: underline;
         }
 
         /* SIDEBAR NAVIGATOR */
         .exam-sidebar {
-            background: rgba(15, 23, 42, 0.65);
+            background: rgba(16, 22, 20, 0.65);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
+            border-radius: 6px;
             padding: 24px;
             display: flex;
             flex-direction: column;
             gap: 20px;
-            backdrop-filter: blur(12px);
             height: fit-content;
             position: sticky;
             top: 98px;
@@ -400,20 +401,20 @@
 
         .sidebar-title {
             font-size: 14px;
-            font-weight: 700;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.7px;
-            color: #e2e8f0;
+            color: #d8dfda;
         }
 
         .sidebar-answered-badge {
             font-size: 11px;
-            font-weight: 700;
+            font-weight: 600;
             padding: 3px 8px;
-            border-radius: 999px;
-            background: rgba(99, 102, 241, 0.15);
-            color: #a5b4fc;
-            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 6px;
+            background: rgba(95, 211, 141, 0.15);
+            color: #5fd38d;
+            border: 1px solid rgba(95, 211, 141, 0.3);
         }
 
         /* 40 QUESTIONS GRID */
@@ -425,7 +426,7 @@
 
         .nav-pip {
             aspect-ratio: 1;
-            border-radius: 8px;
+            border-radius: 4px;
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
             display: flex;
@@ -433,28 +434,28 @@
             justify-content: center;
             font-size: 12px;
             font-weight: 600;
-            color: #64748b;
+            color: #6f7b75;
             cursor: pointer;
             transition: all 0.15s ease;
             position: relative;
         }
 
         .nav-pip:hover {
-            border-color: #818cf8;
+            border-color: #5fd38d;
             color: #ffffff;
             transform: scale(1.08);
         }
 
         .nav-pip.current {
             border: 2px solid #ffffff;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+            box-shadow: none;
             color: #ffffff;
-            font-weight: 700;
+            font-weight: 600;
         }
 
         .nav-pip.answered {
-            background: rgba(99, 102, 241, 0.3);
-            border-color: rgba(99, 102, 241, 0.6);
+            background: rgba(95, 211, 141, 0.3);
+            border-color: rgba(95, 211, 141, 0.6);
             color: #e0e7ff;
         }
 
@@ -467,7 +468,7 @@
             height: 6px;
             border-radius: 50%;
             background: #f59e0b;
-            box-shadow: 0 0 6px #f59e0b;
+            box-shadow: none;
         }
 
         /* NAVIGATOR LEGEND */
@@ -476,7 +477,7 @@
             grid-template-columns: 1fr 1fr;
             gap: 8px;
             font-size: 11px;
-            color: #94a3b8;
+            color: #8a968f;
             padding-top: 14px;
             border-top: 1px solid rgba(255, 255, 255, 0.06);
         }
@@ -493,7 +494,9 @@
             border-radius: 50%;
         }
 
-        .legend-answered { background: #818cf8; }
+        .legend-answered { background: #5fd38d;
+            color: #06200f;
+        }
         .legend-unanswered { background: rgba(255, 255, 255, 0.2); }
         .legend-flagged { background: #f59e0b; }
         .legend-current { background: #ffffff; }
@@ -502,12 +505,12 @@
         .sidebar-stats {
             background: rgba(0, 0, 0, 0.25);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
+            border-radius: 6px;
             padding: 12px 14px;
             display: flex;
             justify-content: space-between;
             font-size: 12px;
-            color: #94a3b8;
+            color: #8a968f;
         }
 
         .sidebar-stats strong {
@@ -531,13 +534,13 @@
         }
 
         .modal-card {
-            background: #0f172a;
+            background: #101614;
             border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 20px;
+            border-radius: 6px;
             max-width: 480px;
             width: 100%;
             padding: 30px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+            box-shadow: none;
             text-align: center;
         }
 
@@ -548,12 +551,12 @@
 
         .modal-card h3 {
             font-size: 20px;
-            font-weight: 700;
+            font-weight: 600;
             margin-bottom: 10px;
         }
 
         .modal-card p {
-            color: #94a3b8;
+            color: #8a968f;
             font-size: 14px;
             line-height: 1.5;
             margin-bottom: 22px;
@@ -562,7 +565,7 @@
         .modal-summary-box {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 12px;
+            border-radius: 6px;
             padding: 14px;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -572,14 +575,14 @@
 
         .summary-num {
             font-size: 20px;
-            font-weight: 800;
-            color: #818cf8;
+            font-weight: 600;
+            color: #5fd38d;
             display: block;
         }
 
         .summary-lbl {
             font-size: 11px;
-            color: #64748b;
+            color: #6f7b75;
         }
 
         .modal-actions {
@@ -590,10 +593,10 @@
         .modal-btn-cancel {
             flex: 1;
             padding: 11px;
-            border-radius: 10px;
+            border-radius: 4px;
             background: rgba(255, 255, 255, 0.06);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #e2e8f0;
+            color: #d8dfda;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
@@ -606,13 +609,13 @@
         .modal-btn-submit {
             flex: 1;
             padding: 11px;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 4px;
+            background: #5fd38d;
             border: none;
-            color: #ffffff;
-            font-weight: 700;
+            color: #06200f;
+            font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.2);
+            box-shadow: none;
             transition: all 0.2s;
         }
 
@@ -632,22 +635,21 @@
         }
 
         .exam-start-card {
-            background: rgba(15, 23, 42, 0.75);
+            background: rgba(16, 22, 20, 0.75);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
+            border-radius: 6px;
             max-width: 720px;
             width: 100%;
             padding: 44px;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(16px);
+            box-shadow: none;
             text-align: left;
         }
 
         .exam-start-card h1 {
             font-size: 30px;
-            font-weight: 800;
+            font-weight: 600;
             margin-bottom: 6px;
-            letter-spacing: -0.5px;
+            letter-spacing: -0.01em;
         }
 
         .start-chips-grid {
@@ -660,7 +662,7 @@
         .start-chip {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.07);
-            border-radius: 12px;
+            border-radius: 6px;
             padding: 14px 18px;
             display: flex;
             align-items: center;
@@ -673,19 +675,19 @@
 
         .chip-val {
             font-size: 15px;
-            font-weight: 700;
+            font-weight: 600;
             color: #ffffff;
         }
 
         .chip-lbl {
             font-size: 11px;
-            color: #64748b;
+            color: #6f7b75;
         }
 
         .start-instructions {
             background: rgba(0, 0, 0, 0.25);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 14px;
+            border-radius: 6px;
             padding: 20px 24px;
             margin-bottom: 32px;
         }
@@ -693,7 +695,7 @@
         .start-instructions ul {
             padding-left: 20px;
             font-size: 14px;
-            color: #94a3b8;
+            color: #8a968f;
             line-height: 1.8;
         }
 
@@ -717,12 +719,11 @@
         }
 
         .report-hero {
-            background: rgba(15, 23, 42, 0.7);
+            background: rgba(16, 22, 20, 0.7);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 24px;
+            border-radius: 6px;
             padding: 38px;
             margin-bottom: 32px;
-            backdrop-filter: blur(14px);
             display: grid;
             grid-template-columns: 1.3fr 1fr;
             gap: 36px;
@@ -731,13 +732,13 @@
 
         .hero-left h1 {
             font-size: 28px;
-            font-weight: 800;
+            font-weight: 600;
             margin-bottom: 10px;
-            letter-spacing: -0.5px;
+            letter-spacing: -0.01em;
         }
 
         .hero-left p {
-            color: #94a3b8;
+            color: #8a968f;
             font-size: 15px;
             line-height: 1.6;
             margin-bottom: 24px;
@@ -746,7 +747,7 @@
         .score-display-card {
             background: rgba(0, 0, 0, 0.35);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 18px;
+            border-radius: 6px;
             padding: 26px;
             text-align: center;
         }
@@ -757,12 +758,12 @@
             line-height: 1;
             margin-bottom: 6px;
             color: #fde047;
-            text-shadow: 0 0 30px rgba(245, 158, 11, 0.4);
+            text-shadow: none;
         }
 
         .ap-score-title {
             font-size: 15px;
-            font-weight: 700;
+            font-weight: 600;
             color: #ffffff;
             margin-bottom: 12px;
         }
@@ -778,13 +779,13 @@
 
         .meta-stat-num {
             font-size: 20px;
-            font-weight: 800;
-            color: #818cf8;
+            font-weight: 600;
+            color: #5fd38d;
         }
 
         .meta-stat-lbl {
             font-size: 11px;
-            color: #64748b;
+            color: #6f7b75;
         }
 
         /* UNIT BREAKDOWN SECTION */
@@ -794,12 +795,12 @@
 
         .section-header h2 {
             font-size: 22px;
-            font-weight: 700;
+            font-weight: 600;
             margin-bottom: 6px;
         }
 
         .section-header p {
-            color: #94a3b8;
+            color: #8a968f;
             font-size: 14px;
         }
 
@@ -811,16 +812,16 @@
         }
 
         .unit-card {
-            background: rgba(15, 23, 42, 0.5);
+            background: rgba(16, 22, 20, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 14px;
+            border-radius: 6px;
             padding: 20px;
             transition: all 0.2s ease;
         }
 
         .unit-card:hover {
-            border-color: rgba(99, 102, 241, 0.3);
-            background: rgba(15, 23, 42, 0.7);
+            border-color: rgba(95, 211, 141, 0.3);
+            background: rgba(16, 22, 20, 0.7);
         }
 
         .unit-card-header {
@@ -832,15 +833,15 @@
 
         .unit-name {
             font-size: 15px;
-            font-weight: 700;
-            color: #f1f5f9;
+            font-weight: 600;
+            color: #e3e9e5;
         }
 
         .unit-status-pill {
             font-size: 11px;
-            font-weight: 700;
+            font-weight: 600;
             padding: 3px 8px;
-            border-radius: 999px;
+            border-radius: 6px;
         }
 
         .pill-mastery {
@@ -858,7 +859,7 @@
         .unit-progress-container {
             height: 6px;
             background: rgba(255, 255, 255, 0.06);
-            border-radius: 999px;
+            border-radius: 6px;
             overflow: hidden;
             margin-bottom: 10px;
         }
@@ -873,18 +874,18 @@
             justify-content: space-between;
             align-items: center;
             font-size: 12px;
-            color: #64748b;
+            color: #6f7b75;
         }
 
         .unit-study-link {
-            color: #818cf8;
+            color: #5fd38d;
             text-decoration: none;
             font-weight: 600;
             transition: all 0.2s;
         }
 
         .unit-study-link:hover {
-            color: #c7d2fe;
+            color: #b5ecc9;
             text-decoration: underline;
         }
 
@@ -898,9 +899,9 @@
         .review-tab-btn {
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            color: #94a3b8;
+            color: #8a968f;
             padding: 8px 16px;
-            border-radius: 8px;
+            border-radius: 4px;
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
@@ -908,8 +909,8 @@
         }
 
         .review-tab-btn.active {
-            background: rgba(99, 102, 241, 0.2);
-            border-color: #818cf8;
+            background: rgba(95, 211, 141, 0.2);
+            border-color: #5fd38d;
             color: #ffffff;
         }
 
@@ -921,9 +922,9 @@
         }
 
         .review-item {
-            background: rgba(15, 23, 42, 0.5);
+            background: rgba(16, 22, 20, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 14px;
+            border-radius: 6px;
             padding: 24px;
         }
 
@@ -937,7 +938,7 @@
         .review-question-title {
             font-size: 16px;
             font-weight: 600;
-            color: #f8fafc;
+            color: #e9efeb;
             margin-bottom: 18px;
             line-height: 1.5;
         }
@@ -951,14 +952,14 @@
 
         .review-option {
             padding: 10px 14px;
-            border-radius: 8px;
+            border-radius: 4px;
             font-size: 14px;
             display: flex;
             align-items: center;
             gap: 10px;
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            color: #94a3b8;
+            color: #8a968f;
         }
 
         .review-option.correct-answer {
@@ -976,11 +977,11 @@
 
         .explanation-box {
             background: rgba(0, 0, 0, 0.25);
-            border-left: 3px solid #818cf8;
+            border: 1px solid rgba(255, 255, 255, 0.08);
             padding: 12px 16px;
-            border-radius: 0 8px 8px 0;
+            border-radius: 4px;
             font-size: 13px;
-            color: #cbd5e1;
+            color: #b9c3bd;
             line-height: 1.5;
         }
 
@@ -994,9 +995,9 @@
 
         .report-btn {
             padding: 12px 26px;
-            border-radius: 10px;
+            border-radius: 4px;
             font-size: 14px;
-            font-weight: 700;
+            font-weight: 600;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
@@ -1006,21 +1007,20 @@
         }
 
         .btn-primary-action {
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
-            color: #ffffff;
-            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.17);
+            background: #5fd38d;
+            color: #06200f;
+            box-shadow: none;
             border: none;
         }
 
         .btn-primary-action:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.25);
+            box-shadow: none;
         }
 
         .btn-secondary-action {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #e2e8f0;
+            color: #d8dfda;
         }
 
         .btn-secondary-action:hover {
@@ -1035,14 +1035,14 @@
             justify-content: center;
             min-height: 400px;
             gap: 16px;
-            color: #94a3b8;
+            color: #8a968f;
         }
 
         .loading-spinner {
             width: 44px;
             height: 44px;
             border: 3px solid rgba(255, 255, 255, 0.1);
-            border-top-color: #818cf8;
+            border-top-color: #5fd38d;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
@@ -1067,6 +1067,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" th:href="@{/css/theme.css}" href="/css/theme.css">
 </head>
 <body>
 
@@ -1104,8 +1105,8 @@
         <div class="exam-start-card">
             <span class="exam-badge" style="margin-bottom: 14px; display: inline-block;">OFFICIAL EXAM SIMULATION</span>
             <h1>AP Computer Science A</h1>
-            <h2 style="font-size: 18px; color: #818cf8; font-weight: 600; margin-bottom: 14px;">Diagnostic Mock Exam • Section I</h2>
-            <p style="color: #94a3b8; font-size: 15px; line-height: 1.6;">
+            <h2 style="font-size: 18px; color: #5fd38d; font-weight: 600; margin-bottom: 14px;">Diagnostic Mock Exam • Section I</h2>
+            <p style="color: #8a968f; font-size: 15px; line-height: 1.6;">
                 This exam contains 40 multiple-choice questions representative of the official AP Computer Science A exam format. Questions are balanced across all 8 syllabus units.
             </p>
 
@@ -1141,7 +1142,7 @@
             </div>
 
             <div class="start-instructions">
-                <h3 style="font-size: 14px; font-weight: 700; color: #e2e8f0; margin-bottom: 8px;">Important Guidelines:</h3>
+                <h3 style="font-size: 14px; font-weight: 600; color: #d8dfda; margin-bottom: 8px;">Important Guidelines:</h3>
                 <ul>
                     <li>The 90-minute timer will <strong>only start when you click "Start Exam" below</strong>.</li>
                     <li>Navigate freely between questions anytime using the Question Navigator on the right.</li>
@@ -1757,7 +1758,7 @@
             // Projected Score calculation
             let projectedScore = 1;
             let scoreTitle = 'Score 1 — No Recommendation';
-            let scoreColor = '#cbd5e1';
+            let scoreColor = '#b9c3bd';
 
             if (isIcseExam) {
                 if (pct >= 90) {
@@ -1771,7 +1772,7 @@
                 } else if (pct >= 70) {
                     projectedScore = '80%+';
                     scoreTitle = 'Grade 3 (B) • Passed with Merit';
-                    scoreColor = '#818cf8';
+                    scoreColor = '#5fd38d';
                 } else {
                     projectedScore = `${pct}%`;
                     scoreTitle = 'Needs Review • Board Pass Threshold is 70%';
@@ -1789,7 +1790,7 @@
                 } else if (pct >= 55) {
                     projectedScore = 3;
                     scoreTitle = 'Score 3 — Qualified (College Credit Baseline)';
-                    scoreColor = '#a5b4fc';
+                    scoreColor = '#5fd38d';
                 } else if (pct >= 40) {
                     projectedScore = 2;
                     scoreTitle = 'Score 2 — Possibly Qualified';
@@ -1863,13 +1864,13 @@
                         </span>
                     </div>
                     <div class="unit-progress-container">
-                        <div class="unit-progress-fill" style="width: ${unitPct}%; background: ${isUnitPassed ? 'linear-gradient(90deg, #10b981, #34d399)' : 'linear-gradient(90deg, #f59e0b, #fbbf24)'};"></div>
+                        <div class="unit-progress-fill" style="width: ${unitPct}%; background: ${isUnitPassed ? '#10b981' : '#f59e0b'};"></div>
                     </div>
                     <div class="unit-card-footer">
                         <span>${stat.correct} of ${stat.total} Correct (${unitPct}%)</span>
                         <span style="display: flex; gap: 14px; flex-wrap: wrap;">
                             <a href="${lessonUrl}" class="unit-study-link">Review Unit →</a>
-                            <a href="${quizUrl}" class="unit-study-link" style="${isUnitPassed ? '' : 'color: #fcd34d; font-weight: 700;'}">${isUnitPassed ? 'Practise Again →' : 'Practise This Topic →'}</a>
+                            <a href="${quizUrl}" class="unit-study-link" style="${isUnitPassed ? '' : 'color: #fcd34d; font-weight: 600;'}">${isUnitPassed ? 'Practise Again →' : 'Practise This Topic →'}</a>
                         </span>
                     </div>
                 `;
@@ -1940,7 +1941,7 @@
                     return `
                         <div class="review-option ${cls}">
                             <span style="flex-grow: 1;">${escapeHtml(opt)}</span>
-                            ${badge ? `<span style="font-size:11px; font-weight:700;">${badge}</span>` : ''}
+                            ${badge ? `<span style="font-size:11px; font-weight: 600;">${badge}</span>` : ''}
                         </div>
                     `;
                 }).join('');
@@ -1948,7 +1949,7 @@
                 card.innerHTML = `
                     <div class="review-item-header">
                         <span class="question-unit-tag">${q.topic || 'AP CS A'} • QUESTION ${idx + 1}</span>
-                        <span style="font-size: 13px; font-weight: 700; color: ${isCorrect ? '#86efac' : '#fca5a5'};">
+                        <span style="font-size: 13px; font-weight: 600; color: ${isCorrect ? '#86efac' : '#fca5a5'};">
                             ${isCorrect ? '✓ Correct (+1)' : '✕ Incorrect'}
                         </span>
                     </div>

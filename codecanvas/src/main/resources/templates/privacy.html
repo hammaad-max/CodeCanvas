@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}" href="/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy | TraceTables</title>
+    <meta name="description" content="What TraceTables collects, why, and how to ask for your data to be removed.">
+    <meta name="theme-color" content="#0e1311">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/theme.css}" href="/css/theme.css">
+</head>
+<body class="legal-page">
+<a class="tt-skip" href="#main">Skip to content</a>
+<header class="legal-header">
+    <a href="/" class="legal-brand"><img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="22" height="22">TraceTables</a>
+    <a href="/" class="legal-signin">Sign in</a>
+</header>
+<main id="main" class="legal">
+    <h1>Privacy</h1>
+    <p class="legal-updated">Last updated 12 November 2026</p>
+    <p>TraceTables is a practice site for AP CS, ICSE and ISC Java students. This page explains in plain language what the site keeps about you and why.</p>
+
+    <h2>What we keep</h2>
+    <ul>
+        <li><strong>Your account:</strong> the name you entered, your username and your email address.</li>
+        <li><strong>Your password:</strong> never stored as you typed it. Only a one-way scrambled version (a bcrypt hash) is kept, so nobody, including us, can read it.</li>
+        <li><strong>Your practice:</strong> each quiz and mock exam you finish, with the topic, your score and the date. This powers your progress page.</li>
+        <li><strong>A sign-in cookie</strong> that keeps you logged in. It is needed for the site to work. There are no advertising or tracking cookies.</li>
+        <li><strong>Server logs:</strong> short technical records (for example a sign-in succeeded or failed for a username) used to keep the site safe and fix problems.</li>
+    </ul>
+
+    <h2>Why</h2>
+    <p>Only to run your account, show your progress, let you reset a forgotten password by email, and keep the site secure. We do not sell your information and we do not show ads.</p>
+
+    <h2>Who handles it</h2>
+    <p>The site runs on services in Singapore: Render (hosting) and Neon (database). If email is switched on, an email provider sends password reset emails. Fonts are loaded from Google Fonts, so Google can see your visit to load them.</p>
+
+    <h2>Your choices</h2>
+    <ul>
+        <li>You can reset your progress at any time from the My Progress page.</li>
+        <li>You can change your email and password on the Account page.</li>
+        <li>To have your account and all its data removed, or to get a copy of what we hold, contact us<span th:if="${contactEmail != null}"> at <a th:href="'mailto:' + ${contactEmail}" th:text="${contactEmail}">contact address</a></span>.</li>
+    </ul>
+
+    <h2>Young students</h2>
+    <p>If you are under 18, please use TraceTables with the knowledge of a parent, guardian or teacher. Do not enter anything you would not want others to read. Only your name, username and email are needed.</p>
+
+    <h2>Changes</h2>
+    <p>If this page changes in an important way, the date at the top will change too.</p>
+</main>
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

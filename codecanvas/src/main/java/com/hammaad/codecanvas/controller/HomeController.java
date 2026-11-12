@@ -125,6 +125,17 @@ public class HomeController {
         return "redirect:/icse/" + ICSE_LESSONS.get(index);
     }
 
+    // Public legal pages (reachable without signing in)
+    @GetMapping("/privacy")
+    public String privacy() {
+        return "privacy";
+    }
+
+    @GetMapping("/terms")
+    public String terms() {
+        return "terms";
+    }
+
     // ICSE lesson pages (one per syllabus unit), styled like the AP CS lessons
     @GetMapping("/icse/{slug}")
     public String icseLesson(@PathVariable String slug) {

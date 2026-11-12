@@ -5,10 +5,14 @@
     <meta charset="UTF-8">
     <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}" href="/favicon.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Practice AP CS, ICSE and ISC Java with lessons, quizzes and mock exams.">
+    <meta name="theme-color" content="#0e1311">
+    <link rel="manifest" th:href="@{/site.webmanifest}" href="/site.webmanifest">
+    <link rel="apple-touch-icon" th:href="@{/images/apple-touch-icon.png}" href="/images/apple-touch-icon.png">
     <title>Iterative Constructs &amp; Loops | ICSE Java | TraceTables</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
         * {
@@ -17,20 +21,9 @@
 
         body {
             margin: 0;
-            font-family: 'Lexend', Arial, Helvetica, sans-serif;
-            background:
-                    radial-gradient(
-                            circle at 80% 0%,
-                            rgba(99, 102, 241, 0.18),
-                            transparent 30%
-                    ),
-                    radial-gradient(
-                            circle at 0% 50%,
-                            rgba(124, 58, 237, 0.08),
-                            transparent 30%
-                    ),
-                    #080b14;
-            color: #f8fafc;
+            font-family: 'IBM Plex Sans', Arial, Helvetica, sans-serif;
+            background: #0e1311;
+            color: #e9efeb;
             min-height: 100vh;
         }
 
@@ -40,7 +33,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: rgba(8, 11, 20, 0.82);
+            background: rgba(14, 19, 17, 0.82);
             backdrop-filter: blur(16px);
             border-bottom: 1px solid rgba(255,255,255,0.08);
             position: sticky;
@@ -50,18 +43,18 @@
 
         .logo {
             font-size: 25px;
-            font-weight: 800;
+            font-weight: 600;
             color: #ffffff;
             text-decoration: none;
-            letter-spacing: -0.7px;
+            letter-spacing: -0.01em;
         }
 
         .logo span {
-            color: #818cf8;
+            color: #5fd38d;
         }
 
         .back {
-            color: #a1a1aa;
+            color: #8a968f;
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
@@ -79,7 +72,7 @@
         }
 
         .breadcrumb {
-            color: #71717a;
+            color: #75807a;
             font-size: 13px;
             margin-bottom: 20px;
             display: flex;
@@ -88,7 +81,7 @@
         }
 
         .breadcrumb a {
-            color: #94a3b8;
+            color: #8a968f;
             text-decoration: none;
             transition: color 0.2s;
         }
@@ -100,25 +93,25 @@
         .badge {
             display: inline-block;
             padding: 7px 14px;
-            border-radius: 999px;
-            background: rgba(129,140,248,0.12);
-            border: 1px solid rgba(129,140,248,0.25);
-            color: #a5b4fc;
+            border-radius: 6px;
+            background: rgba(95, 211, 141, 0.12);
+            border: 1px solid rgba(95, 211, 141, 0.25);
+            color: #5fd38d;
             font-size: 12px;
-            font-weight: 700;
+            font-weight: 600;
             letter-spacing: 0.5px;
             margin-bottom: 16px;
         }
 
         h1 {
             font-size: 46px;
-            letter-spacing: -1.5px;
+            letter-spacing: -0.01em;
             margin: 0 0 15px;
-            font-weight: 800;
+            font-weight: 600;
         }
 
         .intro {
-            color: #94a3b8;
+            color: #8a968f;
             font-size: 17px;
             line-height: 1.7;
             max-width: 780px;
@@ -126,30 +119,30 @@
         }
 
         .card {
-            background: rgba(15,23,42,0.72);
+            background: rgba(16, 22, 20, 0.72);
             border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 20px;
+            border-radius: 6px;
             padding: 32px;
             margin-bottom: 24px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            box-shadow: none;
         }
 
         .card h2 {
             margin-top: 0;
             font-size: 24px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
             color: #ffffff;
         }
 
         .card h3 {
             font-size: 18px;
             font-weight: 600;
-            color: #f1f5f9;
+            color: #e3e9e5;
         }
 
         .card p {
-            color: #94a3b8;
+            color: #8a968f;
             line-height: 1.7;
             font-size: 15px;
         }
@@ -163,7 +156,7 @@
 
         .concept {
             padding: 22px;
-            border-radius: 14px;
+            border-radius: 6px;
             background: rgba(255,255,255,0.03);
             border: 1px solid rgba(255,255,255,0.06);
         }
@@ -171,33 +164,33 @@
         .concept h3 {
             margin-top: 0;
             font-size: 16px;
-            color: #e2e8f0;
+            color: #d8dfda;
         }
 
         .concept p {
             margin-bottom: 0;
             font-size: 14px;
-            color: #94a3b8;
+            color: #8a968f;
             line-height: 1.6;
         }
 
         code {
-            color: #c4b5fd;
-            background: rgba(129,140,248,0.1);
+            color: #9be3b8;
+            background: rgba(95, 211, 141, 0.1);
             padding: 3px 7px;
             border-radius: 5px;
-            font-family: 'JetBrains Mono', Consolas, monospace;
+            font-family: 'IBM Plex Mono', Consolas, monospace;
             font-size: 13px;
         }
 
         .code-block {
-            background: #05070d;
+            background: #121917;
             border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 12px;
+            border-radius: 6px;
             padding: 22px;
             overflow-x: auto;
-            color: #e2e8f0;
-            font-family: 'JetBrains Mono', Consolas, monospace;
+            color: #d8dfda;
+            font-family: 'IBM Plex Mono', Consolas, monospace;
             font-size: 14px;
             line-height: 1.7;
             margin: 16px 0;
@@ -211,19 +204,18 @@
             display: inline-block;
             margin-top: 14px;
             padding: 13px 26px;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #6366f1, #7c3aed);
-            color: white;
+            border-radius: 4px;
+            background: #5fd38d;
+            color: #06200f;
             text-decoration: none;
-            font-weight: 700;
+            font-weight: 600;
             font-size: 15px;
-            box-shadow: 0 10px 25px rgba(99,102,241, 0.15);
+            box-shadow: none;
             transition: all 0.2s ease;
         }
 
         .quiz-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 14px 30px rgba(99,102,241, 0.25);
+            box-shadow: none;
         }
 
         @media(max-width: 768px) {
@@ -249,30 +241,29 @@
             flex: 1;
             display: block;
             padding: 18px 22px;
-            border-radius: 14px;
-            background: rgba(15,23,42,0.72);
+            border-radius: 6px;
+            background: rgba(16, 22, 20, 0.72);
             border: 1px solid rgba(255,255,255,0.08);
-            color: #e2e8f0;
+            color: #d8dfda;
             text-decoration: none;
             transition: all 0.2s ease;
         }
 
         .lesson-nav a:hover {
-            border-color: rgba(129,140,248,0.45);
-            transform: translateY(-2px);
+            border-color: rgba(95, 211, 141, 0.45);
         }
 
         .lesson-nav .dir {
             display: block;
-            color: #818cf8;
+            color: #5fd38d;
             font-size: 12px;
-            font-weight: 700;
+            font-weight: 600;
             letter-spacing: 0.5px;
             margin-bottom: 4px;
         }
 
         .lesson-nav .name {
-            font-weight: 700;
+            font-weight: 600;
             font-size: 15px;
         }
 
@@ -290,25 +281,26 @@
             background: none !important;
             border: none !important;
             padding: 0 !important;
-            box-shadow: none !important;
-            color: #a5b4fc !important;
+            box-shadow: none;
+            color: #5fd38d !important;
             letter-spacing: 1px;
         }
     </style>
+    <link rel="stylesheet" th:href="@{/css/theme.css}" href="/css/theme.css">
 </head>
 
 <body>
 
 <div th:replace="~{fragments/nav :: nav('course')}"></div>
 
-<main class="container">
+<main id="main" class="container">
 
     <div class="breadcrumb">
         <a href="/dashboard">Dashboard</a>
         <span>›</span>
         <a href="/icse">ICSE Java</a>
         <span>›</span>
-        <span style="color: #e2e8f0;">Iterative Constructs &amp; Loops</span>
+        <span style="color: #d8dfda;">Iterative Constructs &amp; Loops</span>
     </div>
 
     <div class="badge">
@@ -485,15 +477,15 @@ do-while ran with k = 10
         <h2>ICSE Board Exam Tips &amp; Common Traps</h2>
         <p>Keep these frequent exam traps in mind:</p>
         <div class="concept-grid">
-            <div class="concept" style="border-left: 3px solid #818cf8;">
+            <div class="concept">
                 <h3>Counting Iterations</h3>
                 <p><code>for (i = 1; i &lt;= n; i++)</code> runs n times; <code>for (i = 0; i &lt; n; i++)</code> also runs n times; <code>i &lt;= n</code> starting at 0 runs n + 1 times.</p>
             </div>
-            <div class="concept" style="border-left: 3px solid #818cf8;">
+            <div class="concept">
                 <h3>Stray Semicolon</h3>
                 <p><code>for (i = 1; i &lt;= 5; i++);</code> has an empty body; the block after it runs only once, after the loop finishes.</p>
             </div>
-            <div class="concept" style="border-left: 3px solid #818cf8;">
+            <div class="concept">
                 <h3>Entry vs Exit Controlled</h3>
                 <p>A frequent theory question: <code>for</code> and <code>while</code> are entry-controlled; <code>do-while</code> is exit-controlled and runs at least once.</p>
             </div>
@@ -525,5 +517,6 @@ do-while ran with k = 10
 
 </main>
 
+    <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<body>
+<!-- Shared footer. Use: <div th:replace="~{fragments/footer :: footer}"></div> -->
+<footer class="tt-footer" th:fragment="footer">
+    <div class="tt-footer-inner">
+        <span>&copy; <span th:text="${#dates.year(#dates.createNow())}">2026</span> TraceTables</span>
+        <nav aria-label="Footer">
+            <a href="/privacy">Privacy</a>
+            <a href="/terms">Terms</a>
+            <a th:if="${contactEmail != null}" th:href="'mailto:' + ${contactEmail} + '?subject=TraceTables%20feedback'">Report a problem</a>
+        </nav>
+    </div>
+</footer>
+</body>
+</html>

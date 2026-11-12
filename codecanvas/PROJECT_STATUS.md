@@ -1,6 +1,6 @@
 # TraceTables — Project Status
 
-_Last verified: 2026-11-09 · Renamed to TraceTables in `c99d86f`; free deployment setup (Render + Neon)_
+_Last verified: 2026-11-12 · Design "Editor" applied; footer, Privacy/Terms, link previews and phone icons added (uncommitted)_
 
 The site is now called **TraceTables** (repository and Java package names are unchanged).
 
@@ -20,7 +20,7 @@ Java 25 · Spring Boot 4.1.0 (Spring MVC, Thymeleaf, Spring Security, Spring Dat
 ## Verified working (tested, not assumed)
 | Area | How verified | Result |
 |---|---|---|
-| Build + tests | `mvnw clean verify` (H2 in PostgreSQL mode, same Flyway migrations) | **50/50 pass** |
+| Build + tests | `mvnw clean verify` (H2 in PostgreSQL mode, same Flyway migrations) | **58/58 pass** |
 | Production mode | Packaged jar, `prod` profile, DB config from env vars only | Starts in ~6 s; JSON logs; health/liveness/readiness `UP` |
 | Health check | Real HTTP tests + curl | Public status only; all other actuator endpoints blocked |
 | Error handling | Real HTTP tests + browser | Branded 404/403/500 page; API errors are short JSON, unexpected ones get a reference id |
@@ -55,6 +55,11 @@ Java 25 · Spring Boot 4.1.0 (Spring MVC, Thymeleaf, Spring Security, Spring Dat
 - **Progress:** `GET /api/progress` (own data only), `DELETE /api/progress` (reset). Pages still read `localStorage`, but only as a display cache refreshed from the server on every load and cleared on the login page.
 - **Secrets:** `DB_URL`, `DB_USERNAME`, `DB_PASSWORD` from the environment; locally from gitignored `codecanvas/.env` (template: `.env.example`). The app refuses to start without `DB_PASSWORD`.
 - **Schema:** Flyway migrations in `src/main/resources/db/migration`: V1 students and attempts, V2 email and password reset tokens, V3 ISC curriculum.
+
+## Design and public pages
+- **Look:** flat dark-green neutrals, one green accent, IBM Plex fonts, no gradients or glow. Frosted glass only on the sticky menu and the login card. Shared stylesheet `static/css/theme.css`; shared menu and footer in `templates/fragments/`.
+- **Public pages:** `/privacy` and `/terms` (plain-language drafts; have someone qualified read them), `robots.txt`, `site.webmanifest`, phone icons, link-preview image.
+- **Contact address:** shown only when `CONTACT_EMAIL` is set, so a personal address is never published by accident.
 
 ## Known gaps / next work
 1. Login lockout is per username and in memory: someone who knows a username can lock it for 15 minutes, and counters reset when the app restarts. Per-IP limiting needs the real client IP verified on the host first.

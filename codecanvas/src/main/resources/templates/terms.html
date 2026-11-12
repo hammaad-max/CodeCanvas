@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}" href="/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms | TraceTables</title>
+    <meta name="description" content="The simple rules for using TraceTables.">
+    <meta name="theme-color" content="#0e1311">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/theme.css}" href="/css/theme.css">
+</head>
+<body class="legal-page">
+<a class="tt-skip" href="#main">Skip to content</a>
+<header class="legal-header">
+    <a href="/" class="legal-brand"><img th:src="@{/images/logo-mark.svg}" src="/images/logo-mark.svg" alt="" width="22" height="22">TraceTables</a>
+    <a href="/" class="legal-signin">Sign in</a>
+</header>
+<main id="main" class="legal">
+    <h1>Terms</h1>
+    <p class="legal-updated">Last updated 12 November 2026</p>
+    <p>By creating an account or using TraceTables you agree to these simple rules.</p>
+
+    <h2>What TraceTables is</h2>
+    <p>A free practice site with Java lessons, quizzes and mock exams for students preparing for AP Computer Science A, ICSE Computer Applications and ISC Computer Science. It is a study aid, not a replacement for your teacher or your textbook.</p>
+
+    <h2>Not official</h2>
+    <p>TraceTables is independent. It is not connected to or endorsed by the College Board, the CISCE or any school. AP is a registered trademark of the College Board. ICSE and ISC are examinations of the CISCE. Projected scores and grades shown on the site are rough estimates from practice results. They do not predict your real result.</p>
+
+    <h2>Your account</h2>
+    <ul>
+        <li>Give accurate details and keep your password to yourself. You are responsible for what happens under your account.</li>
+        <li>One person per account.</li>
+        <li>Tell us if you think someone else has used your account.</li>
+    </ul>
+
+    <h2>Fair use</h2>
+    <p>Do not try to break, overload or get around the site, read other students' data, or copy the questions and lessons to sell or publish them elsewhere. We may suspend accounts that do.</p>
+
+    <h2>Accuracy and availability</h2>
+    <p>We work hard to keep lessons and answers correct, but mistakes can happen. If you spot one, please tell us. The site is provided as it is. It may be offline for maintenance or without warning, and we cannot promise it will always be available or error free.</p>
+
+    <h2>Changes</h2>
+    <p>We may update these terms or the site. Continuing to use TraceTables after a change means you accept it.</p>
+
+    <h2>Contact</h2>
+    <p>Questions, corrections or removal requests<span th:if="${contactEmail != null}">: <a th:href="'mailto:' + ${contactEmail}" th:text="${contactEmail}">contact address</a></span>. See also the <a href="/privacy">Privacy</a> page.</p>
+</main>
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

@@ -1,0 +1,235 @@
+/*
+ * TraceTables design "Editor": flat dark neutrals tinted green, one green accent, IBM Plex.
+ * Loaded last on every page, so it sets the shared look and the row-style layouts.
+ * Frosted glass is used only where it does a job: the sticky menu and the login card.
+ */
+:root {
+    --bg: #0e1311;
+    --surface: #101614;
+    --text: #d8dfda;
+    --muted: #8a968f;
+    --line: #222b27;
+    --line-strong: #33403a;
+    --accent: #5fd38d;
+    --ink: #06200f;
+    --code: #121917;
+    --sel: #1f3d2e;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', system-ui, Arial, sans-serif;
+    font-variant-numeric: tabular-nums;
+    -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--sel); color: var(--text); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+a { text-underline-offset: 3px; }
+code, pre, kbd { font-family: 'IBM Plex Mono', Consolas, monospace; }
+code { background: var(--code); color: var(--text); border: 1px solid var(--line); border-radius: 3px; }
+pre code, .code-block code { border: 0; background: none; }
+input, textarea, select { caret-color: var(--accent); }
+
+/* ------------------------------------------------------------------ small labels and badges above headings are dropped */
+.badge,
+.card-pill,
+.welcome-badge,
+.exam-badge,
+.hero .badge { display: none !important; }
+#resultStatusBadge { display: inline-block !important; }
+
+/* ------------------------------------------------------------------ headings and text */
+h1 { font-size: clamp(26px, 4vw, 34px); line-height: 1.15; letter-spacing: -0.02em; }
+h2 { letter-spacing: -0.015em; }
+.hero h1 span, .welcome-header h1 span { color: var(--accent); }
+.hero p, .welcome-header p, .intro, .lede { max-width: 62ch; }
+
+/* ------------------------------------------------------------------ the login card keeps a frosted look */
+body:has(.login-container) {
+    background:
+        radial-gradient(60% 50% at 50% 28%, rgba(95, 211, 141, 0.07), transparent 70%),
+        var(--bg);
+}
+.login-container {
+    background: rgba(18, 25, 23, 0.55);
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 8px;
+    box-shadow: none;
+}
+.login-container input { background: rgba(255, 255, 255, 0.03); border-radius: 4px; }
+.login-container .logo { font-weight: 600; }
+
+/* ------------------------------------------------------------------ lessons: flat sections, no cards inside cards */
+.container > .card, main.container > .card {
+    background: none;
+    border: 0;
+    border-top: 1px solid var(--line);
+    border-radius: 0;
+    box-shadow: none;
+    padding: 30px 0;
+    margin: 0;
+}
+.container > .card h2 { font-size: 20px; }
+.concept-grid { gap: 12px; }
+.concept { background: none; border: 1px solid var(--line); border-radius: 4px; }
+.code-block { background: var(--code); border: 1px solid var(--line); border-radius: 4px; }
+.breadcrumb { font-family: 'IBM Plex Mono', Consolas, monospace; font-size: 13px; }
+.lesson-nav a { background: none; border: 1px solid var(--line); border-radius: 4px; }
+.lesson-nav a:hover { border-color: var(--line-strong); transform: none; }
+
+/* ------------------------------------------------------------------ dashboard: courses as rows, not three identical cards */
+.curriculum-grid {
+    display: block;
+    margin-top: 8px;
+}
+.curriculum-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: 28px;
+    align-items: center;
+    padding: 22px 0;
+    background: none;
+    border: 0;
+    border-top: 1px solid var(--line);
+    border-radius: 0;
+    box-shadow: none;
+    transform: none;
+}
+.curriculum-card:last-child { border-bottom: 1px solid var(--line); }
+.curriculum-card h3 { font-size: 18px; margin: 0 0 4px; }
+.curriculum-card p { margin: 0; max-width: 56ch; }
+.curriculum-card > div:last-child { display: flex; align-items: center; justify-content: flex-end; gap: 22px; flex-wrap: wrap; }
+.curriculum-card .card-meta { margin: 0; padding: 0; border: 0; white-space: nowrap; font-family: 'IBM Plex Mono', Consolas, monospace; font-size: 12.5px; }
+.card-actions { flex-wrap: nowrap; }
+.card-actions .card-button { border-radius: 4px; flex: 0 0 auto; width: auto; padding: 0 16px; height: 36px; }
+.progress-card, .stat-box, .ap-score-predictor { background: none; border: 1px solid var(--line); border-radius: 6px; box-shadow: none; }
+.profile-container .avatar, .avatar, .profile { background: none; border: 1px solid var(--line-strong); color: var(--text); }
+
+/* ------------------------------------------------------------------ course pages: topics as rows */
+.hero-main { padding: 8px 0; border: 0; background: none; }
+.stats-card { background: none; border: 1px solid var(--line); border-radius: 6px; box-shadow: none; }
+.topics { display: block; margin-top: 4px; }
+.topic-card {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) auto;
+    grid-template-areas: "num title actions" "num desc actions";
+    column-gap: 20px;
+    row-gap: 2px;
+    align-items: center;
+    padding: 18px 0;
+    background: none;
+    border: 0;
+    border-top: 1px solid var(--line);
+    border-radius: 0;
+    box-shadow: none;
+    transform: none;
+}
+.topic-card:last-child { border-bottom: 1px solid var(--line); }
+.topic-card:hover { background: none; border-color: var(--line); transform: none; }
+.topic-number { grid-area: num; font-family: 'IBM Plex Mono', Consolas, monospace; color: var(--muted); margin: 0; }
+.topic-card h3 { grid-area: title; margin: 0; font-size: 17px; }
+.topic-card p { grid-area: desc; margin: 0; }
+.topic-actions { grid-area: actions; display: flex; align-items: center; gap: 10px; margin: 0; }
+.topic-actions .status-badge { margin-right: 10px; white-space: nowrap; }
+.topic-button { border-radius: 4px; }
+.search { border-radius: 4px; }
+
+/* ------------------------------------------------------------------ quiz, exam and progress: flat panels */
+.quiz-card, .result-card, .question-card, .exam-start-card, .exam-sidebar, .report-hero, .unit-card, .kpi-card,
+.plan-card, .modal, .unit-progress-card {
+    box-shadow: none;
+    border-radius: 6px;
+}
+.kpi-card, .unit-card, .plan-card { background: none; border: 1px solid var(--line); }
+.option, .option-button { border-radius: 4px; }
+
+/* ------------------------------------------------------------------ phones */
+@media (max-width: 760px) {
+    .curriculum-card { grid-template-columns: 1fr; gap: 14px; }
+    .curriculum-card > div:last-child { justify-content: flex-start; }
+    .topic-card { grid-template-columns: 34px minmax(0, 1fr); grid-template-areas: "num title" "num desc" "actions actions"; row-gap: 6px; }
+    .topic-actions { margin-top: 8px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* ------------------------------------------------------------------ skip link (keyboard users) */
+.tt-skip {
+    position: absolute;
+    left: 12px;
+    top: -60px;
+    z-index: 100;
+    padding: 10px 14px;
+    background: var(--accent);
+    color: var(--ink);
+    font: 500 14px 'IBM Plex Sans', system-ui, sans-serif;
+    border-radius: 4px;
+    text-decoration: none;
+}
+.tt-skip:focus { top: 12px; }
+
+/* ------------------------------------------------------------------ footer */
+.tt-footer {
+    border-top: 1px solid var(--line);
+    margin-top: 48px;
+    font: 400 13px 'IBM Plex Sans', system-ui, sans-serif;
+    color: var(--muted);
+}
+.tt-footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 18px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+.tt-footer nav { display: flex; gap: 20px; }
+.tt-footer a { color: var(--muted); text-decoration: none; }
+.tt-footer a:hover { color: var(--text); text-decoration: underline; }
+body:has(.login-container) { position: relative; padding-bottom: 72px; }
+body:has(.login-container) .tt-footer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    border-top: 0;
+}
+
+/* ------------------------------------------------------------------ privacy and terms pages */
+.legal-header {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 20px 24px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.legal-brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 16px; color: var(--text); text-decoration: none; }
+.legal-signin { font-size: 14px; color: var(--muted); text-decoration: none; }
+.legal-signin:hover { color: var(--text); }
+.legal { max-width: 760px; margin: 0 auto; padding: 40px 24px 24px; }
+.legal h1 { margin-bottom: 4px; }
+.legal-updated { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
+.legal h2 { font-size: 18px; margin: 32px 0 8px; }
+.legal p, .legal li { color: var(--muted); line-height: 1.7; }
+.legal p { margin: 8px 0; }
+.legal ul { margin: 8px 0; padding-left: 20px; }
+.legal li { margin: 6px 0; }
+.legal strong { color: var(--text); font-weight: 500; }
+.legal a { color: var(--accent); }
+
+/* ------------------------------------------------------------------ sign-up note */
+.consent { margin-top: 14px; font-size: 13px; color: var(--muted); text-align: center; }
+.consent a { color: var(--accent); }
